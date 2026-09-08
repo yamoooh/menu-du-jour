@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Header } from '@/components/Header'
 import { useAuth } from '@/context/AuthContext'
 import { restaurantService } from '@/services/restaurantService'
+import { subscriptionService } from '@/services/subscriptionService'
 import { menuService } from '@/services/menuService'
 import type {
   Restaurant,
@@ -14,6 +15,7 @@ import { RestaurantSelector } from '@/components/restaurant/RestaurantSelector'
 import { RestaurantFormModal } from '@/components/restaurant/RestaurantFormModal'
 import { RestaurantHoursForm } from '@/components/restaurant/RestaurantHoursForm'
 import { SubscriptionCard } from '@/components/restaurant/SubscriptionCard'
+import { SubscriptionBanner } from '@/components/restaurant/SubscriptionBanner'
 import { RestaurantStats } from '@/components/restaurant/RestaurantStats'
 import { RestaurantNav, type TabType } from '@/components/restaurant/RestaurantNav'
 import { CurrentMenuCard } from '@/components/menu/CurrentMenuCard'
@@ -22,16 +24,20 @@ import { MenuEditor } from '@/components/menu/MenuEditor'
 import { RestaurantReservationsList } from '@/components/reservation/RestaurantReservationsList'
 import { NotificationList } from '@/components/notification/NotificationList'
 import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
+import { useLanguage } from '@/context/LanguageContext'
 import {
   Store,
   Edit,
-  AlertTriangle,
   Sparkles,
   Plus,
+  CheckCircle2,
+  Clock,
+  X,
 } from 'lucide-react'
 
 export const RestaurantDashboardPage: React.FC = () => {
   const { profile } = useAuth()
+  const { t } = useLanguage()
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null)
@@ -50,6 +56,33 @@ export const RestaurantDashboardPage: React.FC = () => {
   // Modal de création/édition de restaurant
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [restaurantToEdit, setRestaurantToEdit] = useState<Restaurant | null>(null)
+
+  // Notification après redirection LeekPay
+  const [paymentNotice, setPaymentNotice] = useState<{
+    type: 'pending' | 'confirmed'
+    title: string
+    message: string
+  } | null>(null)
+
+  // Vérification de la redirection LeekPay dans l'URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const paymentParam = params.get('payment')
+
+    if (paymentParam === 'pending') {
+      setPaymentNotice({
+        type: 'pending',
+        title: 'Paiement en attente de confirmation',
+        message: t.subscription.paymentReceivedPending,
+      })
+    } else if (paymentParam === 'success' || paymentParam === 'confirmed') {
+      setPaymentNotice({
+        type: 'confirmed',
+        title: 'Paiement confirmé',
+        message: t.subscription.paymentConfirmedActive,
+      })
+    }
+  }, [t])
 
   // Charger tous les restaurants de l'utilisateur
   const loadMyRestaurants = useCallback(async () => {
@@ -79,7 +112,7 @@ export const RestaurantDashboardPage: React.FC = () => {
   const loadRestaurantData = useCallback(async (restaurantId: string) => {
     const [hoursRes, subRes, statsRes, menusRes] = await Promise.all([
       restaurantService.fetchRestaurantHours(restaurantId),
-      restaurantService.fetchSubscription(restaurantId),
+      subscriptionService.fetchSubscription(restaurantId),
       restaurantService.fetchRestaurantStats(restaurantId),
       menuService.fetchMenusByRestaurant(restaurantId),
     ])
@@ -137,18 +170,40 @@ export const RestaurantDashboardPage: React.FC = () => {
     }
   }
 
-  // Vérifier si l'abonnement est expiré
-  const isSubscriptionExpired =
-    subscription?.status === 'expired' ||
-    (subscription?.status === 'trialing' &&
-      subscription.trial_end_at &&
-      new Date(subscription.trial_end_at).getTime() < Date.now())
-
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {/* Banner d'information après paiement LeekPay (ex: redirection) */}
+        {paymentNotice && (
+          <div
+            className={`p-4 sm:p-5 rounded-2xl border flex items-start justify-between gap-3 shadow-md animate-fadeIn ${
+              paymentNotice.type === 'confirmed'
+                ? 'bg-emerald-900 text-white border-emerald-700'
+                : 'bg-amber-900 text-white border-amber-700'
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              {paymentNotice.type === 'confirmed' ? (
+                <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
+              ) : (
+                <Clock className="w-6 h-6 text-amber-400 shrink-0 mt-0.5" />
+              )}
+              <div>
+                <h4 className="font-extrabold text-sm sm:text-base">{paymentNotice.title}</h4>
+                <p className="text-xs sm:text-sm text-slate-200 mt-0.5">{paymentNotice.message}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setPaymentNotice(null)}
+              className="p-1 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer shrink-0"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+
         {/* Écran de chargement principal */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-4">
@@ -221,17 +276,13 @@ export const RestaurantDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Alerte si abonnement expiré */}
-            {isSubscriptionExpired && (
-              <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-3 shadow-xs">
-                <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <h4 className="font-bold text-sm text-red-900">Abonnement professionnel expiré</h4>
-                  <p>
-                    L'accès professionnel pour <strong>{selectedRestaurant?.name}</strong> a expiré. Vos menus, réservations et données restent entièrement conservés. Renouvelez votre abonnement pour continuer à publier et recevoir des réservations.
-                  </p>
-                </div>
-              </div>
+            {/* Banner d'abonnement (Trial / Actif / Expirant / Expiré) */}
+            {selectedRestaurant && (
+              <SubscriptionBanner
+                subscription={subscription}
+                restaurantId={selectedRestaurant.id}
+                onRenewClick={() => setActiveTab('subscription')}
+              />
             )}
 
             {/* Navigation par onglets */}
@@ -245,11 +296,17 @@ export const RestaurantDashboardPage: React.FC = () => {
               <div className="space-y-6">
                 <CurrentMenuCard
                   menus={menus}
+                  subscription={subscription}
+                  restaurantId={selectedRestaurant?.id}
                   onCreateNewMenu={handleCreateNewMenu}
                   onEditMenu={handleEditMenu}
                 />
                 <RestaurantStats stats={stats} subscription={subscription} />
-                <SubscriptionCard subscription={subscription} />
+                <SubscriptionCard
+                  subscription={subscription}
+                  restaurantId={selectedRestaurant?.id}
+                  onRefresh={() => selectedRestaurant && loadRestaurantData(selectedRestaurant.id)}
+                />
               </div>
             )}
 
@@ -258,6 +315,7 @@ export const RestaurantDashboardPage: React.FC = () => {
               isEditingMenu ? (
                 <MenuEditor
                   restaurantId={selectedRestaurant.id}
+                  subscription={subscription}
                   menuToEdit={menuToEdit}
                   onBack={() => setIsEditingMenu(false)}
                   onSaved={handleMenuSaved}
@@ -265,6 +323,8 @@ export const RestaurantDashboardPage: React.FC = () => {
               ) : (
                 <MenuList
                   menus={menus}
+                  subscription={subscription}
+                  restaurantId={selectedRestaurant.id}
                   onSelectMenuToEdit={handleEditMenu}
                   onCreateNewMenu={handleCreateNewMenu}
                   onRefresh={() => selectedRestaurant && loadRestaurantData(selectedRestaurant.id)}
@@ -348,7 +408,13 @@ export const RestaurantDashboardPage: React.FC = () => {
             )}
 
             {/* Onglet 5 : Abonnement */}
-            {activeTab === 'subscription' && <SubscriptionCard subscription={subscription} />}
+            {activeTab === 'subscription' && (
+              <SubscriptionCard
+                subscription={subscription}
+                restaurantId={selectedRestaurant?.id}
+                onRefresh={() => selectedRestaurant && loadRestaurantData(selectedRestaurant.id)}
+              />
+            )}
 
             {/* Onglet 6 : Réservations */}
             {activeTab === 'reservations' && selectedRestaurant && (
@@ -358,7 +424,7 @@ export const RestaurantDashboardPage: React.FC = () => {
               />
             )}
 
-            {/* Onglets Bientôt Disponibles (Followers) */}
+            {/* Onglet 7 : Notifications */}
             {activeTab === 'notifications' && (
               <div className="space-y-6">
                 <NotificationList />
@@ -366,6 +432,7 @@ export const RestaurantDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Onglet 8 : Followers */}
             {activeTab === 'followers' && (
               <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-3 shadow-xs">
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 mx-auto flex items-center justify-center font-bold">

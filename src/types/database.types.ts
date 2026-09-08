@@ -609,6 +609,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      confirm_payment_subscription: {
+        Args: {
+          p_restaurant_id: string
+          p_amount?: number
+          p_provider_ref?: string
+          p_metadata?: Json
+        }
+        Returns: Json
+      }
       generate_restaurant_slug: {
         Args: { p_id?: string; p_name: string }
         Returns: string

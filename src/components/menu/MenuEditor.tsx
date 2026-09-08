@@ -19,8 +19,13 @@ import {
   ArrowLeft,
 } from 'lucide-react'
 
+import type { Subscription } from '@/types/restaurant.types'
+import { subscriptionService } from '@/services/subscriptionService'
+import { AlertTriangle, ExternalLink } from 'lucide-react'
+
 interface MenuEditorProps {
   restaurantId: string
+  subscription?: Subscription | null
   menuToEdit?: MenuWithDetails | null
   onBack: () => void
   onSaved: (updatedMenuId: string) => void
@@ -28,11 +33,14 @@ interface MenuEditorProps {
 
 export const MenuEditor: React.FC<MenuEditorProps> = ({
   restaurantId,
+  subscription = null,
   menuToEdit,
   onBack,
   onSaved,
 }) => {
   const isEditing = Boolean(menuToEdit)
+  const subInfo = subscriptionService.getSubscriptionInfo(subscription)
+  const isExpired = subInfo.isExpired
 
   // Champs du menu principal
   const [title, setTitle] = useState('Menu du jour')
@@ -112,6 +120,11 @@ export const MenuEditor: React.FC<MenuEditorProps> = ({
 
   // Enregistrer ou Publier
   const handleSaveMenu = async (targetStatus: 'draft' | 'published') => {
+    if (isExpired) {
+      setError('Votre abonnement a expiré. Renouvelez votre abonnement pour continuer à utiliser les fonctionnalités professionnelles de Menu du Jour.')
+      return
+    }
+
     setError(null)
     setSuccessMessage(null)
 
@@ -212,6 +225,28 @@ export const MenuEditor: React.FC<MenuEditorProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Alerte si abonnement expiré */}
+      {isExpired && (
+        <div className="p-5 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs space-y-3 shadow-xs">
+          <div className="font-bold flex items-center gap-2 text-sm text-red-900">
+            <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
+            Abonnement expiré — Édition suspendue
+          </div>
+          <p className="text-red-700 leading-relaxed">
+            Votre abonnement a expiré. Renouvelez votre abonnement pour continuer à utiliser les fonctionnalités professionnelles de Menu du Jour.
+          </p>
+          <button
+            onClick={() => {
+              window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Renouveler mon abonnement
+          </button>
+        </div>
+      )}
+
       {/* Header Éditeur */}
       <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <button

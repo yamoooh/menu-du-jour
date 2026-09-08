@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import type { MenuWithDetails } from '@/types/menu.types'
+import type { Subscription } from '@/types/restaurant.types'
+import { subscriptionService } from '@/services/subscriptionService'
 import { menuService } from '@/services/menuService'
-import { Utensils, Plus, Calendar, Image, Edit, Trash2, Send, AlertCircle } from 'lucide-react'
+import { Utensils, Plus, Calendar, Image, Edit, Trash2, Send, AlertCircle, AlertTriangle, ExternalLink } from 'lucide-react'
 
 interface MenuListProps {
   menus: MenuWithDetails[]
+  subscription?: Subscription | null
+  restaurantId?: string
   onSelectMenuToEdit: (menu: MenuWithDetails) => void
   onCreateNewMenu: () => void
   onRefresh: () => void
@@ -12,6 +16,8 @@ interface MenuListProps {
 
 export const MenuList: React.FC<MenuListProps> = ({
   menus,
+  subscription = null,
+  restaurantId,
   onSelectMenuToEdit,
   onCreateNewMenu,
   onRefresh,
@@ -20,7 +26,23 @@ export const MenuList: React.FC<MenuListProps> = ({
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const subInfo = subscriptionService.getSubscriptionInfo(subscription)
+  const isExpired = subInfo.isExpired
+
+  const handleRenew = () => {
+    if (restaurantId) {
+      window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+    } else {
+      window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
+    }
+  }
+
   const handleTogglePublish = async (menu: MenuWithDetails) => {
+    if (isExpired) {
+      setError('Votre abonnement a expiré. Renouvelez votre abonnement pour continuer à utiliser les fonctionnalités professionnelles de Menu du Jour.')
+      return
+    }
+
     setError(null)
     const newStatus = menu.status === 'published' ? 'draft' : 'published'
 
@@ -63,6 +85,26 @@ export const MenuList: React.FC<MenuListProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Alerte abonnement expiré */}
+      {isExpired && (
+        <div className="p-5 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs space-y-3 shadow-xs">
+          <div className="font-bold flex items-center gap-2 text-sm text-red-900">
+            <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
+            Abonnement expiré — Fonctionnalités de création et édition suspendues
+          </div>
+          <p className="text-red-700 leading-relaxed">
+            Votre abonnement a expiré. Renouvelez votre abonnement pour continuer à utiliser les fonctionnalités professionnelles de Menu du Jour. Vos menus existants et données restent intégralement conservés.
+          </p>
+          <button
+            onClick={handleRenew}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Renouveler mon abonnement
+          </button>
+        </div>
+      )}
+
       {/* Header section menus */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
@@ -79,7 +121,8 @@ export const MenuList: React.FC<MenuListProps> = ({
 
         <button
           onClick={onCreateNewMenu}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer w-full sm:w-auto justify-center"
+          disabled={isExpired}
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 disabled:opacity-50 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer w-full sm:w-auto justify-center"
         >
           <Plus className="w-4 h-4" />
           Créer un nouveau menu
@@ -107,7 +150,8 @@ export const MenuList: React.FC<MenuListProps> = ({
           </div>
           <button
             onClick={onCreateNewMenu}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
+            disabled={isExpired}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Créer le premier menu
@@ -168,8 +212,8 @@ export const MenuList: React.FC<MenuListProps> = ({
                 <button
                   type="button"
                   onClick={() => handleTogglePublish(menu)}
-                  disabled={loading}
-                  className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                  disabled={loading || isExpired}
+                  className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50 ${
                     menu.status === 'published'
                       ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
@@ -187,7 +231,8 @@ export const MenuList: React.FC<MenuListProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectMenuToEdit(menu)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 transition-colors cursor-pointer"
+                  disabled={isExpired}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   <Edit className="w-3.5 h-3.5" />
                   Éditer

@@ -1,22 +1,38 @@
 import React from 'react'
 import type { MenuWithDetails } from '@/types/menu.types'
-import { Utensils, Calendar, Plus, Edit } from 'lucide-react'
+import { subscriptionService } from '@/services/subscriptionService'
+import type { Subscription } from '@/types/restaurant.types'
+import { Utensils, Calendar, Plus, Edit, AlertTriangle, ExternalLink } from 'lucide-react'
 
 interface CurrentMenuCardProps {
   menus: MenuWithDetails[]
+  subscription: Subscription | null
+  restaurantId?: string
   onCreateNewMenu: () => void
   onEditMenu: (menu: MenuWithDetails) => void
 }
 
 export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
   menus,
+  subscription,
+  restaurantId,
   onCreateNewMenu,
   onEditMenu,
 }) => {
+  const subInfo = subscriptionService.getSubscriptionInfo(subscription)
+  const isExpired = subInfo.isExpired
+
   const todayStr = new Date().toISOString().split('T')[0]
   const todayMenu = menus.find((m) => m.menu_date === todayStr) || menus[0]
-
   const isToday = todayMenu?.menu_date === todayStr
+
+  const handleRenew = () => {
+    if (restaurantId) {
+      window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+    } else {
+      window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
+    }
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
@@ -50,6 +66,25 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
           </span>
         )}
       </div>
+
+      {isExpired && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs space-y-2">
+          <div className="font-bold flex items-center gap-2 text-sm text-red-900">
+            <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+            Abonnement expiré
+          </div>
+          <p className="text-red-700">
+            Votre abonnement a expiré. Renouvelez votre abonnement pour continuer à utiliser les fonctionnalités professionnelles de Menu du Jour.
+          </p>
+          <button
+            onClick={handleRenew}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors cursor-pointer"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Renouveler mon abonnement
+          </button>
+        </div>
+      )}
 
       {todayMenu ? (
         <div className="space-y-3">
@@ -91,8 +126,9 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
           <div className="pt-2 flex justify-end">
             <button
               type="button"
+              disabled={isExpired}
               onClick={() => onEditMenu(todayMenu)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
             >
               <Edit className="w-4 h-4" />
               Modifier le menu du jour
@@ -106,8 +142,9 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
           </p>
           <button
             type="button"
+            disabled={isExpired}
             onClick={onCreateNewMenu}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 disabled:opacity-50 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Créer le menu du jour
