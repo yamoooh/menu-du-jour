@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
-import type { UserProfile, SignUpParams, SignInParams } from '@/types/auth.types'
+import type { UserProfile, UserRole, SignUpParams, SignInParams } from '@/types/auth.types'
 
 interface AuthContextType {
   user: User | null
@@ -23,46 +23,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
-    if (!supabase) return null
+  /**
+   * Récupération robuste du profil utilisateur avec tentatives multiples et profil de secours.
+   */
+  const fetchProfile = useCallback(async (currUser: User): Promise<UserProfile> => {
+    const userId = currUser.id
+    const meta = currUser.user_metadata || {}
+
+    const fallbackProfile: UserProfile = {
+      id: userId,
+      full_name: meta.full_name || currUser.email || 'Utilisateur',
+      phone: meta.phone || null,
+      role: (meta.role as UserRole) || 'client',
+      avatar_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+
+    if (!supabase) return fallbackProfile
 
     try {
-      const { data, error } = await supabase
+      // Tentative 1
+      let { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle()
 
-      if (error) {
-        console.error('Erreur de récupération du profil :', error.message)
-        return null
-      }
+      if (data) return data as UserProfile
 
-      // Si le trigger de création automatique n'a pas encore fini (latence réseau)
-      if (!data) {
-        await new Promise((resolve) => setTimeout(resolve, 600))
+      // Re-tentatives si le trigger PostgreSQL prend quelques millisecondes
+      for (const delay of [200, 500, 1000]) {
+        await new Promise((resolve) => setTimeout(resolve, delay))
         const { data: retryData } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', userId)
           .maybeSingle()
 
-        return retryData || null
+        if (retryData) return retryData as UserProfile
       }
 
-      return data
+      if (error) {
+        console.warn('Utilisation du profil de secours suite à une erreur RLS/BDD:', error.message)
+      }
+
+      return fallbackProfile
     } catch (err) {
-      console.error('Erreur inattendue lors du chargement du profil :', err)
-      return null
+      console.warn('Exception lors de la récupération du profil, utilisation du secours:', err)
+      return fallbackProfile
     }
   }, [])
 
   const refreshProfile = useCallback(async () => {
-    if (user?.id) {
-      const p = await fetchProfile(user.id)
+    if (user) {
+      const p = await fetchProfile(user)
       setProfile(p)
     }
-  }, [user?.id, fetchProfile])
+  }, [user, fetchProfile])
 
   useEffect(() => {
     if (!supabase) {
@@ -80,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(initSession?.user ?? null)
 
       if (initSession?.user) {
-        const p = await fetchProfile(initSession.user.id)
+        const p = await fetchProfile(initSession.user)
         if (isMounted) setProfile(p)
       }
 
@@ -88,23 +106,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     // Écouter les changements d'état d'authentification
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, currentSession) => {
-        if (!isMounted) return
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, currentSession) => {
+      if (!isMounted) return
 
-        setSession(currentSession)
-        setUser(currentSession?.user ?? null)
+      setSession(currentSession)
+      setUser(currentSession?.user ?? null)
 
-        if (currentSession?.user) {
-          const p = await fetchProfile(currentSession.user.id)
-          if (isMounted) setProfile(p)
-        } else {
-          if (isMounted) setProfile(null)
-        }
-
-        if (isMounted) setLoading(false)
+      if (currentSession?.user) {
+        const p = await fetchProfile(currentSession.user)
+        if (isMounted) setProfile(p)
+      } else {
+        if (isMounted) setProfile(null)
       }
-    )
+
+      if (isMounted) setLoading(false)
+    })
 
     return () => {
       isMounted = false
@@ -122,20 +140,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }: SignUpParams): Promise<{ error: Error | null; needsEmailConfirmation: boolean }> => {
     if (!supabase) return { error: new Error('Client Supabase non initialisé'), needsEmailConfirmation: false }
 
-    // Rôle admin interdit en inscription publique
+    // Le rôle Administrateur est strictement interdit lors de l'inscription publique
     if (role === ('admin' as string)) {
-      return { error: new Error('Le rôle Administrateur ne peut pas être attribué à l\'inscription'), needsEmailConfirmation: false }
+      return {
+        error: new Error('Le rôle Administrateur ne peut pas être attribué lors d\'une inscription publique.'),
+        needsEmailConfirmation: false,
+      }
     }
 
     const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+    const userPhone = phone?.trim() || null
 
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: {
         data: {
           full_name: fullName,
           role,
+          phone: userPhone,
         },
       },
     })
@@ -145,17 +168,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newUser = data.user
     const needsEmailConfirmation = !data.session && !!newUser
 
-    // Si le numéro de téléphone est renseigné, le mettre à jour sur le profil
-    if (newUser && phone && phone.trim()) {
-      // Laisser le temps au trigger handle_new_user de créer la ligne
-      setTimeout(async () => {
-        await supabase
-          .from('profiles')
-          .update({ phone: phone.trim() })
-          .eq('id', newUser.id)
-      }, 500)
-    }
-
     return { error: null, needsEmailConfirmation }
   }
 
@@ -163,7 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!supabase) return { error: new Error('Client Supabase non initialisé') }
 
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: email.trim(),
       password,
     })
 
@@ -240,7 +252,7 @@ function translateAuthError(message: string): string {
     return 'Le mot de passe doit contenir au moins 6 caractères.'
   }
   if (lower.includes('email rate limit exceeded')) {
-    return 'Trop de tentatives en peu de temps. Veuillez réespayer dans quelques minutes.'
+    return 'Trop de tentatives en peu de temps. Veuillez réessayer dans quelques minutes.'
   }
   if (lower.includes('network') || lower.includes('fetch')) {
     return 'Problème de connexion réseau. Veuillez vérifier votre connexion internet.'
