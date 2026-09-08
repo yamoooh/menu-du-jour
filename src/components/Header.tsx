@@ -16,24 +16,24 @@ export const Header = () => {
   const roleLabel = profile?.role ? ROLE_LABELS[profile.role as UserRole] || '' : ''
 
   return (
-    <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-xs">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 md:h-24 flex items-center justify-between">
+        {/* Logo (Agrandi pour une lisibilité optimale) */}
         <Link to="/" className="flex items-center gap-3 group">
           <img
             src="/logo.png"
             alt="Menu du Jour"
-            className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+            className="h-14 sm:h-16 md:h-18 w-auto object-contain group-hover:scale-105 transition-transform"
           />
         </Link>
 
         {/* Actions utilisateur / Navigation */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link
             to="/decouvrir"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 hover:text-orange-600 hover:bg-orange-50 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-slate-800 hover:text-orange-600 hover:bg-orange-50 transition-colors"
           >
-            <UtensilsCrossed className="w-3.5 h-3.5 text-orange-500" />
+            <UtensilsCrossed className="w-4 h-4 text-orange-500" />
             <span className="hidden sm:inline">Découvrir</span>
           </Link>
           {user ? (

@@ -27,29 +27,29 @@ export const PublicHeader: React.FC = () => {
   }
 
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-2xs">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-24 md:h-28 flex items-center justify-between">
+        {/* Logo (Agrandi pour une lisibilité optimale) */}
         <Link to="/" className="flex items-center gap-3 group">
           <img
             src="/logo.png"
             alt="Menu du Jour"
-            className="h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+            className="h-16 sm:h-20 md:h-22 w-auto object-contain group-hover:scale-105 transition-transform"
           />
         </Link>
 
-        {/* Navigation Principale Desktop */}
-        <nav className="hidden md:flex items-center gap-6">
+        {/* Navigation Principale Desktop (Agrondie & mise en valeur) */}
+        <nav className="hidden md:flex items-center gap-8 lg:gap-10">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-xs font-bold transition-colors ${
+                className={`text-sm lg:text-base font-extrabold transition-colors ${
                   isActive
-                    ? 'text-orange-600 border-b-2 border-orange-600 pb-1'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'text-orange-600 border-b-3 border-orange-600 pb-1.5'
+                    : 'text-slate-700 hover:text-slate-900'
                 }`}
               >
                 {link.label}
@@ -58,14 +58,14 @@ export const PublicHeader: React.FC = () => {
           })}
         </nav>
 
-        {/* Droite du Header : FR/EN, Auth, CTA */}
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Droite du Header : FR/EN, Auth, CTA (Boutons agrandis) */}
+        <div className="hidden lg:flex items-center gap-4">
           {/* Sélecteur de Langue FR / EN */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold border border-slate-200">
-            <Globe className="w-3.5 h-3.5 text-slate-400 ml-1.5" />
+          <div className="flex items-center gap-1 bg-slate-100 p-1.5 rounded-xl text-sm font-extrabold border border-slate-200">
+            <Globe className="w-4 h-4 text-slate-400 ml-1.5" />
             <button
               onClick={() => setLanguage('fr')}
-              className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                 language === 'fr' ? 'bg-white text-orange-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -74,7 +74,7 @@ export const PublicHeader: React.FC = () => {
             <span className="text-slate-300">|</span>
             <button
               onClick={() => setLanguage('en')}
-              className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                 language === 'en' ? 'bg-white text-orange-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -85,7 +85,7 @@ export const PublicHeader: React.FC = () => {
           {user ? (
             <Link
               to={getDashboardPath()}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs shadow-sm hover:bg-slate-800 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900 text-white font-extrabold text-sm shadow-md hover:bg-slate-800 transition-colors"
             >
               <LayoutDashboard className="w-4 h-4 text-orange-400" />
               <span>{t.nav.dashboard}</span>
@@ -94,16 +94,16 @@ export const PublicHeader: React.FC = () => {
             <>
               <Link
                 to="/connexion"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
               >
-                <LogIn className="w-3.5 h-3.5 text-slate-400" />
+                <LogIn className="w-4 h-4 text-slate-500" />
                 {t.nav.signIn}
               </Link>
               <Link
                 to="/inscription"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
               >
-                <UserPlus className="w-3.5 h-3.5 text-slate-400" />
+                <UserPlus className="w-4 h-4 text-slate-500" />
                 {t.nav.signUp}
               </Link>
             </>
@@ -111,7 +111,7 @@ export const PublicHeader: React.FC = () => {
 
           <Link
             to="/inscription"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs shadow-md shadow-orange-500/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-black text-sm md:text-base shadow-lg shadow-orange-500/25 transition-all transform hover:scale-105 cursor-pointer"
           >
             {t.nav.startFree}
           </Link>
