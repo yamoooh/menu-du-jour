@@ -19,17 +19,11 @@ export const Header = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-sm shadow-orange-500/30 group-hover:scale-105 transition-transform">
-            <UtensilsCrossed className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-none">
-              Menu du Jour
-            </h1>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
-              Plateforme Web PWA
-            </p>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Menu du Jour"
+            className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+          />
         </Link>
 
         {/* Actions utilisateur / Navigation */}

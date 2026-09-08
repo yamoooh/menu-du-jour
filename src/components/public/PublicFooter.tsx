@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { PwaInstallButton } from '@/components/public/PwaInstallButton'
 import { WHATSAPP_NUMBER, WHATSAPP_URL } from '@/components/public/FloatingWhatsApp'
-import { UtensilsCrossed, MessageCircle, Shield, Globe } from 'lucide-react'
+import { MessageCircle, Shield, Globe } from 'lucide-react'
 
 export const PublicFooter: React.FC = () => {
   const { t, language, setLanguage } = useLanguage()
@@ -15,17 +15,11 @@ export const PublicFooter: React.FC = () => {
           {/* Colonne 1 : Brand & Description */}
           <div className="space-y-4 md:col-span-1">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-md">
-                <UtensilsCrossed className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-white tracking-tight leading-none">
-                  Menu du Jour
-                </h3>
-                <p className="text-[10px] text-orange-400 font-bold uppercase mt-0.5">
-                  Plateforme SaaS
-                </p>
-              </div>
+              <img
+                src="/logo.png"
+                alt="Menu du Jour"
+                className="h-12 w-auto object-contain bg-white/90 p-1.5 rounded-xl shadow-xs"
+              />
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
               La solution digitale complète permettant aux restaurants de publier leurs menus quotidiens et de gérer leurs réservations en ligne sans commission.

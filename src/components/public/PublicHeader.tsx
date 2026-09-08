@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
-import { UtensilsCrossed, Menu as MenuIcon, X, Globe, UserPlus, LogIn, LayoutDashboard } from 'lucide-react'
+import { Menu as MenuIcon, X, Globe, UserPlus, LogIn, LayoutDashboard } from 'lucide-react'
 
 export const PublicHeader: React.FC = () => {
   const { t, language, setLanguage } = useLanguage()
@@ -31,17 +31,11 @@ export const PublicHeader: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-orange-500/30 group-hover:scale-105 transition-transform">
-            <UtensilsCrossed className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-xl font-black text-slate-900 tracking-tight leading-none">
-              Menu du Jour
-            </h1>
-            <p className="text-[11px] text-orange-600 font-bold tracking-wide mt-0.5 uppercase">
-              Plateforme SaaS
-            </p>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Menu du Jour"
+            className="h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+          />
         </Link>
 
         {/* Navigation Principale Desktop */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
-import { KeyRound, Mail, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { Mail, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react'
 
 export const ForgotPasswordPage: React.FC = () => {
   const { resetPassword } = useAuth()
@@ -42,9 +42,7 @@ export const ForgotPasswordPage: React.FC = () => {
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center font-bold">
-              <KeyRound className="w-6 h-6" />
-            </div>
+            <img src="/logo.png" alt="Menu du Jour" className="h-16 w-auto mx-auto object-contain mb-1" />
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
               Mot de passe oublié
             </h2>

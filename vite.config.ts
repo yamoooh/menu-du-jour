@@ -11,7 +11,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg'],
+      includeAssets: ['favicon.svg', 'logo.png', 'pwa-192x192.svg', 'pwa-512x512.svg'],
       manifest: {
         name: 'Menu du Jour',
         short_name: 'MenuDuJour',
@@ -23,6 +23,12 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
+          {
+            src: '/logo.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
           {
             src: '/pwa-192x192.svg',
             sizes: '192x192',

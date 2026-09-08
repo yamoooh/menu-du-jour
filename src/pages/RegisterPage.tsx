@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
-import { UserPlus, Mail, Lock, User, Phone, Store, UserCheck, AlertCircle, ArrowRight } from 'lucide-react'
+import { Mail, Lock, User, Phone, Store, UserCheck, AlertCircle, ArrowRight } from 'lucide-react'
 
 export const RegisterPage: React.FC = () => {
   const { signUp, user, profile, loading: authLoading } = useAuth()
@@ -97,9 +97,7 @@ export const RegisterPage: React.FC = () => {
         <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 space-y-6">
           {/* Header de la carte */}
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center font-bold">
-              <UserPlus className="w-6 h-6" />
-            </div>
+            <img src="/logo.png" alt="Menu du Jour" className="h-16 w-auto mx-auto object-contain mb-1" />
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
               Créer votre compte
             </h2>
