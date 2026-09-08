@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { UtensilsCrossed, LogOut, User as UserIcon, LogIn, UserPlus } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { NotificationBell } from '@/components/notification/NotificationBell'
 import { ROLE_LABELS, type UserRole } from '@/types/auth.types'
 
 export const Header = () => {
@@ -37,6 +38,7 @@ export const Header = () => {
           </Link>
           {user ? (
             <div className="flex items-center gap-3">
+              <NotificationBell />
               <div className="hidden sm:flex flex-col items-end text-right">
                 <span className="text-sm font-semibold text-slate-900 leading-none">
                   {profile?.full_name || user.email}

@@ -9,6 +9,8 @@ import { FollowedRestaurantsList } from '@/components/follow/FollowedRestaurants
 import { RestaurantCard } from '@/components/discovery/RestaurantCard'
 import { RestaurantSearch } from '@/components/discovery/RestaurantSearch'
 import { ReservationModal } from '@/components/reservation/ReservationModal'
+import { NotificationList } from '@/components/notification/NotificationList'
+import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
 import {
   UserCheck,
   Heart,
@@ -17,9 +19,10 @@ import {
   UtensilsCrossed,
   Store,
   RefreshCw,
+  Bell,
 } from 'lucide-react'
 
-type ClientTab = 'discover' | 'followed' | 'reservations' | 'profile'
+type ClientTab = 'discover' | 'followed' | 'reservations' | 'notifications' | 'profile'
 
 export const ClientDashboardPage: React.FC = () => {
   const { profile } = useAuth()
@@ -120,6 +123,18 @@ export const ClientDashboardPage: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('notifications')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                activeTab === 'notifications'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Bell className={`w-4 h-4 ${activeTab === 'notifications' ? 'text-orange-400' : 'text-slate-400'}`} />
+              <span>Notifications</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('profile')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'profile'
@@ -200,6 +215,14 @@ export const ClientDashboardPage: React.FC = () => {
         {/* Onglet 3 : Mes réservations */}
         {activeTab === 'reservations' && (
           <ClientReservationsList onOpenReservationModal={() => setIsModalOpen(true)} />
+        )}
+
+        {/* Onglet 4 : Notifications */}
+        {activeTab === 'notifications' && (
+          <div className="space-y-6">
+            <NotificationList />
+            <PushSubscriptionToggle />
+          </div>
         )}
 
         {/* Onglet 4 : Profil */}

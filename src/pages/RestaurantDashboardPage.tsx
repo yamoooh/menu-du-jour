@@ -20,6 +20,8 @@ import { CurrentMenuCard } from '@/components/menu/CurrentMenuCard'
 import { MenuList } from '@/components/menu/MenuList'
 import { MenuEditor } from '@/components/menu/MenuEditor'
 import { RestaurantReservationsList } from '@/components/reservation/RestaurantReservationsList'
+import { NotificationList } from '@/components/notification/NotificationList'
+import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
 import {
   Store,
   Edit,
@@ -357,6 +359,13 @@ export const RestaurantDashboardPage: React.FC = () => {
             )}
 
             {/* Onglets Bientôt Disponibles (Followers) */}
+            {activeTab === 'notifications' && (
+              <div className="space-y-6">
+                <NotificationList />
+                <PushSubscriptionToggle />
+              </div>
+            )}
+
             {activeTab === 'followers' && (
               <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-3 shadow-xs">
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 mx-auto flex items-center justify-center font-bold">

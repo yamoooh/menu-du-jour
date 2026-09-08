@@ -1,5 +1,5 @@
 import React from 'react'
-import { LayoutDashboard, Store, Clock, Utensils, Calendar, Users, CreditCard } from 'lucide-react'
+import { LayoutDashboard, Store, Clock, Utensils, Calendar, Users, CreditCard, Bell } from 'lucide-react'
 
 export type TabType =
   | 'dashboard'
@@ -9,6 +9,7 @@ export type TabType =
   | 'reservations'
   | 'followers'
   | 'subscription'
+  | 'notifications'
 
 interface RestaurantNavProps {
   activeTab: TabType
@@ -23,6 +24,7 @@ export const RestaurantNav: React.FC<RestaurantNavProps> = ({ activeTab, onTabCh
     { id: 'subscription' as TabType, label: 'Abonnement', icon: CreditCard, comingSoon: false },
     { id: 'menus' as TabType, label: 'Mes menus', icon: Utensils, comingSoon: false },
     { id: 'reservations' as TabType, label: 'Réservations', icon: Calendar, comingSoon: false },
+    { id: 'notifications' as TabType, label: 'Notifications', icon: Bell, comingSoon: false },
     { id: 'followers' as TabType, label: 'Personnes qui suivent', icon: Users, comingSoon: true },
   ]
 
