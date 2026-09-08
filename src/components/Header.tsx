@@ -34,6 +34,13 @@ export const Header = () => {
 
         {/* Actions utilisateur / Navigation */}
         <div className="flex items-center gap-3">
+          <Link
+            to="/decouvrir"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 hover:text-orange-600 hover:bg-orange-50 transition-colors"
+          >
+            <UtensilsCrossed className="w-3.5 h-3.5 text-orange-500" />
+            <span className="hidden sm:inline">Découvrir</span>
+          </Link>
           {user ? (
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex flex-col items-end text-right">

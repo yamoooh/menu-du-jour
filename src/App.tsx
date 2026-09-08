@@ -5,6 +5,8 @@ import { LoginPage } from '@/pages/LoginPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { ClientDashboardPage } from '@/pages/ClientDashboardPage'
+import { ClientDiscoveryPage } from '@/pages/ClientDiscoveryPage'
+import { RestaurantDetailPage } from '@/pages/RestaurantDetailPage'
 import { RestaurantDashboardPage } from '@/pages/RestaurantDashboardPage'
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage'
 import { Header } from '@/components/Header'
@@ -107,6 +109,8 @@ export const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/decouvrir" element={<ClientDiscoveryPage />} />
+          <Route path="/restaurants/:slug" element={<RestaurantDetailPage />} />
           <Route path="/connexion" element={<LoginPage />} />
           <Route path="/inscription" element={<RegisterPage />} />
           <Route path="/mot-de-passe-oublie" element={<ForgotPasswordPage />} />
