@@ -1,171 +1,147 @@
-import {
-  Code2,
-  Paintbrush,
-  Smartphone,
-  GitBranch,
-  Database,
-  CheckCircle2,
-  Clock,
-} from 'lucide-react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from '@/context/AuthContext'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { LoginPage } from '@/pages/LoginPage'
+import { RegisterPage } from '@/pages/RegisterPage'
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
+import { ClientDashboardPage } from '@/pages/ClientDashboardPage'
+import { RestaurantDashboardPage } from '@/pages/RestaurantDashboardPage'
+import { AdminDashboardPage } from '@/pages/AdminDashboardPage'
 import { Header } from '@/components/Header'
 import { StatusCard } from '@/components/StatusCard'
-import { isSupabaseConfigured } from '@/lib/supabase'
+import { Smartphone, Database, ShieldCheck } from 'lucide-react'
 
-export const App = () => {
+// Page d'accueil / Landing
+const HomePage = () => {
+  const { user, profile, loading } = useAuth()
+
+  // Si l'utilisateur est déjà connecté, le diriger automatiquement vers son espace
+  if (!loading && user && profile) {
+    if (profile.role === 'client') return <Navigate to="/espace-client" replace />
+    if (profile.role === 'restaurant_manager') return <Navigate to="/espace-restaurant" replace />
+    if (profile.role === 'admin') return <Navigate to="/admin" replace />
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
-        {/* Section Titre / Présentation */}
+        {/* Banner principal */}
         <div className="text-center max-w-2xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-200">
-            <CheckCircle2 className="w-3.5 h-3.5 text-orange-600" />
-            Socle technique initialisé avec succès
+            <ShieldCheck className="w-3.5 h-3.5 text-orange-600" />
+            Étape 2 : Authentification & Gestion des Rôles Opérationnelle
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Menu du Jour
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            Application Web Progressive (PWA) prête pour le développement des fonctionnalités restaurant et client.
+            Plateforme PWA reliant les restaurants et leurs clients. Connectez-vous ou créez votre compte pour commencer.
           </p>
         </div>
 
-        {/* Grille des briques techniques */}
+        {/* Status des composants */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <StatusCard
-            title="React 19 & TypeScript"
-            subtitle="Moteur applicatif moderne"
-            icon={Code2}
+            title="Authentification Supabase"
+            subtitle="Auth & Profils"
+            icon={ShieldCheck}
             status="ready"
-            statusLabel="Opérationnel"
+            statusLabel="Fonctionnel"
             details={[
-              'Vite 8 & TypeScript 6',
-              'Typage strict activé',
-              'Alias de chemins @/ configuré',
+              'Supabase Auth connecté',
+              'Trigger handle_new_user actif',
+              'Gestion des profils synchronisée',
             ]}
           />
 
           <StatusCard
-            title="Tailwind CSS"
-            subtitle="Design system réactif"
-            icon={Paintbrush}
+            title="Gestion des Rôles"
+            subtitle="Client, Manager & Admin"
+            icon={Database}
             status="ready"
-            statusLabel="Opérationnel"
+            statusLabel="Fonctionnel"
             details={[
-              'Tailwind CSS v4 intégré',
-              'Classes utilitaires prêtes',
-              'Palette gourmande (orange & ambre)',
+              'Rôle Client (client)',
+              'Rôle Restaurateur (restaurant_manager)',
+              'Rôle Admin (admin)',
             ]}
           />
 
           <StatusCard
-            title="PWA & Offline"
-            subtitle="Expérience mobile native"
+            title="PWA & Stack Web"
+            subtitle="React 19, TS & Tailwind v4"
             icon={Smartphone}
             status="ready"
             statusLabel="Opérationnel"
             details={[
-              'Manifest Web App configuré',
-              'Icônes adaptatives 192px & 512px',
-              'Service Worker & Cache automatique',
+              'Vite 8 & TypeScript strict',
+              'Tailwind CSS v4',
+              'Manifest & SW configurés',
             ]}
           />
-
-          <StatusCard
-            title="Dépôt GitHub"
-            subtitle="Gestion de versions"
-            icon={GitBranch}
-            status="ready"
-            statusLabel="Prêt à connecter"
-            details={[
-              'Git local initialisé',
-              '.gitignore sécurisé (.env exclu)',
-              'Commit initial prêt',
-            ]}
-          />
-
-          <StatusCard
-            title="Supabase"
-            subtitle="Backend & Base de données"
-            icon={Database}
-            status={isSupabaseConfigured ? 'ready' : 'pending'}
-            statusLabel={isSupabaseConfigured ? 'Connecté' : 'En attente de clés'}
-            details={[
-              'Client Supabase préparé (src/lib/supabase.ts)',
-              '.env.example pré-rempli',
-              'Aucune table ni auth créée (étape suivante)',
-            ]}
-          />
-        </div>
-
-        {/* Section Prochaines étapes */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-sm">
-              <Clock className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">
-                Prochaines étapes recommandées
-              </h3>
-              <p className="text-xs text-slate-500">
-                Préparation préalable avant le développement des fonctionnalités métier
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/60 space-y-2">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-slate-800 text-white text-xs font-bold">
-                  1
-                </span>
-                Lier à GitHub
-              </div>
-              <p className="text-xs text-slate-600">
-                Créer le dépôt distant sur GitHub et synchroniser avec :
-              </p>
-              <code className="block text-xs bg-slate-900 text-slate-100 p-2.5 rounded-lg overflow-x-auto font-mono">
-                git remote add origin https://github.com/votre-compte/menu-du-jour.git
-              </code>
-            </div>
-
-            <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/60 space-y-2">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-slate-800 text-white text-xs font-bold">
-                  2
-                </span>
-                Connecter Supabase
-              </div>
-              <p className="text-xs text-slate-600">
-                Créer un nouveau projet sur Supabase et renseigner les variables dans le fichier <code className="text-orange-600">.env</code> :
-              </p>
-              <code className="block text-xs bg-slate-900 text-slate-100 p-2.5 rounded-lg overflow-x-auto font-mono">
-                VITE_SUPABASE_URL=...<br />
-                VITE_SUPABASE_ANON_KEY=...
-              </code>
-            </div>
-          </div>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-slate-200 bg-white py-6">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© 2026 Menu du Jour — Plateforme PWA</p>
           <div className="flex items-center gap-4">
-            <span>React + TypeScript</span>
+            <span>Supabase Auth</span>
             <span>•</span>
-            <span>Tailwind CSS</span>
+            <span>React Router</span>
             <span>•</span>
-            <span>Vite PWA</span>
-            <span>•</span>
-            <span>Supabase Ready</span>
+            <span>RLS Active</span>
           </div>
         </div>
       </footer>
     </div>
+  )
+}
+
+export const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/connexion" element={<LoginPage />} />
+          <Route path="/inscription" element={<RegisterPage />} />
+          <Route path="/mot-de-passe-oublie" element={<ForgotPasswordPage />} />
+
+          {/* Protected Routes by Role */}
+          <Route
+            path="/espace-client"
+            element={
+              <ProtectedRoute allowedRoles={['client']}>
+                <ClientDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/espace-restaurant"
+            element={
+              <ProtectedRoute allowedRoles={['restaurant_manager']}>
+                <RestaurantDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Catch-all redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

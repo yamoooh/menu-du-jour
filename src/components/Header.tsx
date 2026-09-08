@@ -1,11 +1,25 @@
-import { UtensilsCrossed, Smartphone } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { UtensilsCrossed, LogOut, User as UserIcon, LogIn, UserPlus } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
+import { ROLE_LABELS, type UserRole } from '@/types/auth.types'
 
 export const Header = () => {
+  const { user, profile, signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/connexion')
+  }
+
+  const roleLabel = profile?.role ? ROLE_LABELS[profile.role as UserRole] || '' : ''
+
   return (
-    <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-xs">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-sm shadow-orange-500/30">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-sm shadow-orange-500/30 group-hover:scale-105 transition-transform">
             <UtensilsCrossed className="w-5 h-5" />
           </div>
           <div>
@@ -16,17 +30,52 @@ export const Header = () => {
               Plateforme Web PWA
             </p>
           </div>
-        </div>
+        </Link>
 
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            Socle PWA prêt
-          </span>
-          <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-200">
-            <Smartphone className="w-3.5 h-3.5" />
-            Installable
-          </span>
+        {/* Actions utilisateur / Navigation */}
+        <div className="flex items-center gap-3">
+          {user ? (
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex flex-col items-end text-right">
+                <span className="text-sm font-semibold text-slate-900 leading-none">
+                  {profile?.full_name || user.email}
+                </span>
+                <span className="text-xs font-medium text-orange-600 mt-1">
+                  {roleLabel}
+                </span>
+              </div>
+
+              <div className="sm:hidden w-8 h-8 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs">
+                <UserIcon className="w-4 h-4" />
+              </div>
+
+              <button
+                onClick={handleSignOut}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
+                title="Se déconnecter"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Déconnexion</span>
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/connexion"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                <LogIn className="w-3.5 h-3.5 text-slate-500" />
+                Se connecter
+              </Link>
+              <Link
+                to="/inscription"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-sm shadow-orange-500/20 hover:opacity-95 transition-opacity"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                S'inscrire
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
