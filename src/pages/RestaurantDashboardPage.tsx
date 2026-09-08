@@ -19,6 +19,7 @@ import { RestaurantNav, type TabType } from '@/components/restaurant/RestaurantN
 import { CurrentMenuCard } from '@/components/menu/CurrentMenuCard'
 import { MenuList } from '@/components/menu/MenuList'
 import { MenuEditor } from '@/components/menu/MenuEditor'
+import { RestaurantReservationsList } from '@/components/reservation/RestaurantReservationsList'
 import {
   Store,
   Edit,
@@ -347,15 +348,23 @@ export const RestaurantDashboardPage: React.FC = () => {
             {/* Onglet 5 : Abonnement */}
             {activeTab === 'subscription' && <SubscriptionCard subscription={subscription} />}
 
-            {/* Onglets Bientôt Disponibles (Réservations, Followers) */}
-            {['reservations', 'followers'].includes(activeTab) && (
+            {/* Onglet 6 : Réservations */}
+            {activeTab === 'reservations' && selectedRestaurant && (
+              <RestaurantReservationsList
+                restaurantId={selectedRestaurant.id}
+                restaurantName={selectedRestaurant.name}
+              />
+            )}
+
+            {/* Onglets Bientôt Disponibles (Followers) */}
+            {activeTab === 'followers' && (
               <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-3 shadow-xs">
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 mx-auto flex items-center justify-center font-bold">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-slate-900 text-lg">Fonctionnalité en cours de préparation</h3>
                 <p className="text-xs text-slate-500 max-w-md mx-auto">
-                  La gestion complète des réservations et des abonnés au restaurant sera disponible lors de la prochaine étape.
+                  La gestion des abonnés (followers) du restaurant sera disponible lors d'une prochaine étape.
                 </p>
               </div>
             )}

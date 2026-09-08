@@ -25,6 +25,24 @@ export const restaurantService = {
     }
   },
 
+  // Récupère la liste de tous les restaurants actifs (pour réservation client)
+  async fetchActiveRestaurants(): Promise<{ data: Restaurant[] | null; error: Error | null }> {
+    if (!supabase) return { data: null, error: new Error('Client Supabase non initialisé') }
+
+    try {
+      const { data, error } = await supabase
+        .from('restaurants')
+        .select('*')
+        .eq('is_active', true)
+        .order('name', { ascending: true })
+
+      if (error) return { data: null, error: new Error(translateDbError(error.message)) }
+      return { data, error: null }
+    } catch (err) {
+      return { data: null, error: new Error('Erreur de chargement des restaurants') }
+    }
+  },
+
   // Créer un nouveau restaurant (slug & subscription créés automatiquement en DB)
   async createRestaurant(payload: {
     name: string

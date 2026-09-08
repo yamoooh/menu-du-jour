@@ -21,8 +21,8 @@ export const RestaurantNav: React.FC<RestaurantNavProps> = ({ activeTab, onTabCh
     { id: 'details' as TabType, label: 'Mon restaurant', icon: Store, comingSoon: false },
     { id: 'hours' as TabType, label: 'Horaires', icon: Clock, comingSoon: false },
     { id: 'subscription' as TabType, label: 'Abonnement', icon: CreditCard, comingSoon: false },
-    { id: 'menus' as TabType, label: 'Mes menus', icon: Utensils, comingSoon: true },
-    { id: 'reservations' as TabType, label: 'Réservations', icon: Calendar, comingSoon: true },
+    { id: 'menus' as TabType, label: 'Mes menus', icon: Utensils, comingSoon: false },
+    { id: 'reservations' as TabType, label: 'Réservations', icon: Calendar, comingSoon: false },
     { id: 'followers' as TabType, label: 'Personnes qui suivent', icon: Users, comingSoon: true },
   ]
 

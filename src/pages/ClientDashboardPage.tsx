@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header } from '@/components/Header'
 import { useAuth } from '@/context/AuthContext'
-import { UserCheck, Heart, Calendar, Bell } from 'lucide-react'
+import { restaurantService } from '@/services/restaurantService'
+import type { Restaurant } from '@/types/restaurant.types'
+import { ClientReservationsList } from '@/components/reservation/ClientReservationsList'
+import { ReservationModal } from '@/components/reservation/ReservationModal'
+import { UserCheck, Heart, Calendar, Bell, UtensilsCrossed } from 'lucide-react'
 
 export const ClientDashboardPage: React.FC = () => {
   const { profile } = useAuth()
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([])
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    restaurantService.fetchActiveRestaurants().then((res) => {
+      if (res.data) setRestaurants(res.data)
+    })
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -12,18 +24,28 @@ export const ClientDashboardPage: React.FC = () => {
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Banner de bienvenue */}
-        <div className="bg-gradient-to-r from-orange-600 to-amber-500 rounded-2xl p-6 sm:p-8 text-white shadow-lg shadow-orange-500/20">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="px-3 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-md">
-              Espace Client
-            </span>
+        <div className="bg-gradient-to-r from-orange-600 to-amber-500 rounded-2xl p-6 sm:p-8 text-white shadow-lg shadow-orange-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="px-3 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-md">
+                Espace Client
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Bienvenue, {profile?.full_name || 'Cher client'} !
+            </h2>
+            <p className="text-orange-100 text-sm mt-1 max-w-xl">
+              Découvrez les menus du jour des restaurants de votre région, gérez vos réservations et consultez vos établissements suivis.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Bienvenue, {profile?.full_name || 'Cher client'} !
-          </h2>
-          <p className="text-orange-100 text-sm mt-1 max-w-xl">
-            Découvrez les menus du jour des restaurants de votre région, gérez vos réservations et consultez vos restaurants suivis.
-          </p>
+
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-orange-600 hover:bg-orange-50 font-bold text-xs shadow-md transition-all cursor-pointer shrink-0"
+          >
+            <UtensilsCrossed className="w-4 h-4" />
+            Réserver une table
+          </button>
         </div>
 
         {/* Section rapide */}
@@ -59,6 +81,9 @@ export const ClientDashboardPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Liste des réservations client */}
+        <ClientReservationsList onOpenReservationModal={() => setIsModalOpen(true)} />
+
         {/* Info profil */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-xs">
           <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
@@ -68,11 +93,15 @@ export const ClientDashboardPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400 block font-medium">Nom complet</span>
-              <span className="text-slate-900 font-semibold mt-0.5 block">{profile?.full_name || 'Non renseigné'}</span>
+              <span className="text-slate-900 font-semibold mt-0.5 block">
+                {profile?.full_name || 'Non renseigné'}
+              </span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400 block font-medium">Téléphone</span>
-              <span className="text-slate-900 font-semibold mt-0.5 block">{profile?.phone || 'Non renseigné'}</span>
+              <span className="text-slate-900 font-semibold mt-0.5 block">
+                {profile?.phone || 'Non renseigné'}
+              </span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400 block font-medium">Rôle d'accès</span>
@@ -80,6 +109,13 @@ export const ClientDashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Modal de réservation */}
+        <ReservationModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          restaurants={restaurants}
+        />
       </main>
     </div>
   )
