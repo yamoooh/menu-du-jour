@@ -6,12 +6,25 @@ interface SeoHeadProps {
   description: string
   path?: string
   schema?: object
+  noindex?: boolean
 }
 
-export const SeoHead: React.FC<SeoHeadProps> = ({ title, description, path = '', schema }) => {
+export const SeoHead: React.FC<SeoHeadProps> = ({ title, description, path = '', schema, noindex = false }) => {
   const { language } = useLanguage()
 
   useEffect(() => {
+    // Robots meta tag for noindex
+    let metaRobots = document.querySelector('meta[name="robots"]')
+    if (noindex) {
+      if (!metaRobots) {
+        metaRobots = document.createElement('meta')
+        metaRobots.setAttribute('name', 'robots')
+        document.head.appendChild(metaRobots)
+      }
+      metaRobots.setAttribute('content', 'noindex, nofollow')
+    } else if (metaRobots) {
+      metaRobots.remove()
+    }
     // Modifier le titre de la page
     document.title = title
 
@@ -79,7 +92,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({ title, description, path = '',
     } else if (scriptSchema) {
       scriptSchema.remove()
     }
-  }, [title, description, path, language, schema])
+  }, [title, description, path, language, schema, noindex])
 
   return null
 }
