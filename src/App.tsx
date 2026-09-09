@@ -43,7 +43,7 @@ export const App = () => {
 
             {/* Protected Routes by Role */}
             <Route
-              path="/espace-client"
+              path="/espace-client/*"
               element={
                 <ProtectedRoute allowedRoles={['client']}>
                   <ClientDashboardPage />
