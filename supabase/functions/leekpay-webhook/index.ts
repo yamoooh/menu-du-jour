@@ -6,27 +6,27 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-leekpay-signature, x-leekpay-event, x-leekpay-delivery',
 }
 
-// Convertir Uint8Array en chaîne Hex
+// Convertir un Uint8Array en chaîne Hexadécimale
 function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes)
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
 }
 
-// Vérification de signature HMAC SHA-256 selon la spécification officielle LeekPay
+// Vérification de la signature HMAC SHA-256 avec la clé publique pk_live LeekPay sur le raw body
 async function verifyLeekPaySignature(
   rawBody: string,
   signatureHeader: string | null,
-  secretKey: string
+  publicKey: string
 ): Promise<boolean> {
-  if (!signatureHeader || !secretKey) return false
+  if (!signatureHeader || !publicKey) return false
   const cleanSig = signatureHeader.replace(/^sha256=/, '').trim().toLowerCase()
 
   try {
     const encoder = new TextEncoder()
     const cryptoKey = await crypto.subtle.importKey(
       'raw',
-      encoder.encode(secretKey),
+      encoder.encode(publicKey),
       { name: 'HMAC', hash: 'SHA-256' },
       false,
       ['sign']
@@ -35,13 +35,13 @@ async function verifyLeekPaySignature(
     const computedSig = bytesToHex(new Uint8Array(signatureBuffer))
     return computedSig === cleanSig
   } catch (err) {
-    console.error('Erreur vérification HMAC SHA-256 LeekPay:', err)
+    console.error('Erreur lors de la vérification HMAC SHA-256 LeekPay:', err)
     return false
   }
 }
 
 serve(async (req) => {
-  // Gérer CORS preflight
+  // Gérer le pré-vol CORS (OPTIONS)
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -57,10 +57,40 @@ serve(async (req) => {
       )
     }
 
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+    // 1. Contrôle obligatoire de la présence de la clé publique LeekPay serveur (LEEKPAY_PUBLIC_KEY)
+    const leekpayPublicKey = Deno.env.get('LEEKPAY_PUBLIC_KEY')
+    if (!leekpayPublicKey) {
+      console.error('Erreur de sécurité : LEEKPAY_PUBLIC_KEY non configurée dans Supabase secrets')
+      return new Response(
+        JSON.stringify({ error: 'Accès non autorisé : LEEKPAY_PUBLIC_KEY manquante dans Supabase secrets' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
-    // Lire le corps brut pour le calcul de la signature HMAC
+    // 2. Contrôle obligatoire de la présence de l'en-tête X-LeekPay-Signature
+    const signatureHeader = req.headers.get('x-leekpay-signature') || req.headers.get('x-signature')
+    if (!signatureHeader) {
+      console.warn('Requête rejetée : En-tête X-LeekPay-Signature absent')
+      return new Response(
+        JSON.stringify({ error: 'Accès non autorisé : En-tête X-LeekPay-Signature absent' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // 3. Lecture du corps brut (raw body) AVANT toute analyse JSON
     const rawBody = await req.text()
+
+    // 4. Vérification HMAC SHA-256 stricte : Rejet HTTP 401 si la signature est invalide
+    const isSignatureValid = await verifyLeekPaySignature(rawBody, signatureHeader, leekpayPublicKey)
+    if (!isSignatureValid) {
+      console.warn('Requête rejetée : Signature HMAC SHA-256 LeekPay invalide')
+      return new Response(
+        JSON.stringify({ error: 'Accès non autorisé : Signature HMAC SHA-256 LeekPay invalide' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // 5. Analyse du JSON après validation de signature
     let body: any = {}
     try {
       body = JSON.parse(rawBody)
@@ -71,79 +101,76 @@ serve(async (req) => {
       )
     }
 
-    // En-têtes officiels LeekPay Webhook
-    const signatureHeader = req.headers.get('x-leekpay-signature') || req.headers.get('x-signature')
+    // 6. Validation stricte de l'événement (payment.completed)
     const eventHeader = req.headers.get('x-leekpay-event')
-    const deliveryHeader = req.headers.get('x-leekpay-delivery')
-
-    // Secret du Webhook LeekPay (configuré via `supabase secrets set LEEKPAY_WEBHOOK_SECRET=...` ou LEEKPAY_PUBLIC_KEY)
-    const webhookSecret = Deno.env.get('LEEKPAY_WEBHOOK_SECRET') || Deno.env.get('LEEKPAY_PUBLIC_KEY')
-    if (webhookSecret) {
-      const isValid = await verifyLeekPaySignature(rawBody, signatureHeader, webhookSecret)
-      if (!isValid) {
-        console.warn('Tentative d appel non autorisée au Webhook LeekPay (Signature HMAC invalide)')
-        return new Response(
-          JSON.stringify({ error: 'Signature HMAC SHA-256 LeekPay invalide (X-LeekPay-Signature)' }),
-          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-    } else {
-      console.log('Notice: LEEKPAY_WEBHOOK_SECRET / LEEKPAY_PUBLIC_KEY non configuré dans les secrets Supabase. Signature non vérifiée.')
-    }
-
-    // Structure du Payload officiel LeekPay Webhook
-    const eventType = eventHeader || body.event || 'payment.completed'
-    const payloadData = body.data || body
-
-    const restaurant_id =
-      payloadData.metadata?.restaurant_id ||
-      payloadData.restaurant_id ||
-      body.restaurant_id ||
-      body.metadata?.restaurant_id
-
-    const provider_ref =
-      payloadData.transaction_id ||
-      payloadData.checkout_id ||
-      payloadData.provider_ref ||
-      body.provider_ref ||
-      deliveryHeader ||
-      `LEEK-${Date.now()}`
-
-    const amount = Number(payloadData.amount || body.amount || 5000)
-    const paymentStatus = (payloadData.status || body.status || 'completed').toString().toLowerCase()
-
-    if (!restaurant_id) {
+    const eventType = eventHeader || body.event
+    if (eventType !== 'payment.completed') {
+      console.log(`Événement ${eventType} ignoré : Seul payment.completed est crédité.`)
       return new Response(
-        JSON.stringify({ error: 'restaurant_id obligatoire dans metadata.restaurant_id ou dans le webhook' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    // Vérifier que le statut correspond bien à un paiement réussi
-    const validPaidStatuses = ['completed', 'success', 'paid', 'successful', 'payment.completed', 'payment.success']
-    const isPaid = validPaidStatuses.includes(paymentStatus) || validPaidStatuses.includes(eventType.toLowerCase())
-
-    if (!isPaid) {
-      console.log(`Paiement LeekPay non finalisé (statut: ${paymentStatus}, événement: ${eventType}). Aucune prolongation d abonnement.`)
-      return new Response(
-        JSON.stringify({ message: 'Événement reçu mais paiement non finalisé, aucune action effectuée', status: paymentStatus }),
+        JSON.stringify({ message: `Événement ${eventType} ignoré`, success: true }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    // Appeler la RPC PostgreSQL confirm_payment_subscription (sécurisée en SECURITY DEFINER)
+    // 7. Extraction des données et vérifications de sécurité avant crédit
+    const data = body.data || {}
+    const transactionId = data.transaction_id || body.transaction_id
+    const checkoutId = data.checkout_id || body.checkout_id
+    const amount = Number(data.amount || body.amount)
+    const currency = data.currency || body.currency
+    const status = data.status || body.status
+    const restaurantId = data.metadata?.restaurant_id || body.metadata?.restaurant_id || body.restaurant_id
+
+    if (!transactionId) {
+      return new Response(
+        JSON.stringify({ error: 'data.transaction_id obligatoire dans le webhook LeekPay' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (!restaurantId) {
+      return new Response(
+        JSON.stringify({ error: 'data.metadata.restaurant_id obligatoire dans le webhook LeekPay' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (amount !== 5000) {
+      return new Response(
+        JSON.stringify({ error: `Montant invalide : ${amount} XOF (5000 XOF attendu)` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (currency !== 'XOF') {
+      return new Response(
+        JSON.stringify({ error: `Devise invalide : ${currency} (XOF attendu)` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // 8. Vérification stricte du statut réussi : Seul le statut "paid" est crédité
+    if (status !== 'paid') {
+      console.log(`Paiement non finalisé (statut : ${status}). Aucune prolongation d abonnement.`)
+      return new Response(
+        JSON.stringify({ message: `Paiement avec statut '${status}' non crédité (seul 'paid' est valide)`, success: true }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // 9. Validation de l'abonnement et idempotence via la RPC PostgreSQL sécurisée
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
     const { data: rpcResult, error: rpcError } = await supabaseAdmin.rpc('confirm_payment_subscription', {
-      p_restaurant_id: restaurant_id,
-      p_amount: amount,
-      p_provider_ref: provider_ref,
+      p_restaurant_id: restaurantId,
+      p_amount: 5000,
+      p_provider_ref: transactionId,
       p_metadata: {
         event: eventType,
-        delivery_id: deliveryHeader,
-        checkout_id: payloadData.checkout_id,
-        payment_method: payloadData.payment_method,
-        customer: payloadData.customer,
-        received_at: new Date().toISOString(),
-        ...payloadData.metadata,
+        checkout_id: checkoutId,
+        payment_method: data.payment_method,
+        customer: data.customer,
+        paid_at: data.paid_at || new Date().toISOString(),
+        delivery_id: req.headers.get('x-leekpay-delivery'),
       },
     })
 
