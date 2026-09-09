@@ -51,7 +51,7 @@ export const App = () => {
               }
             />
             <Route
-              path="/espace-restaurant"
+              path="/espace-restaurant/*"
               element={
                 <ProtectedRoute allowedRoles={['restaurant_manager']}>
                   <RestaurantDashboardPage />

@@ -23,6 +23,7 @@ import { MenuEditor } from '@/components/menu/MenuEditor'
 import { RestaurantReservationsList } from '@/components/reservation/RestaurantReservationsList'
 import { NotificationList } from '@/components/notification/NotificationList'
 import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
+import { SeoHead } from '@/components/public/SeoHead'
 import { useLanguage } from '@/context/LanguageContext'
 import {
   LayoutDashboard,
@@ -187,17 +188,23 @@ export const RestaurantDashboardPage: React.FC = () => {
   }
 
   const sidebarItems = [
-    { id: 'dashboard' as SidebarTab, label: 'Tableau de bord', icon: LayoutDashboard },
-    { id: 'restaurants' as SidebarTab, label: 'Mes restaurants', icon: Store },
-    { id: 'menus' as SidebarTab, label: 'Mes menus du jour', icon: Utensils },
-    { id: 'reservations' as SidebarTab, label: 'Réservations', icon: Calendar },
-    { id: 'notifications' as SidebarTab, label: 'Notifications', icon: Bell },
-    { id: 'subscription' as SidebarTab, label: 'Abonnement', icon: CreditCard },
-    { id: 'profile' as SidebarTab, label: 'Mon profil', icon: User },
+    { id: 'dashboard' as SidebarTab, label: t.restaurantNav.dashboard, icon: LayoutDashboard },
+    { id: 'restaurants' as SidebarTab, label: t.restaurantNav.restaurants, icon: Store },
+    { id: 'menus' as SidebarTab, label: t.restaurantNav.menus, icon: Utensils },
+    { id: 'reservations' as SidebarTab, label: t.restaurantNav.reservations, icon: Calendar },
+    { id: 'notifications' as SidebarTab, label: t.restaurantNav.notifications, icon: Bell },
+    { id: 'subscription' as SidebarTab, label: t.restaurantNav.subscription, icon: CreditCard },
+    { id: 'profile' as SidebarTab, label: t.restaurantNav.profile, icon: User },
   ]
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title={`${t.restaurant.title} — Menu du Jour`}
+        description="Espace professionnel pour les gestionnaires de restaurants."
+        path="/espace-restaurant"
+        noindex={true}
+      />
       <Header />
 
       <div className="flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row">
