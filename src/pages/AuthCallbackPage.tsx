@@ -1,46 +1,88 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Header } from '@/components/Header'
 import { supabase } from '@/lib/supabase'
 import { CheckCircle2, ArrowRight, AlertCircle, Loader2 } from 'lucide-react'
 
 export const AuthCallbackPage: React.FC = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [statusMessage, setStatusMessage] = useState('Validation de votre adresse email en cours...')
 
   useEffect(() => {
     let isMounted = true
 
+    const redirectUserSpace = async (userId: string) => {
+      try {
+        if (isMounted) setStatusMessage('Redirection vers votre espace...')
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .single()
+
+        if (!isMounted) return
+
+        if (profile?.role === 'restaurant_manager') {
+          navigate('/espace-restaurant', { replace: true })
+        } else if (profile?.role === 'admin') {
+          navigate('/admin', { replace: true })
+        } else {
+          navigate('/espace-client', { replace: true })
+        }
+      } catch {
+        if (isMounted) {
+          navigate('/connexion?confirmed=1', { replace: true })
+        }
+      }
+    }
+
     const handleAuthCallback = async () => {
       try {
-        // Traiter le hachage ou la session Supabase
+        const errorDesc = searchParams.get('error_description')
+        if (errorDesc) {
+          if (isMounted) {
+            setError(errorDesc)
+            setLoading(false)
+          }
+          return
+        }
+
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
         if (sessionError) {
-          if (isMounted) setError(sessionError.message)
-        } else if (session) {
-          // Session active
-        } else {
-          // Attendre un court instant si le changement d'état d'authentification est en cours
-          const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
-            if (currentSession && isMounted) {
-              setLoading(false)
-            }
-          })
-
-          setTimeout(() => {
-            if (isMounted && loading) {
-              setLoading(false)
-            }
-            subscription.unsubscribe()
-          }, 1500)
+          if (isMounted) {
+            setError(sessionError.message)
+            setLoading(false)
+          }
           return
         }
+
+        if (session?.user) {
+          await redirectUserSpace(session.user.id)
+          return
+        }
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, currentSession) => {
+          if (currentSession?.user && isMounted) {
+            subscription.unsubscribe()
+            await redirectUserSpace(currentSession.user.id)
+          }
+        })
+
+        setTimeout(() => {
+          subscription.unsubscribe()
+          if (isMounted && loading) {
+            navigate('/connexion?confirmed=1', { replace: true })
+          }
+        }, 1500)
       } catch (err: any) {
-        if (isMounted) setError(err.message || 'Erreur lors de la confirmation')
-      } finally {
-        if (isMounted) setLoading(false)
+        if (isMounted) {
+          setError(err.message || 'Erreur lors de la confirmation d\'adresse email')
+          setLoading(false)
+        }
       }
     }
 
@@ -49,7 +91,7 @@ export const AuthCallbackPage: React.FC = () => {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [navigate, searchParams])
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -62,9 +104,7 @@ export const AuthCallbackPage: React.FC = () => {
           {loading ? (
             <div className="py-8 space-y-4">
               <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto" />
-              <p className="text-sm text-slate-600 font-medium">
-                Validation de votre adresse email en cours...
-              </p>
+              <p className="text-sm text-slate-600 font-medium">{statusMessage}</p>
             </div>
           ) : error ? (
             <div className="space-y-4">
@@ -91,13 +131,13 @@ export const AuthCallbackPage: React.FC = () => {
                   Adresse email confirmée !
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Votre adresse email a été confirmée avec succès. Votre compte Menu du Jour est maintenant actif et prêt à l'emploi.
+                  Votre adresse email a été confirmée avec succès.
                 </p>
               </div>
 
               <div className="pt-2">
                 <button
-                  onClick={() => navigate('/connexion', { state: { message: 'Adresse email confirmée avec succès ! Vous pouvez maintenant vous connecter.' } })}
+                  onClick={() => navigate('/connexion?confirmed=1', { replace: true })}
                   className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Se connecter à mon compte
@@ -111,3 +151,4 @@ export const AuthCallbackPage: React.FC = () => {
     </div>
   )
 }
+

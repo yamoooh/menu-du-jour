@@ -10,7 +10,6 @@ import {
   CheckCircle2,
   ExternalLink,
   ShieldCheck,
-  RefreshCw,
   Sparkles,
 } from 'lucide-react'
 
@@ -23,13 +22,10 @@ interface SubscriptionCardProps {
 export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
   restaurantId,
-  onRefresh,
 }) => {
   const { t } = useLanguage()
   const [payments, setPayments] = useState<Payment[]>([])
   const [loadingPayments, setLoadingPayments] = useState(false)
-  const [testingPayment, setTestingPayment] = useState(false)
-  const [testMessage, setTestMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const info = subscriptionService.getSubscriptionInfo(subscription)
 
@@ -49,25 +45,6 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
       window.open(url, '_blank', 'noopener,noreferrer')
     } else {
       window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
-    }
-  }
-
-  const handleTestRenewal = async () => {
-    if (!restaurantId) return
-    setTestingPayment(true)
-    setTestMessage(null)
-
-    const { error } = await subscriptionService.confirmPaymentForTest(restaurantId)
-    setTestingPayment(false)
-
-    if (error) {
-      setTestMessage({ type: 'error', text: `Échec du test : ${error.message}` })
-    } else {
-      setTestMessage({
-        type: 'success',
-        text: 'Paiement de test confirmé ! L\'abonnement a été prolongé de 30 jours avec succès.',
-      })
-      if (onRefresh) onRefresh()
     }
   }
 
@@ -191,38 +168,6 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           <ExternalLink className="w-4 h-4" />
           {t.subscription.renewButton}
         </button>
-      </div>
-
-      {/* Section Mode Test / Démo */}
-      <div className="p-4 rounded-xl bg-slate-100/80 border border-slate-200 space-y-3 text-xs">
-        <div className="flex items-center justify-between">
-          <span className="font-bold text-slate-800 flex items-center gap-2">
-            <RefreshCw className="w-4 h-4 text-slate-500" />
-            {t.subscription.testPaymentButton}
-          </span>
-          <button
-            onClick={handleTestRenewal}
-            disabled={testingPayment || !restaurantId}
-            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white font-semibold transition-colors cursor-pointer"
-          >
-            {testingPayment ? 'Traitement...' : 'Exécuter le test +30 jours'}
-          </button>
-        </div>
-        <p className="text-slate-500">
-          {t.subscription.testPaymentNote}
-        </p>
-
-        {testMessage && (
-          <div
-            className={`p-3 rounded-lg font-medium text-xs ${
-              testMessage.type === 'success'
-                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                : 'bg-red-100 text-red-800 border border-red-200'
-            }`}
-          >
-            {testMessage.text}
-          </div>
-        )}
       </div>
 
       {/* Tableau d'historique des paiements */}

@@ -15,8 +15,14 @@ export const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // Message transmis depuis la page d'inscription (ex: confirmation d'email requise)
-  const infoMessage = location.state?.message
+  // Message transmis depuis l'inscription ou la confirmation d'email
+  const searchParams = new URLSearchParams(location.search)
+  const isEmailConfirmed = searchParams.get('confirmed') === '1'
+  const infoMessage =
+    location.state?.message ||
+    (isEmailConfirmed
+      ? 'Votre adresse email a été confirmée avec succès. Vous pouvez maintenant vous connecter.'
+      : null)
 
   // Si déjà connecté, rediriger automatiquement vers son espace
   React.useEffect(() => {
