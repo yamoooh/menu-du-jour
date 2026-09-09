@@ -8,6 +8,7 @@ import type { MenuWithDetails, MenuItemCategory } from '@/types/menu.types'
 import { MENU_ITEM_CATEGORY_LABELS } from '@/types/menu.types'
 import { FollowButton } from '@/components/follow/FollowButton'
 import { ReservationModal } from '@/components/reservation/ReservationModal'
+import { SeoHead } from '@/components/public/SeoHead'
 import {
   Store,
   MapPin,
@@ -71,8 +72,35 @@ export const RestaurantDetailPage: React.FC = () => {
 
   const daysLabel = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
 
+  const restaurantTitle = restaurant ? `${restaurant.name} - Menu du Jour & Carte à ${restaurant.city || 'Côte d\'Ivoire'}` : 'Restaurant - Menu du Jour'
+  const restaurantDesc = restaurant?.description || `Découvrez les menus du jour et spécialités de ${restaurant?.name || 'ce restaurant'} en temps réel sur Menu du Jour.`
+  const restaurantSchema = restaurant ? {
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    'name': restaurant.name,
+    'description': restaurant.description || '',
+    'telephone': restaurant.phone || '',
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': restaurant.address || '',
+      'addressLocality': restaurant.city || ''
+    },
+    'url': window.location.href,
+    'hasMenu': menu ? {
+      '@type': 'Menu',
+      'name': menu.title,
+      'description': menu.description || ''
+    } : undefined
+  } : undefined
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title={restaurantTitle}
+        description={restaurantDesc}
+        path={`/restaurants/${slug || ''}`}
+        schema={restaurantSchema}
+      />
       <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6">

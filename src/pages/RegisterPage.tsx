@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
 import { Mail, Lock, User, Phone, Store, UserCheck, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { SeoHead } from '@/components/public/SeoHead'
 
 export const RegisterPage: React.FC = () => {
   const { signUp, user, profile, loading: authLoading } = useAuth()
@@ -93,6 +94,12 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title="Inscription - Menu du Jour"
+        description="Créez votre compte client ou restaurant sur Menu du Jour."
+        path="/inscription"
+        noindex={true}
+      />
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 py-8 sm:py-12">

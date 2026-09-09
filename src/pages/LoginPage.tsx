@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
 import { Mail, Lock, AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react'
+import { SeoHead } from '@/components/public/SeoHead'
 
 export const LoginPage: React.FC = () => {
   const { signIn, user, profile, loading: authLoading } = useAuth()
@@ -57,6 +58,12 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title="Connexion - Menu du Jour"
+        description="Espace de connexion sécurisé Menu du Jour."
+        path="/connexion"
+        noindex={true}
+      />
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6">

@@ -81,25 +81,19 @@ export const RestaurantDashboardPage: React.FC = () => {
     message: string
   } | null>(null)
 
-  // Vérification de la redirection LeekPay dans l'URL
+  // Vérification de la redirection LeekPay dans l'URL (traitée comme information d'attente serveur)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const paymentParam = params.get('payment')
 
-    if (paymentParam === 'pending') {
+    if (paymentParam) {
       setPaymentNotice({
         type: 'pending',
-        title: 'Paiement en attente de confirmation',
-        message: t.subscription.paymentReceivedPending,
-      })
-    } else if (paymentParam === 'success' || paymentParam === 'confirmed') {
-      setPaymentNotice({
-        type: 'confirmed',
-        title: 'Paiement confirmé',
-        message: t.subscription.paymentConfirmedActive,
+        title: 'Paiement transmis — Vérification serveur en cours',
+        message: 'Votre demande de paiement LeekPay a été transmise. L activation/prolongation automatique de l abonnement s effectuera dès validation par le webhook serveur.',
       })
     }
-  }, [t])
+  }, [])
 
   // Charger tous les restaurants de l'utilisateur
   const loadMyRestaurants = useCallback(async () => {

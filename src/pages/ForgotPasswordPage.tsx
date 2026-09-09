@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
 import { Mail, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { SeoHead } from '@/components/public/SeoHead'
 
 export const ForgotPasswordPage: React.FC = () => {
   const { resetPassword } = useAuth()
@@ -37,6 +38,12 @@ export const ForgotPasswordPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title="Mot de passe oublié - Menu du Jour"
+        description="Réinitialisation de mot de passe Menu du Jour."
+        path="/mot-de-passe-oublie"
+        noindex={true}
+      />
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6">

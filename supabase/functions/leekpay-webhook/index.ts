@@ -24,6 +24,22 @@ serve(async (req) => {
     }
 
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+
+    // Optionnel : Vérification de la clé secrète LeekPay si configurée dans les secrets Deno Supabase
+    const webhookSecret = Deno.env.get('LEEKPAY_WEBHOOK_SECRET')
+    if (webhookSecret) {
+      const incomingSecret = req.headers.get('x-leekpay-secret') || req.headers.get('x-leekpay-signature') || req.headers.get('authorization')
+      if (!incomingSecret || !incomingSecret.includes(webhookSecret)) {
+        console.warn('Tentative d appel non autorisée au Webhook LeekPay (secret invalide ou absent)')
+        return new Response(
+          JSON.stringify({ error: 'Signature ou secret Webhook LeekPay invalide' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    } else {
+      console.log('Indication : LEEKPAY_WEBHOOK_SECRET non configuré dans les secrets Supabase. Traitement direct du payload.')
+    }
+
     const body = await req.json()
 
     // LeekPay webhook payload schema:

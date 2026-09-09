@@ -5,6 +5,7 @@ import type { Restaurant } from '@/types/restaurant.types'
 import { RestaurantCard } from '@/components/discovery/RestaurantCard'
 import { RestaurantSearch } from '@/components/discovery/RestaurantSearch'
 import { Store, Utensils, RefreshCw } from 'lucide-react'
+import { SeoHead } from '@/components/public/SeoHead'
 
 export const ClientDiscoveryPage: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
@@ -27,6 +28,11 @@ export const ClientDiscoveryPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title="Découvrir les Restaurants - Menu du Jour"
+        description="Recherchez et découvrez les établissements et leurs menus du jour publiés en temps réel."
+        path="/decouvrir"
+      />
       <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6">
