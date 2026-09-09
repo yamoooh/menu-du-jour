@@ -39,12 +39,24 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     }
   }, [restaurantId, subscription?.updated_at])
 
-  const handleRenewLeekPay = () => {
-    if (restaurantId) {
-      const url = subscriptionService.getLeekPayPaymentUrl(restaurantId)
-      window.open(url, '_blank', 'noopener,noreferrer')
-    } else {
-      window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+
+  const handleRenewLeekPay = async () => {
+    if (!restaurantId) return
+    setCheckoutLoading(true)
+    setCheckoutError(null)
+
+    const { checkoutUrl, error } = await subscriptionService.createCheckoutSession(restaurantId)
+    setCheckoutLoading(false)
+
+    if (error) {
+      setCheckoutError(error.message || 'Erreur lors de la génération de la session LeekPay')
+      return
+    }
+
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
     }
   }
 
@@ -150,6 +162,13 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         </div>
       </div>
 
+      {checkoutError && (
+        <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
+          <span>{checkoutError}</span>
+        </div>
+      )}
+
       {/* CTA principal LeekPay */}
       <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-5 border border-orange-200/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="space-y-1">
@@ -163,10 +182,20 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
         <button
           onClick={handleRenewLeekPay}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-orange-500/20 transition-all cursor-pointer shrink-0"
+          disabled={checkoutLoading}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-orange-500/20 transition-all cursor-pointer shrink-0 disabled:opacity-50"
         >
-          <ExternalLink className="w-4 h-4" />
-          {t.subscription.renewButton}
+          {checkoutLoading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Génération du checkout...</span>
+            </>
+          ) : (
+            <>
+              <ExternalLink className="w-4 h-4" />
+              {t.subscription.renewButton}
+            </>
+          )}
         </button>
       </div>
 

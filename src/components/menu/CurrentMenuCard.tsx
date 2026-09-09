@@ -26,11 +26,13 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
   const todayMenu = menus.find((m) => m.menu_date === todayStr) || menus[0]
   const isToday = todayMenu?.menu_date === todayStr
 
-  const handleRenew = () => {
-    if (restaurantId) {
-      window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+  const handleRenew = async () => {
+    if (!restaurantId) return
+    const { checkoutUrl } = await subscriptionService.createCheckoutSession(restaurantId)
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
     } else {
-      window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
+      window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
     }
   }
 

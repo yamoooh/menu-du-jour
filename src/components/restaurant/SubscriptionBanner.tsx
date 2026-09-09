@@ -18,16 +18,25 @@ export const SubscriptionBanner: React.FC<SubscriptionBannerProps> = ({
   const { t } = useLanguage()
   const info = subscriptionService.getSubscriptionInfo(subscription)
 
-  const handleRenew = () => {
+  const [loading, setLoading] = React.useState(false)
+
+  const handleRenew = async () => {
     if (onRenewClick) {
       onRenewClick()
       return
     }
-    if (restaurantId) {
-      const url = subscriptionService.getLeekPayPaymentUrl(restaurantId)
-      window.open(url, '_blank', 'noopener,noreferrer')
+    if (!restaurantId) return
+
+    setLoading(true)
+    const { checkoutUrl } = await subscriptionService.createCheckoutSession(restaurantId)
+    setLoading(false)
+
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
     } else {
-      window.open('https://leekpay.me/menu-du-jour', '_blank', 'noopener,noreferrer')
+      // Fallback si l'Edge Function serveur n'est pas encore provisionnée
+      const fallbackUrl = subscriptionService.getLeekPayPaymentUrl(restaurantId)
+      window.open(fallbackUrl, '_blank', 'noopener,noreferrer')
     }
   }
 
@@ -56,9 +65,14 @@ export const SubscriptionBanner: React.FC<SubscriptionBannerProps> = ({
 
           <button
             onClick={handleRenew}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-red-50 text-red-900 font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer shrink-0"
+            disabled={loading}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-red-50 text-red-900 font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer shrink-0 disabled:opacity-50"
           >
-            <CreditCard className="w-4 h-4 text-red-600" />
+            {loading ? (
+              <div className="w-4 h-4 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin" />
+            ) : (
+              <CreditCard className="w-4 h-4 text-red-600" />
+            )}
             {t.subscription.renewButton}
           </button>
         </div>

@@ -99,7 +99,37 @@ export const subscriptionService = {
     }
   },
 
-  // Obtenir le lien LeekPay prérempli avec l'ID du restaurant
+  // Créer une session de paiement officielle via l'Edge Function serveur create-leekpay-checkout
+  async createCheckoutSession(
+    restaurantId: string
+  ): Promise<{ checkoutUrl: string | null; error: Error | null }> {
+    if (!supabase) return { checkoutUrl: null, error: new Error('Client Supabase non initialisé') }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-leekpay-checkout', {
+        body: { restaurant_id: restaurantId },
+      })
+
+      if (error) {
+        return { checkoutUrl: null, error: new Error(error.message || 'Erreur lors de la génération de la session LeekPay') }
+      }
+
+      if (data?.error) {
+        return { checkoutUrl: null, error: new Error(data.error) }
+      }
+
+      const checkoutUrl = data?.checkout_url
+      if (!checkoutUrl) {
+        return { checkoutUrl: null, error: new Error('URL de paiement LeekPay manquante dans la réponse serveur') }
+      }
+
+      return { checkoutUrl, error: null }
+    } catch (err: any) {
+      return { checkoutUrl: null, error: new Error(err.message || 'Erreur de connexion à l Edge Function LeekPay') }
+    }
+  },
+
+  // Obtenir le lien LeekPay (fallback static URL)
   getLeekPayPaymentUrl(restaurantId: string): string {
     const url = new URL(LEEKPAY_PAYMENT_URL)
     url.searchParams.set('restaurant_id', restaurantId)
