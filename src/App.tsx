@@ -12,6 +12,7 @@ import { RestaurantDetailPage } from '@/pages/RestaurantDetailPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
+import { AuthCallbackPage } from '@/pages/AuthCallbackPage'
 import { ClientDashboardPage } from '@/pages/ClientDashboardPage'
 import { RestaurantDashboardPage } from '@/pages/RestaurantDashboardPage'
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage'
@@ -38,6 +39,7 @@ export const App = () => {
             <Route path="/connexion" element={<LoginPage />} />
             <Route path="/inscription" element={<RegisterPage />} />
             <Route path="/mot-de-passe-oublie" element={<ForgotPasswordPage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
             {/* Protected Routes by Role */}
             <Route

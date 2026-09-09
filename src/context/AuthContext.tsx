@@ -151,10 +151,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
     const userPhone = phone?.trim() || null
 
+    const redirectUrl = `${window.location.origin}/auth/callback`
+
     const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
       options: {
+        emailRedirectTo: redirectUrl,
         data: {
           full_name: fullName,
           role,
