@@ -237,12 +237,12 @@ export const MenuEditor: React.FC<MenuEditorProps> = ({
           </p>
           <button
             onClick={async () => {
-              const { checkoutUrl } = await subscriptionService.createCheckoutSession(restaurantId)
-              if (checkoutUrl) {
-                window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
-              } else {
-                window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+              const { checkoutUrl, error: checkoutError } = await subscriptionService.createCheckoutSession(restaurantId)
+              if (checkoutError || !checkoutUrl) {
+                alert(checkoutError?.message || 'Impossible de créer la session de paiement LeekPay. Veuillez réessayer.')
+                return
               }
+              window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
             }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
           >

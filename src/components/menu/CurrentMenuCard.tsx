@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { MenuWithDetails } from '@/types/menu.types'
 import { subscriptionService } from '@/services/subscriptionService'
 import type { Subscription } from '@/types/restaurant.types'
@@ -26,14 +26,17 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
   const todayMenu = menus.find((m) => m.menu_date === todayStr) || menus[0]
   const isToday = todayMenu?.menu_date === todayStr
 
+  const [renewError, setRenewError] = useState<string | null>(null)
+
   const handleRenew = async () => {
     if (!restaurantId) return
-    const { checkoutUrl } = await subscriptionService.createCheckoutSession(restaurantId)
-    if (checkoutUrl) {
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
-    } else {
-      window.open(subscriptionService.getLeekPayPaymentUrl(restaurantId), '_blank', 'noopener,noreferrer')
+    setRenewError(null)
+    const { checkoutUrl, error: checkoutError } = await subscriptionService.createCheckoutSession(restaurantId)
+    if (checkoutError || !checkoutUrl) {
+      setRenewError(checkoutError?.message || 'Impossible de créer la session de paiement LeekPay. Veuillez réessayer.')
+      return
     }
+    window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -87,6 +90,13 @@ export const CurrentMenuCard: React.FC<CurrentMenuCardProps> = ({
             <ExternalLink className="w-3.5 h-3.5" />
             Renouveler mon abonnement
           </button>
+        </div>
+      )}
+
+      {renewError && (
+        <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
+          <span>{renewError}</span>
         </div>
       )}
 

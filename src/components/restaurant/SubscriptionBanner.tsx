@@ -19,6 +19,7 @@ export const SubscriptionBanner: React.FC<SubscriptionBannerProps> = ({
   const info = subscriptionService.getSubscriptionInfo(subscription)
 
   const [loading, setLoading] = React.useState(false)
+  const [renewError, setRenewError] = React.useState<string | null>(null)
 
   const handleRenew = async () => {
     if (onRenewClick) {
@@ -27,23 +28,23 @@ export const SubscriptionBanner: React.FC<SubscriptionBannerProps> = ({
     }
     if (!restaurantId) return
 
+    setRenewError(null)
     setLoading(true)
-    const { checkoutUrl } = await subscriptionService.createCheckoutSession(restaurantId)
+    const { checkoutUrl, error: checkoutError } = await subscriptionService.createCheckoutSession(restaurantId)
     setLoading(false)
 
-    if (checkoutUrl) {
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
-    } else {
-      // Fallback si l'Edge Function serveur n'est pas encore provisionnée
-      const fallbackUrl = subscriptionService.getLeekPayPaymentUrl(restaurantId)
-      window.open(fallbackUrl, '_blank', 'noopener,noreferrer')
+    if (checkoutError || !checkoutUrl) {
+      setRenewError(checkoutError?.message || 'Impossible de créer la session de paiement LeekPay. Veuillez réessayer.')
+      return
     }
+    window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
   }
 
   if (info.isExpired) {
     return (
-      <div className="bg-gradient-to-r from-red-900 via-red-800 to-rose-950 rounded-2xl p-5 sm:p-6 text-white shadow-md border border-red-700 space-y-3">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="space-y-2">
+        <div className="bg-gradient-to-r from-red-900 via-red-800 to-rose-950 rounded-2xl p-5 sm:p-6 text-white shadow-md border border-red-700 space-y-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-300 flex items-center justify-center font-bold shrink-0 border border-red-400/30">
               <AlertTriangle className="w-5 h-5 text-red-400" />
@@ -77,6 +78,13 @@ export const SubscriptionBanner: React.FC<SubscriptionBannerProps> = ({
           </button>
         </div>
       </div>
+      {renewError && (
+        <div className="p-3 rounded-xl bg-red-50 border border-red-300 text-red-700 text-xs font-medium flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
+          <span>{renewError}</span>
+        </div>
+      )}
+    </div>
     )
   }
 

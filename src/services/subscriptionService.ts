@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase'
 import type { Subscription, Payment, SubscriptionInfo } from '@/types/restaurant.types'
-import { LEEKPAY_PAYMENT_URL } from '@/types/restaurant.types'
 
 export const subscriptionService = {
   // Calculer et structurer le statut complet d'un abonnement
@@ -127,15 +126,6 @@ export const subscriptionService = {
     } catch (err: any) {
       return { checkoutUrl: null, error: new Error(err.message || 'Erreur de connexion à l Edge Function LeekPay') }
     }
-  },
-
-  // Obtenir le lien LeekPay (fallback static URL)
-  getLeekPayPaymentUrl(restaurantId: string): string {
-    const url = new URL(LEEKPAY_PAYMENT_URL)
-    url.searchParams.set('restaurant_id', restaurantId)
-    url.searchParams.set('amount', '5000')
-    url.searchParams.set('currency', 'XOF')
-    return url.toString()
   },
 
   // Simuler/tester la confirmation d'un paiement en mode TEST (sans exposer service_role)
