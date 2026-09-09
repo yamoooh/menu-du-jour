@@ -494,6 +494,11 @@ export type Database = {
           cuisine_type: string | null
           description: string | null
           email: string | null
+          formatted_address: string | null
+          google_place_id: string | null
+          accepts_reservations: boolean
+          max_party_size: number
+          reservation_instructions: string | null
           id: string
           is_active: boolean
           is_verified: boolean
@@ -516,6 +521,11 @@ export type Database = {
           cuisine_type?: string | null
           description?: string | null
           email?: string | null
+          formatted_address?: string | null
+          google_place_id?: string | null
+          accepts_reservations?: boolean
+          max_party_size?: number
+          reservation_instructions?: string | null
           id?: string
           is_active?: boolean
           is_verified?: boolean
@@ -538,6 +548,11 @@ export type Database = {
           cuisine_type?: string | null
           description?: string | null
           email?: string | null
+          formatted_address?: string | null
+          google_place_id?: string | null
+          accepts_reservations?: boolean
+          max_party_size?: number
+          reservation_instructions?: string | null
           id?: string
           is_active?: boolean
           is_verified?: boolean

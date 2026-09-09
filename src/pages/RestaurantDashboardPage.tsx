@@ -13,7 +13,6 @@ import type {
 import type { MenuWithDetails } from '@/types/menu.types'
 import { RestaurantSelector } from '@/components/restaurant/RestaurantSelector'
 import { RestaurantFormModal } from '@/components/restaurant/RestaurantFormModal'
-import { RestaurantHoursForm } from '@/components/restaurant/RestaurantHoursForm'
 import { SubscriptionCard } from '@/components/restaurant/SubscriptionCard'
 import { SubscriptionBanner } from '@/components/restaurant/SubscriptionBanner'
 import { RestaurantStats } from '@/components/restaurant/RestaurantStats'
@@ -23,6 +22,8 @@ import { MenuEditor } from '@/components/menu/MenuEditor'
 import { RestaurantReservationsList } from '@/components/reservation/RestaurantReservationsList'
 import { NotificationList } from '@/components/notification/NotificationList'
 import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
+import { RestaurantProfileSettings } from '@/components/restaurant/RestaurantProfileSettings'
+import { PwaInstallPromptModal } from '@/components/notification/PwaInstallPromptModal'
 import { SeoHead } from '@/components/public/SeoHead'
 import { useLanguage } from '@/context/LanguageContext'
 import {
@@ -34,7 +35,6 @@ import {
   CreditCard,
   User,
   Clock,
-  Edit,
   Plus,
   CheckCircle2,
   X,
@@ -81,7 +81,7 @@ export const RestaurantDashboardPage: React.FC = () => {
     message: string
   } | null>(null)
 
-  // Vérification de la redirection LeekPay dans l'URL (traitée comme information d'attente serveur)
+  // Vérification de la redirection LeekPay dans l'URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const paymentParam = params.get('payment')
@@ -152,11 +152,6 @@ export const RestaurantDashboardPage: React.FC = () => {
     setIsModalOpen(true)
   }
 
-  const handleOpenEditModal = () => {
-    setRestaurantToEdit(selectedRestaurant)
-    setIsModalOpen(true)
-  }
-
   const handleModalSuccess = (restaurant: Restaurant) => {
     loadMyRestaurants()
     setSelectedRestaurant(restaurant)
@@ -200,10 +195,11 @@ export const RestaurantDashboardPage: React.FC = () => {
         noindex={true}
       />
       <Header />
+      <PwaInstallPromptModal />
 
       <div className="flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row">
-        {/* Sidebar Desktop */}
-        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 p-4 space-y-6 shrink-0 min-h-[calc(100vh-4rem)]">
+        {/* Sidebar Desktop Fixe / Sticky (BLOC 1) */}
+        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 p-4 space-y-6 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="space-y-1">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-1">
               Navigation Gestion
@@ -218,6 +214,7 @@ export const RestaurantDashboardPage: React.FC = () => {
                     key={item.id}
                     onClick={() => {
                       setActiveTab(item.id)
+                      setMobileMenuOpen(false)
                       if (item.id === 'menus') setIsEditingMenu(false)
                     }}
                     className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
@@ -405,66 +402,13 @@ export const RestaurantDashboardPage: React.FC = () => {
                 </div>
               )}
 
-              {/* 2. Mes Restaurants */}
-              {activeTab === 'restaurants' && (
-                <div className="space-y-6">
-                  <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                      <div>
-                        <h3 className="font-bold text-slate-900 text-base">Fiche de votre restaurant</h3>
-                        <p className="text-xs text-slate-500">
-                          Coordonnées, adresses et identifiant public
-                        </p>
-                      </div>
-                      <button
-                        onClick={handleOpenEditModal}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
-                      >
-                        <Edit className="w-3.5 h-3.5" />
-                        Modifier la fiche
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                        <span className="text-slate-400 font-medium block">Nom de l'établissement</span>
-                        <span className="text-slate-900 font-bold text-sm block">
-                          {selectedRestaurant?.name}
-                        </span>
-                      </div>
-
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                        <span className="text-slate-400 font-medium block">Lien public (Slug)</span>
-                        <code className="text-orange-700 font-mono font-semibold block">
-                          /restaurants/{selectedRestaurant?.slug}
-                        </code>
-                      </div>
-
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                        <span className="text-slate-400 font-medium block">Téléphone</span>
-                        <span className="text-slate-900 font-semibold block">
-                          {selectedRestaurant?.phone || 'Non renseigné'}
-                        </span>
-                      </div>
-
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                        <span className="text-slate-400 font-medium block">Ville & Pays</span>
-                        <span className="text-slate-900 font-semibold block">
-                          {selectedRestaurant?.city ? `${selectedRestaurant.city}, ` : ''}
-                          {selectedRestaurant?.country}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {selectedRestaurant && (
-                    <RestaurantHoursForm
-                      restaurantId={selectedRestaurant.id}
-                      existingHours={hours}
-                      onSaved={() => loadRestaurantData(selectedRestaurant.id)}
-                    />
-                  )}
-                </div>
+              {/* 2. Mes Restaurants & Profil Enrichi (BLOC 2, 5, 7) */}
+              {activeTab === 'restaurants' && selectedRestaurant && (
+                <RestaurantProfileSettings
+                  restaurant={selectedRestaurant}
+                  hours={hours}
+                  onRefresh={() => loadRestaurantData(selectedRestaurant.id)}
+                />
               )}
 
               {/* 3. Mes Menus */}

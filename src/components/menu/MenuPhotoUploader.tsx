@@ -26,15 +26,18 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
 
     setError(null)
 
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+    const isImage = file.type.startsWith('image/')
+
     // Validation type
-    if (!file.type.startsWith('image/')) {
-      setError('Veuillez sélectionner un fichier image valide (JPG, PNG, WEBP).')
+    if (!isPdf && !isImage) {
+      setError('Veuillez sélectionner une image (JPG, PNG, WEBP) ou un document PDF valide.')
       return
     }
 
-    // Validation taille max 5 Mo
-    if (file.size > 5 * 1024 * 1024) {
-      setError('La taille de l\'image ne doit pas dépasser 5 Mo.')
+    // Validation taille max 10 Mo
+    if (file.size > 10 * 1024 * 1024) {
+      setError('La taille du fichier ne doit pas dépasser 10 Mo.')
       return
     }
 
@@ -65,23 +68,23 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
-      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
             <Image className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-900 text-sm">Photos de présentation du menu</h4>
-            <p className="text-xs text-slate-500">Ajoutez des visuels de vos plats du jour</p>
+            <h4 className="font-bold text-slate-900 text-sm">Visuels et Documents du Menu (Images & PDF)</h4>
+            <p className="text-xs text-slate-500">Ajoutez des photos de plats ou la carte intégrale au format PDF</p>
           </div>
         </div>
 
-        <label className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 text-xs font-semibold cursor-pointer transition-colors">
+        <label className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 text-xs font-semibold cursor-pointer transition-colors shrink-0">
           <Upload className="w-3.5 h-3.5" />
-          <span>{uploading ? 'Chargement...' : 'Ajouter une photo'}</span>
+          <span>{uploading ? 'Chargement...' : 'Ajouter Image ou PDF'}</span>
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,application/pdf,.pdf"
             onChange={handleFileSelect}
             disabled={uploading}
             className="hidden"
@@ -98,28 +101,50 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
 
       {photos.length === 0 ? (
         <div className="p-6 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 space-y-1">
-          <p>Aucune photo associée à ce menu.</p>
-          <p className="text-slate-500">Ajoutez une photo pour illustrer vos plats auprès des clients.</p>
+          <p>Aucun support visuel ou PDF associé à ce menu.</p>
+          <p className="text-slate-500">Ajoutez vos photos ou votre fichier PDF pour captiver vos clients.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {photos.map((photo) => {
             const url = menuService.getPhotoPublicUrl(photo.storage_path)
+            const isPdf = photo.storage_path.toLowerCase().endsWith('.pdf')
+
             return (
               <div
                 key={photo.id}
-                className="group relative rounded-xl overflow-hidden border border-slate-200 aspect-square bg-slate-100 shadow-xs"
+                className="group relative rounded-xl overflow-hidden border border-slate-200 aspect-square bg-slate-100 shadow-xs flex flex-col items-center justify-center"
               >
-                <img
-                  src={url}
-                  alt={photo.alt_text || 'Photo du menu'}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                {isPdf ? (
+                  <div className="w-full h-full p-4 flex flex-col items-center justify-center bg-slate-900 text-white space-y-2 text-center">
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold">
+                      PDF
+                    </div>
+                    <span className="text-[11px] font-bold truncate max-w-full px-1">
+                      {photo.alt_text || 'Carte PDF'}
+                    </span>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-orange-400 underline font-semibold"
+                    >
+                      Consulter
+                    </a>
+                  </div>
+                ) : (
+                  <img
+                    src={url}
+                    alt={photo.alt_text || 'Photo du menu'}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                )}
+
                 <button
                   type="button"
                   onClick={() => setPhotoToDelete(photo)}
-                  className="absolute top-2 right-2 p-1.5 bg-slate-900/70 hover:bg-red-600 text-white rounded-lg opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity"
-                  title="Supprimer la photo"
+                  className="absolute top-2 right-2 p-1.5 bg-slate-900/80 hover:bg-red-600 text-white rounded-lg opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Supprimer ce fichier"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

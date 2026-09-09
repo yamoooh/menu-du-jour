@@ -125,6 +125,126 @@ export const restaurantService = {
     }
   },
 
+  // Upload d'image de restaurant (Logo ou Couverture) dans Supabase Storage
+  async uploadRestaurantAsset(
+    restaurantId: string,
+    file: File,
+    assetType: 'logo' | 'cover'
+  ): Promise<{ url: string | null; error: Error | null }> {
+    if (!supabase) return { url: null, error: new Error('Client Supabase non initialisé') }
+
+    // Validation de taille (max 5 Mo)
+    if (file.size > 5 * 1024 * 1024) {
+      return { url: null, error: new Error('L image dépasse la taille maximale autorisée (5 Mo).') }
+    }
+
+    // Validation du type MIME
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      return { url: null, error: new Error('Format d image non supporté. Veuillez utiliser JPG, PNG ou WebP.') }
+    }
+
+    try {
+      const ext = file.name.split('.').pop() || 'jpg'
+      const filePath = `${restaurantId}/${assetType}_${Date.now()}.${ext}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('restaurant-assets')
+        .upload(filePath, file, { upsert: true, contentType: file.type })
+
+      if (uploadError) {
+        return { url: null, error: new Error(uploadError.message || 'Erreur lors du téléchargement de l image') }
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('restaurant-assets')
+        .getPublicUrl(filePath)
+
+      const publicUrl = publicUrlData.publicUrl
+
+      // Mettre à jour le restaurant en BDD
+      const updateData = assetType === 'logo' ? { logo_url: publicUrl } : { cover_image_url: publicUrl }
+      const { error: updateError } = await supabase
+        .from('restaurants')
+        .update(updateData)
+        .eq('id', restaurantId)
+
+      if (updateError) {
+        return { url: null, error: new Error(translateDbError(updateError.message)) }
+      }
+
+      return { url: publicUrl, error: null }
+    } catch (err: any) {
+      return { url: null, error: new Error(err.message || 'Erreur lors du téléchargement de l image') }
+    }
+  },
+
+  // Mettre à jour la localisation GPS & Google Maps du restaurant
+  async updateRestaurantLocation(
+    restaurantId: string,
+    location: {
+      latitude: number
+      longitude: number
+      address?: string
+      formatted_address?: string
+      google_place_id?: string
+    }
+  ): Promise<{ data: Restaurant | null; error: Error | null }> {
+    if (!supabase) return { data: null, error: new Error('Client Supabase non initialisé') }
+
+    try {
+      const { data, error } = await supabase
+        .from('restaurants')
+        .update({
+          latitude: location.latitude,
+          longitude: location.longitude,
+          ...(location.address && { address: location.address.trim() }),
+          ...(location.formatted_address && { formatted_address: location.formatted_address.trim() }),
+          ...(location.google_place_id && { google_place_id: location.google_place_id }),
+        })
+        .eq('id', restaurantId)
+        .select('*')
+        .single()
+
+      if (error) return { data: null, error: new Error(translateDbError(error.message)) }
+      return { data, error: null }
+    } catch (err) {
+      return { data: null, error: new Error('Erreur lors de la sauvegarde de la localisation') }
+    }
+  },
+
+  // Mettre à jour les paramètres de réservation d'un restaurant (BLOC 7)
+  async updateRestaurantReservationSettings(
+    restaurantId: string,
+    settings: {
+      accepts_reservations?: boolean
+      max_party_size?: number
+      reservation_instructions?: string
+      capacity?: number
+    }
+  ): Promise<{ data: Restaurant | null; error: Error | null }> {
+    if (!supabase) return { data: null, error: new Error('Client Supabase non initialisé') }
+
+    try {
+      const { data, error } = await supabase
+        .from('restaurants')
+        .update({
+          ...(settings.accepts_reservations !== undefined && { accepts_reservations: settings.accepts_reservations }),
+          ...(settings.max_party_size !== undefined && { max_party_size: settings.max_party_size }),
+          ...(settings.reservation_instructions !== undefined && { reservation_instructions: settings.reservation_instructions.trim() }),
+          ...(settings.capacity !== undefined && { capacity: settings.capacity }),
+        })
+        .eq('id', restaurantId)
+        .select('*')
+        .single()
+
+      if (error) return { data: null, error: new Error(translateDbError(error.message)) }
+      return { data, error: null }
+    } catch (err) {
+      return { data: null, error: new Error('Erreur lors de la sauvegarde des paramètres de réservation') }
+    }
+  },
+
   // Récupérer les horaires d'un restaurant
   async fetchRestaurantHours(
     restaurantId: string

@@ -3,7 +3,6 @@ import { Header } from '@/components/Header'
 import { SeoHead } from '@/components/public/SeoHead'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
-import { supabase } from '@/lib/supabase'
 import { restaurantService } from '@/services/restaurantService'
 import { discoveryService } from '@/services/discoveryService'
 import { followerService } from '@/services/followerService'
@@ -18,6 +17,8 @@ import { RestaurantSearch } from '@/components/discovery/RestaurantSearch'
 import { ReservationModal } from '@/components/reservation/ReservationModal'
 import { NotificationList } from '@/components/notification/NotificationList'
 import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
+import { ClientProfileSettings } from '@/components/client/ClientProfileSettings'
+import { PwaInstallPromptModal } from '@/components/notification/PwaInstallPromptModal'
 import {
   LayoutDashboard,
   Utensils,
@@ -32,11 +33,6 @@ import {
   Menu as MenuIcon,
   X,
   Sparkles,
-  CheckCircle2,
-  AlertCircle,
-  Phone,
-  User,
-  ShieldCheck,
   ChevronRight,
 } from 'lucide-react'
 
@@ -49,7 +45,7 @@ export type ClientTab =
   | 'profile'
 
 export const ClientDashboardPage: React.FC = () => {
-  const { user, profile, signOut, refreshProfile } = useAuth()
+  const { user, profile, signOut } = useAuth()
   const { t, language } = useLanguage()
 
   const [activeTab, setActiveTab] = useState<ClientTab>('dashboard')
@@ -64,21 +60,6 @@ export const ClientDashboardPage: React.FC = () => {
   const [reservationsCount, setReservationsCount] = useState<number>(0)
   const [unreadNotifsCount, setUnreadNotifsCount] = useState<number>(0)
   const [recentReservations, setRecentReservations] = useState<ReservationWithDetails[]>([])
-
-  // Profile Form State
-  const [fullName, setFullName] = useState<string>(profile?.full_name || '')
-  const [phone, setPhone] = useState<string>(profile?.phone || '')
-  const [updatingProfile, setUpdatingProfile] = useState<boolean>(false)
-  const [profileSuccess, setProfileSuccess] = useState<string | null>(null)
-  const [profileError, setProfileError] = useState<string | null>(null)
-
-  // Synchroniser le formulaire quand le profil change
-  useEffect(() => {
-    if (profile) {
-      setFullName(profile.full_name || '')
-      setPhone(profile.phone || '')
-    }
-  }, [profile])
 
   // Charger les statistiques réelles depuis Supabase
   const loadClientStats = useCallback(async () => {
@@ -126,36 +107,6 @@ export const ClientDashboardPage: React.FC = () => {
       if (res.data) setRestaurants(res.data)
     })
   }, [])
-
-  // Sauvegarder les modifications du profil client
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user) return
-
-    setUpdatingProfile(true)
-    setProfileSuccess(null)
-    setProfileError(null)
-
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: fullName.trim(),
-          phone: phone.trim() || null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', user.id)
-
-      if (error) throw error
-
-      await refreshProfile()
-      setProfileSuccess(t.client.profile.saveSuccess)
-    } catch (err: any) {
-      setProfileError(err.message || 'Erreur lors de la mise à jour du profil.')
-    } finally {
-      setUpdatingProfile(false)
-    }
-  }
 
   // Configuration de la navigation sidebar
   const navItems = [
@@ -225,11 +176,12 @@ export const ClientDashboardPage: React.FC = () => {
 
       {/* Header global */}
       <Header />
+      <PwaInstallPromptModal />
 
       <div className="flex-1 flex max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
-        {/* ================= 1. SIDEBAR LATÉRALE DESKTOP ================= */}
-        <aside className="hidden md:flex flex-col w-64 shrink-0 space-y-6">
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-6 sticky top-24">
+        {/* ================= 1. SIDEBAR LATÉRALE DESKTOP STICKY ================= */}
+        <aside className="hidden md:flex flex-col w-64 shrink-0 space-y-6 sticky top-24 self-start">
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-6">
             {/* Tag Espace Client */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div className="space-y-0.5">
@@ -651,100 +603,7 @@ export const ClientDashboardPage: React.FC = () => {
 
           {/* ================= VUE 6 : MON PROFIL ================= */}
           {activeTab === 'profile' && (
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 space-y-6 shadow-xs">
-              <div className="border-b border-slate-100 pb-4">
-                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <UserCheck className="w-5 h-5 text-orange-600" />
-                  {t.client.profile.title}
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {t.client.profile.subtitle}
-                </p>
-              </div>
-
-              {profileSuccess && (
-                <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>{profileSuccess}</span>
-                </div>
-              )}
-
-              {profileError && (
-                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-                  <span>{profileError}</span>
-                </div>
-              )}
-
-              <form onSubmit={handleUpdateProfile} className="space-y-4 max-w-lg text-xs">
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700 block">
-                    {t.client.profile.fullName}
-                  </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-xs text-slate-900 font-semibold outline-hidden transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700 block">
-                    {t.client.profile.phone}
-                  </label>
-                  <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+237 6XX XXX XXX"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-xs text-slate-900 font-semibold outline-hidden transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700 block">
-                    {t.client.profile.email}
-                  </label>
-                  <input
-                    type="email"
-                    disabled
-                    value={user?.email || ''}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 font-medium text-xs cursor-not-allowed"
-                  />
-                  <span className="text-[10px] text-slate-400">
-                    L'adresse email est associée à votre compte d'authentification Supabase.
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700 block">
-                    {t.client.profile.role}
-                  </label>
-                  <div className="px-3.5 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/60 text-emerald-800 font-extrabold text-xs flex items-center justify-between">
-                    <span>{t.client.profile.roleClient}</span>
-                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={updatingProfile}
-                    className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition-colors cursor-pointer disabled:opacity-50"
-                  >
-                    {updatingProfile ? 'Enregistrement...' : t.client.profile.saveChanges}
-                  </button>
-                </div>
-              </form>
-            </div>
+            <ClientProfileSettings />
           )}
         </main>
       </div>

@@ -265,17 +265,28 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
               </div>
             </div>
 
+            {/* Instructions spécifiques du restaurateur s'il y en a */}
+            {selectedRestaurant?.reservation_instructions && (
+              <div className="p-3 rounded-xl bg-orange-50 border border-orange-200 text-xs text-orange-900 flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="font-bold block">Note du restaurant :</strong>
+                  <span>{selectedRestaurant.reservation_instructions}</span>
+                </div>
+              </div>
+            )}
+
             {/* Nombre de personnes */}
             <div className="space-y-1">
               <label className="font-semibold text-slate-700 flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-orange-600" />
-                Nombre de personnes (convives)
+                Nombre de personnes (convives - max {selectedRestaurant?.max_party_size || 10})
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="range"
                   min={1}
-                  max={20}
+                  max={selectedRestaurant?.max_party_size || 10}
                   value={partySize}
                   onChange={(e) => setPartySize(parseInt(e.target.value, 10))}
                   className="flex-1 accent-orange-600 cursor-pointer"

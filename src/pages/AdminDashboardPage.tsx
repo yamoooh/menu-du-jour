@@ -216,7 +216,7 @@ export const AdminDashboardPage: React.FC = () => {
 
       <div className="flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row">
         {/* Sidebar Desktop Admin */}
-        <aside className="hidden md:flex flex-col w-64 bg-slate-900 text-white p-4 space-y-6 shrink-0 min-h-[calc(100vh-4rem)] border-r border-slate-800">
+        <aside className="hidden md:flex flex-col w-64 bg-slate-900 text-white p-4 space-y-6 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-800">
           <div className="space-y-4">
             <div className="flex items-center gap-2.5 px-3 py-2 bg-slate-800/90 rounded-xl border border-slate-700">
               <ShieldCheck className="w-5 h-5 text-purple-400 shrink-0" />

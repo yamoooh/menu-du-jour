@@ -274,7 +274,7 @@ export const menuService = {
     }
   },
 
-  // Upload d'une photo de menu dans Supabase Storage et insertion dans menu_photos
+  // Upload d'une photo ou document PDF de menu dans Supabase Storage et insertion dans menu_photos (BLOC 4)
   async uploadMenuPhoto(
     restaurantId: string,
     menuId: string,
@@ -283,14 +283,31 @@ export const menuService = {
   ): Promise<{ data: MenuPhoto | null; error: Error | null }> {
     if (!supabase) return { data: null, error: new Error('Client Supabase non initialisé') }
 
+    // Validation de la taille (max 10 Mo)
+    if (file.size > 10 * 1024 * 1024) {
+      return { data: null, error: new Error('Le fichier dépasse la taille maximale autorisée (10 Mo).') }
+    }
+
+    // Validation des formats autorisés (JPG, PNG, WebP, PDF)
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp']
+
+    if (!isPdf && !allowedImageTypes.includes(file.type)) {
+      return { data: null, error: new Error('Format de fichier non supporté. Seuls les formats JPG, PNG, WebP et PDF sont autorisés.') }
+    }
+
     try {
-      const fileExt = file.name.split('.').pop()
+      const fileExt = file.name.split('.').pop() || (isPdf ? 'pdf' : 'jpg')
       const fileName = `${restaurantId}/${menuId}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
 
       // 1. Upload dans le bucket 'menu-photos'
       const { error: uploadErr } = await supabase.storage
         .from('menu-photos')
-        .upload(fileName, file, { cacheControl: '3600', upsert: false })
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type || (isPdf ? 'application/pdf' : 'image/jpeg'),
+        })
 
       if (uploadErr) return { data: null, error: new Error(`Erreur d'upload : ${uploadErr.message}`) }
 
