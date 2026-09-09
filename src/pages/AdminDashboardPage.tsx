@@ -1161,19 +1161,38 @@ export const AdminDashboardPage: React.FC = () => {
           {/* ================= 9. PARAMÈTRES ================= */}
           {activeTab === 'settings' && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
-              <h3 className="font-bold text-slate-900 text-base border-b border-slate-100 pb-3">
-                Configuration de la plateforme SaaS
-              </h3>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 className="font-bold text-slate-900 text-base">
+                  Configuration & Constantes Métier de la Plateforme
+                </h3>
+                <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                  Lecture seule / Constantes système
+                </span>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <p className="text-xs text-slate-500">
+                Ces règles constituent le modèle économique officiel de la plateforme Menu du Jour. Elles sont intégrées de façon immuable dans l'architecture backend et les politiques RLS Supabase.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                 <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
                   <span className="text-slate-400 font-medium block">Nom du SaaS</span>
                   <span className="text-slate-900 font-extrabold text-sm block">Menu du Jour</span>
                 </div>
 
-                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-medium block">Environnement Supabase</span>
-                  <span className="text-orange-700 font-mono font-semibold block">neqnbrhmacperiinpstp.supabase.co</span>
+                <div className="p-4 bg-amber-50/50 rounded-xl border border-amber-100 space-y-1">
+                  <span className="text-amber-800 font-medium block">Période d'Essai Restaurant</span>
+                  <span className="text-amber-900 font-extrabold text-sm block">7 jours offerts</span>
+                </div>
+
+                <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 space-y-1">
+                  <span className="text-emerald-800 font-medium block">Tarif Abonnement Restaurant</span>
+                  <span className="text-emerald-900 font-extrabold text-sm block">5 000 FCFA / 30 jours</span>
+                </div>
+
+                <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 space-y-1">
+                  <span className="text-blue-800 font-medium block">Accès Clients / Gourmets</span>
+                  <span className="text-blue-900 font-extrabold text-sm block">Gratuit (Sans abonnement)</span>
                 </div>
 
                 <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
@@ -1182,8 +1201,13 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
 
                 <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-medium block">Pointeur de paiement</span>
-                  <span className="text-emerald-700 font-mono font-bold block">https://leekpay.me/menu-du-jour</span>
+                  <span className="text-slate-400 font-medium block">Pointeur de paiement LeekPay</span>
+                  <span className="text-emerald-700 font-mono font-bold block truncate">https://leekpay.me/menu-du-jour</span>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1 sm:col-span-2 lg:col-span-3">
+                  <span className="text-slate-400 font-medium block">Environnement Supabase Actif</span>
+                  <span className="text-orange-700 font-mono font-semibold block">https://neqnbrhmacperiinpstp.supabase.co</span>
                 </div>
               </div>
             </div>
