@@ -1,32 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { useLanguage } from '@/context/LanguageContext'
 import { SeoHead } from '@/components/public/SeoHead'
 import { PublicHeader } from '@/components/public/PublicHeader'
 import { PublicFooter } from '@/components/public/PublicFooter'
-import { FloatingWhatsApp } from '@/components/public/FloatingWhatsApp'
-import {
-  UtensilsCrossed,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  ArrowRight,
-  Store,
-  Calendar,
-  Sparkles,
-  Zap,
-  ShieldCheck,
-  Smartphone,
-  BarChart3,
-  Clock,
-  Heart,
-  UserPlus,
-} from 'lucide-react'
 
 export const HomePage: React.FC = () => {
-  const { t } = useLanguage()
-  const [openFaq, setOpenFaq] = useState<number | null>(0)
-
   const jsonLdSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -38,488 +16,778 @@ export const HomePage: React.FC = () => {
       price: '5000',
       priceCurrency: 'XAF',
     },
-    description: t.meta.home.description,
+    description:
+      'La plateforme centrale pour digitaliser, diffuser vos menus et gérer vos réservations en toute autonomie.',
   }
 
+  const heroRestaurantImg =
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuAY93GF8QoHvo6kdFGKGPOM5WdaRmjhOQZ5BBWqcaN4plccoz2I0uXpq0W-ZI7_8zFwskcBYS_hLCMsTLZEKbwV7m8tHfG_NGNGgGOXeHnpodZcC_owZryvaqAxY45ksEAMu1maCdpGRXfLmJuZ1gpcxmTRvhbZq9_HOfRABm9ZKlhSt6EMwQkxfeJB8O7xMWdWBUNrE4CqsW_joeWJrNefpXYIh2VZAIK_pvZMQH4XZfX9_MyreNHw'
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
+    <div className="bg-background font-body-md text-on-surface min-h-screen flex flex-col">
       <SeoHead
-        title={t.meta.home.title}
-        description={t.meta.home.description}
+        title="Menu du Jour - Plateforme SaaS Multi-Restaurants"
+        description="La plateforme centrale pour digitaliser, diffuser vos menus et gérer vos réservations en toute autonomie au Cameroun et en Afrique."
         path="/"
         schema={jsonLdSchema}
       />
 
       <PublicHeader />
 
-      <main className="flex-1 space-y-20 pb-16">
-        {/* ================= HERO SECTION ================= */}
-        <section className="relative overflow-hidden bg-slate-900 text-white pt-12 sm:pt-20 pb-20 sm:pb-28">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ea580c_1px,transparent_1px)] [background-size:16px_16px]" />
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 -left-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
+      <main className="w-full pt-20 flex-1 bg-surface">
+        <div className="flex flex-col w-full">
+          {/* SECTION HERO : ARCHITECTURE SAAS MULTI-RESTAURANTS */}
+          <section className="relative w-full bg-surface-container-lowest overflow-hidden">
+            <div className="absolute -top-32 -right-24 w-96 h-96 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+            <div className="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-surface-dim/40 blur-2xl pointer-events-none"></div>
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 space-y-12">
-            <div className="text-center max-w-3xl mx-auto space-y-6">
-              {/* Badge d'en-tête */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30 backdrop-blur-md animate-fade-in">
-                <Sparkles className="w-4 h-4 text-orange-400" />
-                <span>Plateforme SaaS Multi-Restaurants • Cameroun</span>
-              </div>
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop pt-space-xl pb-space-3xl relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+                {/* Colonne Gauche : Pitch SaaS & Double CTA */}
+                <div className="lg:col-span-7 flex flex-col gap-space-md">
+                  <div className="inline-flex items-center gap-space-xs px-space-sm py-space-2xs rounded-full bg-surface-container w-fit">
+                    <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                    <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">
+                      Solution Logicielle Restauration Afrique &amp; International
+                    </span>
+                  </div>
 
-              {/* Titre principal */}
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight sm:leading-none font-display">
-                La solution SaaS n°1 pour booster la visibilité de votre restaurant
-              </h1>
+                  <h1 className="font-display-lg text-display-lg text-on-surface leading-tight tracking-tight">
+                    La plateforme centrale pour digitaliser, diffuser vos menus et gérer vos réservations en toute autonomie.
+                  </h1>
 
-              {/* Sous-titre */}
-              <p className="text-base sm:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto">
-                Publiez votre menu du jour en 30 secondes, recevez des réservations directes sans aucune commission et fidélisez votre clientèle.
-              </p>
+                  <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                    <strong>Menu du Jour</strong> n'est pas un restaurant unique, mais l'infrastructure logicielle SaaS dédiée aux établissements culinaires et aux convives. Offrez une consultation immédiate de vos cartes (photos, PDF, catégories), pilotez vos demandes de table en temps réel et fidélisez votre clientèle locale.
+                  </p>
 
-              {/* Boutons CTA */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <Link
-                  to="/inscription"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-sm shadow-xl shadow-orange-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer"
-                >
-                  <span>Créer mon restaurant (7 jours offerts)</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-base pt-space-sm">
+                    <Link
+                      to="/decouvrir"
+                      className="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-xl font-label-lg text-label-lg bg-primary text-on-primary shadow-sm hover:bg-primary-container transition-all"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">restaurant_menu</span>
+                      <span>Découvrir les restaurants</span>
+                    </Link>
 
-                <a
-                  href="#ecosysteme"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm backdrop-blur-md border border-white/20 transition-all cursor-pointer"
-                >
-                  <span>Découvrir la plateforme</span>
-                </a>
-              </div>
+                    <Link
+                      to="/inscription"
+                      className="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-xl font-label-lg text-label-lg bg-secondary text-on-secondary shadow-sm hover:bg-secondary-container transition-all"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">storefront</span>
+                      <span>Inscrire mon restaurant (Essai 7j offert)</span>
+                    </Link>
+                  </div>
 
-              {/* Badge essai gratuit */}
-              <p className="text-xs text-orange-400 font-semibold pt-2 flex items-center justify-center gap-1.5">
-                <ShieldCheck className="w-4 h-4" />
-                7 jours d'essai gratuit • Sans carte bancaire • 5 000 FCFA / mois
-              </p>
-            </div>
-
-            {/* PRODUCT PREVIEW WIDGET (STITCH SAMPLE RESTAURANT) */}
-            <div className="max-w-4xl mx-auto bg-slate-800/90 rounded-3xl p-3 sm:p-5 border border-white/10 shadow-2xl backdrop-blur-sm">
-              <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-inner p-4 sm:p-6 space-y-6">
-                {/* Header Mockup */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-orange-600 text-white font-black flex items-center justify-center text-sm shadow-md">
-                      W
+                  {/* Métriques & Réassurance Technique */}
+                  <div className="grid grid-cols-3 gap-space-md pt-space-lg max-w-lg">
+                    <div className="flex flex-col">
+                      <span className="font-headline-md text-headline-md text-secondary font-bold">100%</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">Gratuit pour les clients</span>
                     </div>
-                    <div>
-                      <h4 className="font-extrabold text-white text-base">Le Wouri Bistrot & Grill</h4>
-                      <p className="text-xs text-slate-400 flex items-center gap-1">
-                        <span>Akwa, Douala</span> • <span className="text-amber-400 font-bold">4.9 ★ (128 avis)</span>
-                      </p>
+                    <div className="flex flex-col">
+                      <span className="font-headline-md text-headline-md text-on-surface font-bold">7 Jours</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">Essai restaurant sans carte</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-headline-md text-headline-md text-on-surface font-bold">5 000 XAF</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">Par mois via LeekPay</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">
-                      ● Ouvert • Menu actif
+                </div>
+
+                {/* Colonne Droite : Interface Produit Interactive Mockup */}
+                <div className="lg:col-span-5 relative">
+                  <div className="bg-surface-container rounded-xl p-space-base shadow-xl flex flex-col gap-space-md">
+                    {/* Barre de contrôle supérieure */}
+                    <div className="flex items-center justify-between bg-surface-container-lowest px-space-base py-space-xs rounded-lg">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="w-3 h-3 rounded-full bg-secondary-fixed-dim"></span>
+                        <span className="w-3 h-3 rounded-full bg-surface-container-high"></span>
+                        <span className="w-3 h-3 rounded-full bg-surface-dim"></span>
+                      </div>
+                      <span className="font-label-sm text-label-sm text-on-surface-variant">app.menudujour.io</span>
+                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">sync</span>
+                    </div>
+
+                    {/* Carte interactive aperçu restaurant */}
+                    <div className="relative bg-surface-container-lowest rounded-lg p-space-md shadow-sm flex flex-col gap-space-sm">
+                      <div className="relative h-44 w-full rounded-lg overflow-hidden">
+                        <img
+                          className="w-full h-full object-cover"
+                          alt="Vue intérieure élégante et chaleureuse d'un restaurant moderne à Douala"
+                          src={heroRestaurantImg}
+                        />
+                        <div className="absolute top-space-xs right-space-xs px-space-xs py-space-2xs bg-surface-container-lowest/90 backdrop-blur-sm rounded font-label-sm text-label-sm text-secondary font-bold">
+                          Menu du Jour Actif
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                            Le Wouri Bistrot &amp; Grill
+                          </h3>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-2xs">
+                            <span className="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+                            Bonanjo, Douala • Cameroun
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-space-2xs bg-surface-container-high px-space-xs py-space-2xs rounded text-on-surface font-label-sm text-label-sm font-bold">
+                          <span className="material-symbols-outlined text-[16px] text-secondary">star</span>
+                          4.8
+                        </div>
+                      </div>
+
+                      {/* Badge statut réservation en temps réel */}
+                      <div className="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+                        <div className="flex items-center gap-space-xs">
+                          <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                          <span className="font-label-md text-label-md text-on-surface font-medium">Module Réservations</span>
+                        </div>
+                        <span className="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-space-xs py-space-2xs rounded font-semibold">
+                          3 en attente
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Mini aperçu fiche plat */}
+                    <div className="grid grid-cols-2 gap-space-sm">
+                      <div className="bg-surface-container-lowest p-space-sm rounded-lg shadow-sm flex flex-col">
+                        <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold">Entrée du jour</span>
+                        <span className="font-body-md text-body-md text-on-surface font-medium truncate">Carpaccio de Capitaine</span>
+                        <span className="font-data-mono text-data-mono text-on-surface-variant mt-space-2xs font-bold">4 500 FCFA</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-space-sm rounded-lg shadow-sm flex flex-col">
+                        <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold">Plat du chef</span>
+                        <span className="font-body-md text-body-md text-on-surface font-medium truncate">Ndolè Royal &amp; Miondo</span>
+                        <span className="font-data-mono text-data-mono text-on-surface-variant mt-space-2xs font-bold">7 000 FCFA</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION LE DOUBLE PARCOURS : PROPRIÉTAIRES VS CLIENTS */}
+          <section className="w-full bg-surface-container-low py-space-3xl" id="parcours">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex flex-col gap-space-2xl">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+                <div className="flex flex-col gap-space-xs max-w-2xl">
+                  <span className="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">
+                    Fonctionnement opérationnel
+                  </span>
+                  <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+                    Deux écosystèmes interconnectés pour une fluidité sans rupture
+                  </h2>
+                </div>
+                <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
+                  Chaque acteur dispose d'un espace conçu sur mesure selon ses impératifs d'ergonomie et de rapidité d'exécution.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-xl">
+                {/* PARCOURS RESTAURANT */}
+                <div className="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between gap-space-xl">
+                  <div className="flex flex-col gap-space-md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-space-sm">
+                        <div className="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center">
+                          <span className="material-symbols-outlined text-secondary text-[24px]">storefront</span>
+                        </div>
+                        <div>
+                          <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                            Parcours Établissement
+                          </h3>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Pour les gérants, restaurateurs et chefs
+                          </p>
+                        </div>
+                      </div>
+                      <span className="px-space-xs py-space-2xs rounded bg-surface-container font-data-mono text-data-mono text-on-surface font-bold">
+                        Admin &amp; POS
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-space-base mt-space-sm">
+                      {/* Étape 1 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            1
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Inscription &amp; Création de profil
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Définition de l'identité, contact, photos de la salle et description de vos spécialités culinaires.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 2 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            2
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Horaires &amp; Géolocalisation OpenStreetMap
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Positionnement précis sans licence d'API payante, indication des créneaux de service midi et soir.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 3 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            3
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Mise en ligne des Menus (Images &amp; PDF)
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Édition instantanée de la formule du jour, classement par rubriques et upload de supports visuels haute définition.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 4 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            4
+                          </span>
+                        </div>
+                        <div className="flex flex-col">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Gestion des réservations &amp; Souscription LeekPay
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Validation ou refus argumenté en 1 clic. Renouvellement transparent de votre licence via LeekPay.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/inscription"
+                    className="inline-flex items-center justify-center gap-space-xs px-space-base py-space-sm rounded-xl font-label-md text-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-semibold"
+                  >
+                    <span>Démarrer l'essai restaurant</span>
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </Link>
+                </div>
+
+                {/* PARCOURS CLIENT */}
+                <div
+                  className="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between gap-space-xl"
+                  id="parcours-client"
+                >
+                  <div className="flex flex-col gap-space-md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-space-sm">
+                        <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center">
+                          <span className="material-symbols-outlined text-on-surface text-[24px]">person</span>
+                        </div>
+                        <div>
+                          <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                            Parcours Client &amp; Visiteur
+                          </h3>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Pour les gastronomes, professionnels en pause déjeuner et touristes
+                          </p>
+                        </div>
+                      </div>
+                      <span className="px-space-xs py-space-2xs rounded bg-surface-container-low font-data-mono text-data-mono text-secondary font-bold">
+                        100% Gratuit
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-space-base mt-space-sm">
+                      {/* Étape 1 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-primary text-on-primary font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            1
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Inscription gratuite et instantanée
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Accès immédiat sans carte bancaire ni configuration complexe, via e-mail ou compte rapide.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 2 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            2
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Exploration &amp; Filtrage territorial
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Recherche par métropoles (Douala, Yaoundé, Bafoussam, Kribi...), quartiers et styles de cuisine.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 3 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            3
+                          </span>
+                          <div className="w-0.5 h-full bg-surface-container mt-space-xs"></div>
+                        </div>
+                        <div className="flex flex-col pb-space-sm">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Consultation des fiches &amp; Zoom PDF
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Parcourez les menus du jour en temps réel avec détails des allergènes, prix en FCFA et visualisation plein écran.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Étape 4 */}
+                      <div className="flex gap-space-md">
+                        <div className="flex flex-col items-center">
+                          <span className="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center font-bold">
+                            4
+                          </span>
+                        </div>
+                        <div className="flex flex-col">
+                          <h4 className="font-label-lg text-label-lg text-on-surface font-semibold">
+                            Favoris &amp; Réservation notifiée
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            Abonnez-vous aux alertes quotidiennes de vos tables préférées et réservez votre couvert avec confirmation directe.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/decouvrir"
+                    className="inline-flex items-center justify-center gap-space-xs px-space-base py-space-sm rounded-xl font-label-md text-label-md bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-semibold"
+                  >
+                    <span>Explorer les fonctionnalités</span>
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION CARACTÉRISTIQUES & FONCTIONNALITÉS CLÉS */}
+          <section className="w-full bg-surface py-space-3xl" id="fonctionnalites">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex flex-col gap-space-2xl">
+              <div className="flex flex-col gap-space-xs max-w-2xl">
+                <span className="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">
+                  Conception technique &amp; utilitaire
+                </span>
+                <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+                  Des modules taillés pour les contraintes réelles du terrain
+                </h2>
+              </div>
+
+              {/* Bento Grid 4 Piliers */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-space-lg">
+                {/* Pilier 1 : Menus Interactifs */}
+                <div className="lg:col-span-6 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between gap-space-lg">
+                  <div className="flex flex-col gap-space-sm">
+                    <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+                      <span className="material-symbols-outlined text-secondary text-[22px]">auto_stories</span>
+                    </div>
+                    <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
+                      Menus du Jour Haute Performance
+                    </h3>
+                    <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                      Publication souple pour les restaurateurs : intégrez vos plats ligne par ligne avec étiquettes de catégories (Entrées, Plats de résistance, Desserts, Boissons) ou téléversez directement vos affiches scannées et fichiers PDF vectoriels avec visualiseur plein écran sans perte de netteté.
+                    </p>
+                  </div>
+
+                  <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-sm">
+                    <div className="flex items-center gap-space-xs flex-wrap">
+                      <span className="px-space-xs py-space-2xs bg-secondary text-on-secondary rounded font-label-sm text-label-sm font-semibold">
+                        Grillades
+                      </span>
+                      <span className="px-space-xs py-space-2xs bg-surface-container-lowest text-on-surface-variant rounded font-label-sm text-label-sm">
+                        Spécialités Locales
+                      </span>
+                      <span className="px-space-xs py-space-2xs bg-surface-container-lowest text-on-surface-variant rounded font-label-sm text-label-sm">
+                        Pâtisseries
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between bg-surface-container-lowest p-space-sm rounded">
+                      <div className="flex items-center gap-space-sm">
+                        <span className="material-symbols-outlined text-secondary text-[20px]">picture_as_pdf</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Carte_Semaine_Bonapriso.pdf</span>
+                      </div>
+                      <span className="font-label-sm text-label-sm text-secondary flex items-center gap-space-2xs font-semibold">
+                        <span className="material-symbols-outlined text-[16px]">zoom_in</span> Zoom
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pilier 2 : Gestion des Réservations */}
+                <div className="lg:col-span-6 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between gap-space-lg">
+                  <div className="flex flex-col gap-space-sm">
+                    <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+                      <span className="material-symbols-outlined text-secondary text-[22px]">event_seat</span>
+                    </div>
+                    <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
+                      Module de Réservations Déterministe
+                    </h3>
+                    <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                      Fini l'incertitude des messages éparpillés. Chaque demande est enregistrée avec le nombre de couverts, l'heure exacte et les requêtes spécifiques. Les restaurateurs valident ou rejettent en renseignant un motif explicite (salle complète, privatisation).
+                    </p>
+                  </div>
+
+                  <div className="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs">
+                    <div className="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Table 4 pers. • 13h00</span>
+                      </div>
+                      <span className="px-space-xs py-space-2xs rounded bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold">
+                        Confirmée
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="w-2 h-2 rounded-full bg-outline"></span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Table 2 pers. • 19h30</span>
+                      </div>
+                      <span className="px-space-xs py-space-2xs rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold">
+                        En attente
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="w-2 h-2 rounded-full bg-error"></span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Table 8 pers. • 21h00</span>
+                      </div>
+                      <span className="px-space-xs py-space-2xs rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+                        Refusée (Complet)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pilier 3 : Suivi & Notifications */}
+                <div className="lg:col-span-6 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between gap-space-lg">
+                  <div className="flex flex-col gap-space-sm">
+                    <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+                      <span className="material-symbols-outlined text-secondary text-[22px]">favorite</span>
+                    </div>
+                    <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
+                      Suivi d'Établissements &amp; Alertes
+                    </h3>
+                    <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                      Les clients ajoutent leurs restaurants favoris en un clic à leur carnet personnel. Dès que le gérant actualise son ardoise du midi, les abonnés reçoivent une alerte immédiate avec le contenu complet de la formule du jour.
+                    </p>
+                  </div>
+                  <div className="bg-surface-container-low p-space-md rounded-lg flex items-center gap-space-md">
+                    <div className="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0">
+                      <span className="material-symbols-outlined text-[24px]">notifications_active</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-label-md text-label-md text-on-surface font-bold">
+                        Nouveau Menu chez La Fourchette d'Or
+                      </span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">
+                        Publié à 11h15 : Saumon braisé &amp; Plantains tapés.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pilier 4 : OpenStreetMap Indépendant */}
+                <div className="lg:col-span-6 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between gap-space-lg">
+                  <div className="flex flex-col gap-space-sm">
+                    <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+                      <span className="material-symbols-outlined text-secondary text-[22px]">map</span>
+                    </div>
+                    <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
+                      Cartographie Ouverte OpenStreetMap &amp; Leaflet
+                    </h3>
+                    <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                      Zéro dépendance à des clés API commerciales onéreuses ou instables. Vos restaurants sont positionnés via Leaflet et OpenStreetMap pour une navigation fluide, respectueuse des données personnelles et toujours accessible.
+                    </p>
+                  </div>
+                  <div className="bg-surface-container-low p-space-md rounded-lg flex items-center justify-between">
+                    <div className="flex items-center gap-space-sm">
+                      <span className="material-symbols-outlined text-secondary text-[20px]">explore</span>
+                      <div className="flex flex-col">
+                        <span className="font-label-md text-label-md text-on-surface font-bold">
+                          Yaoundé, Bastos • Coordonnées GPS
+                        </span>
+                        <span className="font-data-mono text-data-mono text-on-surface-variant">3.8872° N, 11.5174° E</span>
+                      </div>
+                    </div>
+                    <span className="px-space-xs py-space-2xs bg-surface-container-lowest rounded font-label-sm text-label-sm text-on-surface font-semibold">
+                      Sans frais API
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
 
-                {/* Content preview */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-                  <div className="md:col-span-2 bg-slate-800/60 p-4 rounded-xl border border-slate-700/70 space-y-3">
+          {/* SECTION MODÈLE ÉCONOMIQUE & TARIFICATION TRANSPARENTE */}
+          <section className="w-full bg-surface-container-lowest py-space-3xl" id="tarifs">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex flex-col gap-space-2xl">
+              <div className="flex flex-col items-center text-center gap-space-xs max-w-2xl mx-auto">
+                <span className="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">
+                  Tarification Claire &amp; Sans Surprise
+                </span>
+                <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+                  Un modèle économique pensé pour la réalité des restaurateurs
+                </h2>
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  Aucun prélèvement sur vos ventes de repas. Les convives profitent de la plateforme sans débourser un centime.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-space-xl max-w-4xl mx-auto w-full">
+                {/* Offre Client */}
+                <div className="bg-surface-container-low rounded-xl p-space-xl flex flex-col justify-between gap-space-xl shadow-sm">
+                  <div className="flex flex-col gap-space-md">
                     <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded-md bg-orange-500/20 text-orange-400 text-[11px] font-bold uppercase tracking-wider">
-                        Spécialité du jour
+                      <span className="font-label-lg text-label-lg text-on-surface uppercase tracking-wider font-bold">
+                        Convives &amp; Visiteurs
                       </span>
-                      <span className="text-xs text-slate-400">Servi de 11h30 à 15h00</span>
+                      <span className="px-space-xs py-space-2xs rounded bg-surface-container font-label-sm text-label-sm text-on-surface font-semibold">
+                        Pour tous
+                      </span>
                     </div>
-                    <h5 className="text-white font-extrabold text-lg">Ndolè Royal aux Crevettes & Plantains Frits</h5>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Ndolè frais préparé le matin même, crevettes sauvages sautées à l'ail, servi avec allocos dorés et miondo chaud.
+
+                    <div className="flex items-baseline gap-space-xs">
+                      <span className="font-display-lg text-display-lg text-on-surface font-extrabold">0</span>
+                      <span className="font-headline-sm text-headline-sm text-on-surface-variant font-bold">FCFA</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">/ Toujours gratuit</span>
+                    </div>
+
+                    <p className="font-body-md text-body-md text-on-surface-variant">
+                      Recherchez, filtrez, consultez les ardoises du jour et réservez sans aucuns frais d'intermédiation ni publicité intrusive.
                     </p>
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-700/50">
-                      <span className="text-xl font-black text-amber-400 tabular-nums">7 000 FCFA</span>
-                      <span className="px-3 py-1.5 rounded-lg bg-orange-600 text-white font-bold text-xs">
-                        Réserver ma table
+
+                    <div className="flex flex-col gap-space-xs pt-space-sm">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface">Recherche par métropoles &amp; quartiers</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface">Consultation des menus, photos &amp; PDF</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface">Abonnement gratuit à vos restaurants favoris</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface">Demandes de réservation avec suivi d'état</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/inscription"
+                    className="inline-flex items-center justify-center px-space-base py-space-md rounded-xl font-label-md text-label-md bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container transition-colors font-bold"
+                  >
+                    Créer mon profil client gratuit
+                  </Link>
+                </div>
+
+                {/* Offre Restaurant Pro */}
+                <div className="bg-surface-container-lowest rounded-xl p-space-xl flex flex-col justify-between gap-space-xl shadow-md relative border border-secondary/20">
+                  <div className="absolute -top-3 right-space-base px-space-sm py-space-2xs rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold tracking-wide uppercase shadow-sm">
+                    7 Jours d'essai gratuit
+                  </div>
+
+                  <div className="flex flex-col gap-space-md">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-lg text-label-lg text-secondary uppercase tracking-wider font-bold">
+                        Abonnement Restaurateur
+                      </span>
+                      <span className="px-space-xs py-space-2xs rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold">
+                        Paiement LeekPay
                       </span>
                     </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/70 space-y-1">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase">Entrée suggérée</span>
-                      <h6 className="text-xs font-bold text-white">Salade de Papaye & Capitaine Fumé</h6>
-                      <span className="text-xs font-bold text-amber-400 tabular-nums">3 500 FCFA</span>
+                    <div className="flex items-baseline gap-space-xs">
+                      <span className="font-display-lg text-display-lg text-on-surface font-extrabold">5 000</span>
+                      <span className="font-headline-sm text-headline-sm text-on-surface-variant font-bold">FCFA</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant">/ 30 jours</span>
                     </div>
-                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/70 space-y-1">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase">Dessert maison</span>
-                      <h6 className="text-xs font-bold text-white">Coupe Passion & Mangue Fraîche</h6>
-                      <span className="text-xs font-bold text-amber-400 tabular-nums">2 500 FCFA</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* ================= ECOSYSTÈME DOUBLE SECTION ================= */}
-        <section id="ecosysteme" className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-orange-100 text-orange-900 text-xs font-bold uppercase tracking-wider">
-              Une plateforme, deux espaces dédiés
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              Pensé pour les Restaurateurs et les Gourmets
-            </h2>
-            <p className="text-sm text-slate-600">
-              Menu du Jour connecte directement les établissements de restauration avec les amoureux de bonne cuisine.
-            </p>
-          </div>
+                    <p className="font-body-md text-body-md text-on-surface-variant">
+                      Prenez en main la plateforme pendant 7 jours sans paiement. Poursuivez ensuite votre présence digitale pour 5 000 FCFA/mois sécurisés via LeekPay (Mobile Money / Cartes).
+                    </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Carte Restaurateurs */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-orange-500/20 shadow-md space-y-6 flex flex-col justify-between hover:border-orange-500 transition-all">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-orange-600 text-white flex items-center justify-center shadow-lg shadow-orange-600/20">
-                  <Store className="w-6 h-6" />
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 font-display">Espace Restaurateurs</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Gagnez du temps et augmentez votre taux d'occupation quotidien grâce à des outils simples et performants.
-                </p>
-                <ul className="space-y-2.5 text-xs text-slate-700 font-medium pt-2">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-orange-600 shrink-0" />
-                    <span>Publication instantanée du Menu du Jour & Carte</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-orange-600 shrink-0" />
-                    <span>Gestion des réservations en temps réel (WhatsApp / email)</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-orange-600 shrink-0" />
-                    <span>Abonnement fixe à 5 000 FCFA / mois (0 commission)</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-orange-600 shrink-0" />
-                    <span>Profil personnalisé et localisation Leaflet interactive</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="pt-4">
-                <Link
-                  to="/inscription"
-                  className="w-full py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs text-center block shadow-md transition-colors"
-                >
-                  Inscrire mon établissement
-                </Link>
-              </div>
-            </div>
-
-            {/* Carte Gourmets */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md space-y-6 flex flex-col justify-between hover:border-slate-400 transition-all">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-lg">
-                  <Heart className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 font-display">Espace Clients & Gourmets</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Accédez gratuitement aux meilleurs repas frais autour de vous et réservez votre table sans intermédiaire.
-                </p>
-                <ul className="space-y-2.5 text-xs text-slate-700 font-medium pt-2">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Accès 100% gratuit à tous les menus du jour</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Réservation de table rapide sans enregistrement complexe</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Sauvegarde de vos restaurants favoris</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Alertes & notifications sur les nouveaux menus</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="pt-4">
-                <Link
-                  to="/restaurants"
-                  className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center block shadow-md transition-colors"
-                >
-                  Explorer les restaurants
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= PRESENTATION SECTION ================= */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xs space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100 text-orange-900 text-xs font-bold">
-              <Store className="w-3.5 h-3.5" />
-              {t.presentation.tag}
-            </div>
-
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              {t.presentation.title}
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed">
-              <p className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                {t.presentation.text1}
-              </p>
-              <p className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                {t.presentation.text2}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= FONCTIONNALITÉS SECTION ================= */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-orange-100 text-orange-900 text-xs font-bold uppercase tracking-wider">
-              {t.features.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              {t.features.title}
-            </h2>
-            <p className="text-sm text-slate-600">{t.features.subtitle}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {t.features.items.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all space-y-3 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-                  {idx === 0 && <Store className="w-6 h-6" />}
-                  {idx === 1 && <UtensilsCrossed className="w-6 h-6" />}
-                  {idx === 2 && <Sparkles className="w-6 h-6" />}
-                  {idx === 3 && <Heart className="w-6 h-6" />}
-                  {idx === 4 && <Calendar className="w-6 h-6" />}
-                  {idx === 5 && <BarChart3 className="w-6 h-6" />}
-                </div>
-                <h3 className="font-bold text-slate-900 text-base group-hover:text-orange-600 transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ================= COMMENT ÇA MARCHE SECTION ================= */}
-        <section id="comment-ca-marche" className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-              {t.howItWorks.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              {t.howItWorks.title}
-            </h2>
-            <p className="text-sm text-slate-600">{t.howItWorks.subtitle}</p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Côté restaurateur */}
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white space-y-6 shadow-xl border border-slate-800">
-              <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
-                <div className="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold">
-                  <Store className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-black font-display">{t.howItWorks.restaurantTitle}</h3>
-              </div>
-
-              <div className="space-y-4">
-                {t.howItWorks.restaurantSteps.map((s, idx) => (
-                  <div key={idx} className="flex items-start gap-4 bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60">
-                    <span className="font-mono font-black text-orange-400 text-lg">{s.step}</span>
-                    <div className="space-y-1 text-xs">
-                      <h4 className="font-bold text-white text-sm">{s.title}</h4>
-                      <p className="text-slate-300">{s.desc}</p>
+                    <div className="flex flex-col gap-space-xs pt-space-sm">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Gestion illimitée des menus du jour</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Module de réservation complet (acceptation/refus)</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Support OpenStreetMap autonome</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">QR Code vitrine &amp; tables téléchargeable</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <span className="material-symbols-outlined text-secondary text-[18px]">check</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-medium">Paiement localisé via LeekPay (MTN MoMo, Orange Money)</span>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Côté client */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 space-y-6 shadow-xs">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
-                  <UserPlus className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-black text-slate-900 font-display">{t.howItWorks.clientTitle}</h3>
-              </div>
-
-              <div className="space-y-4">
-                {t.howItWorks.clientSteps.map((s, idx) => (
-                  <div key={idx} className="flex items-start gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <span className="font-mono font-black text-amber-600 text-lg">{s.step}</span>
-                    <div className="space-y-1 text-xs">
-                      <h4 className="font-bold text-slate-900 text-sm">{s.title}</h4>
-                      <p className="text-slate-600">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= POURQUOI MENU DU JOUR SECTION ================= */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="bg-gradient-to-r from-orange-600 to-amber-500 rounded-3xl p-8 sm:p-12 text-white shadow-xl shadow-orange-600/20 space-y-8">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <span className="px-3.5 py-1 rounded-full bg-white/20 text-xs font-bold backdrop-blur-md">
-                {t.whyUs.tag}
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight font-display">
-                {t.whyUs.title}
-              </h2>
-              <p className="text-orange-100 text-sm">{t.whyUs.subtitle}</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {t.whyUs.reasons.map((r, idx) => (
-                <div key={idx} className="bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/20 space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-white text-orange-600 flex items-center justify-center font-bold">
-                    {idx === 0 && <Zap className="w-4 h-4" />}
-                    {idx === 1 && <Clock className="w-4 h-4" />}
-                    {idx === 2 && <ShieldCheck className="w-4 h-4 text-emerald-600" />}
-                    {idx === 3 && <Smartphone className="w-4 h-4" />}
-                  </div>
-                  <h4 className="font-bold text-sm text-white">{r.title}</h4>
-                  <p className="text-xs text-orange-100 leading-relaxed">{r.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= TARIFICATION SECTION ================= */}
-        <section id="tarifs" className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-              {t.pricing.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              {t.pricing.title}
-            </h2>
-            <p className="text-sm text-slate-600">{t.pricing.subtitle}</p>
-          </div>
-
-          <div className="bg-white rounded-3xl border-2 border-orange-500 p-8 sm:p-10 shadow-xl space-y-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-gradient-to-l from-orange-600 to-amber-500 text-white font-extrabold text-[11px] px-6 py-1.5 rounded-bl-2xl uppercase tracking-wider">
-              {t.pricing.trialText}
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-2xl font-black text-slate-900 font-display">{t.pricing.planName}</h3>
-              <p className="text-xs text-slate-600">{t.pricing.trialDesc}</p>
-
-              <div className="flex items-baseline gap-2 pt-2">
-                <span className="text-4xl sm:text-5xl font-black text-slate-900 tabular-nums">5 000 FCFA</span>
-                <span className="text-slate-500 font-bold text-sm">/ mois</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 border-t border-slate-100 pt-6">
-              <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider">
-                {t.pricing.includesTitle}
-              </h4>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 font-medium">
-                {t.pricing.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pt-4">
-              <Link
-                to="/inscription"
-                className="w-full py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-sm text-center block shadow-lg shadow-orange-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer"
-              >
-                {t.pricing.cta}
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= FAQ SECTION ================= */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-              {t.faq.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
-              {t.faq.title}
-            </h2>
-            <p className="text-sm text-slate-600">{t.faq.subtitle}</p>
-          </div>
-
-          <div className="space-y-3">
-            {t.faq.items.map((item, idx) => {
-              const isOpen = openFaq === idx
-              return (
-                <div
-                  key={idx}
-                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs transition-all"
-                >
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm hover:text-orange-600 cursor-pointer"
+                  <Link
+                    to="/inscription"
+                    className="inline-flex items-center justify-center px-space-base py-space-md rounded-xl font-label-md text-label-md bg-secondary text-on-secondary shadow-sm hover:bg-secondary-container transition-colors font-bold"
                   >
-                    <span>{item.q}</span>
-                    {isOpen ? <ChevronUp className="w-5 h-5 text-orange-600 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
-                  </button>
-                  {isOpen && (
-                    <div className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                      {item.a}
-                    </div>
-                  )}
+                    Activer mes 7 jours offerts
+                  </Link>
                 </div>
-              )
-            })}
-          </div>
-        </section>
-
-        {/* ================= CTA FINAL SECTION ================= */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="bg-slate-900 rounded-3xl p-8 sm:p-14 text-white text-center space-y-6 shadow-2xl relative overflow-hidden border border-slate-800">
-            <div className="space-y-3 max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight font-display">
-                {t.finalCta.title}
-              </h2>
-              <p className="text-slate-300 text-sm sm:text-base">{t.finalCta.subtitle}</p>
+              </div>
             </div>
+          </section>
 
-            <div>
-              <Link
-                to="/inscription"
-                className="inline-flex items-center gap-2 px-9 py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-sm shadow-xl shadow-orange-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer"
-              >
-                <span>{t.finalCta.cta}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+          {/* SECTION PWA & ACCESSIBILITÉ MULTI-SUPPORTS */}
+          <section className="w-full bg-surface-container-low py-space-3xl">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop">
+              <div className="bg-surface-container-lowest rounded-xl p-space-xl md:p-space-2xl shadow-sm flex flex-col lg:flex-row items-center justify-between gap-space-xl">
+                <div className="flex flex-col gap-space-sm max-w-xl">
+                  <div className="inline-flex items-center gap-space-xs px-space-sm py-space-2xs rounded bg-surface-container w-fit">
+                    <span className="material-symbols-outlined text-[18px] text-secondary">install_mobile</span>
+                    <span className="font-label-sm text-label-sm text-on-surface font-semibold">
+                      Technologie Progressive Web App (PWA)
+                    </span>
+                  </div>
+                  <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
+                    Installez Menu du Jour directement sur votre écran d'accueil
+                  </h2>
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    Sans passer par les magasins d'applications énergivores. Compatible avec tous les smartphones Android, iOS et postes de travail d'encaissement (PC, Mac, tablettes tactiles de caisse).
+                  </p>
+                  <div className="flex flex-wrap items-center gap-space-base pt-space-xs">
+                    <div className="flex items-center gap-space-xs">
+                      <span className="material-symbols-outlined text-secondary text-[20px]">offline_pin</span>
+                      <span className="font-label-sm text-label-sm text-on-surface font-medium">Consultation hors-ligne partielle</span>
+                    </div>
+                    <div className="flex items-center gap-space-xs">
+                      <span className="material-symbols-outlined text-secondary text-[20px]">speed</span>
+                      <span className="font-label-sm text-label-sm text-on-surface font-medium">Chargement ultra-léger (&lt; 1 Mo)</span>
+                    </div>
+                    <div className="flex items-center gap-space-xs">
+                      <span className="material-symbols-outlined text-secondary text-[20px]">devices</span>
+                      <span className="font-label-sm text-label-sm text-on-surface font-medium">Responsive tous formats</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Badge & Guide d'installation rapide */}
+                <div className="bg-surface-container p-space-lg rounded-xl flex flex-col gap-space-md w-full lg:w-auto min-w-[320px]">
+                  <span className="font-label-md text-label-md text-on-surface uppercase tracking-wider font-bold">
+                    Comment l'installer ?
+                  </span>
+                  <div className="flex items-start gap-space-sm">
+                    <span className="font-headline-sm text-headline-sm text-secondary font-bold">1</span>
+                    <p className="font-body-sm text-body-sm text-on-surface">
+                      Ouvrez le site sur votre navigateur mobile (Chrome, Safari, Firefox).
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-space-sm">
+                    <span className="font-headline-sm text-headline-sm text-secondary font-bold">2</span>
+                    <p className="font-body-sm text-body-sm text-on-surface">
+                      Appuyez sur le bouton de partage ou le menu « Options ».
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-space-sm">
+                    <span className="font-headline-sm text-headline-sm text-secondary font-bold">3</span>
+                    <p className="font-body-sm text-body-sm text-on-surface">
+                      Sélectionnez « Ajouter à l'écran d'accueil ».
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+
+          {/* SECTION CTA FINAL & CONTACT WHATSAPP OFFICIEL */}
+          <section className="w-full bg-surface-container-lowest py-space-3xl" id="cta-final">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop">
+              <div className="bg-primary text-on-primary rounded-xl p-space-xl md:p-space-2xl flex flex-col lg:flex-row items-center justify-between gap-space-xl shadow-lg relative overflow-hidden">
+                <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-secondary/20 blur-2xl pointer-events-none"></div>
+                <div className="flex flex-col gap-space-sm max-w-2xl relative z-10">
+                  <span className="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider font-semibold">
+                    Rejoignez le réseau
+                  </span>
+                  <h2 className="font-display-lg text-display-lg text-on-primary font-bold">
+                    Faites rayonner votre table ou trouvez votre prochain repas dès aujourd'hui
+                  </h2>
+                  <p className="font-body-md text-body-md text-on-primary-container max-w-lg">
+                    Démarrez vos 7 jours d'essai sans engagement ou échangez directement avec notre équipe technique basée à Douala pour un accompagnement sur mesure.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-space-sm w-full lg:w-auto relative z-10">
+                  <Link
+                    to="/inscription"
+                    className="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-xl font-label-lg text-label-lg bg-secondary text-on-secondary shadow-sm hover:bg-secondary-container transition-colors font-bold"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add_business</span>
+                    <span>Inscrire mon établissement</span>
+                  </Link>
+                  <a
+                    className="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-xl font-label-lg text-label-lg bg-surface-container-lowest text-primary shadow-sm hover:bg-surface-container-low transition-colors font-bold"
+                    href="https://wa.me/237658352129"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span className="material-symbols-outlined text-secondary text-[20px]">chat</span>
+                    <span>WhatsApp : +237 658 35 21 29</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
-      <FloatingWhatsApp />
       <PublicFooter />
     </div>
   )

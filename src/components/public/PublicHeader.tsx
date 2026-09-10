@@ -2,21 +2,20 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
-import { Logo } from '@/components/common/Logo'
-import { Menu as MenuIcon, X, Globe, UserPlus, LogIn, LayoutDashboard } from 'lucide-react'
+import { Menu as MenuIcon, X } from 'lucide-react'
 
 export const PublicHeader: React.FC = () => {
-  const { t, language, setLanguage } = useLanguage()
+  const { language, setLanguage } = useLanguage()
   const { user, profile } = useAuth()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navLinks = [
-    { path: '/', label: t.nav.home },
-    { path: '/a-propos', label: t.nav.about },
-    { path: '/engagez-nous', label: t.nav.engage },
-    { path: '/tarifs', label: t.nav.pricing },
-    { path: '/contact', label: t.nav.contact },
+    { path: '/', label: 'Accueil' },
+    { path: '/a-propos', label: 'À propos' },
+    { path: '/engagez-nous', label: 'Engagez-nous' },
+    { path: '/tarifs', label: 'Tarifs' },
+    { path: '/contact', label: 'Contact' },
   ]
 
   const getDashboardPath = () => {
@@ -27,24 +26,38 @@ export const PublicHeader: React.FC = () => {
     return '/connexion'
   }
 
-  return (
-    <header className="border-b border-slate-200/80 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-xs">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-        {/* Logo Stitch Officiel */}
-        <Logo size="md" />
+  const logoUrl =
+    'https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI'
 
-        {/* Navigation Principale Desktop (Agrondie & mise en valeur) */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      <div className="h-20 max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex items-center justify-between gap-space-md">
+        {/* Logo Stitch */}
+        <div className="flex items-center gap-space-md">
+          <Link className="flex items-center gap-space-sm focus:outline-none" to="/">
+            <img
+              alt="Menu du Jour Logo"
+              className="h-8 w-auto object-contain"
+              src={logoUrl}
+            />
+            <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight hidden sm:inline-block">
+              Menu du Jour
+            </span>
+          </Link>
+        </div>
+
+        {/* Navigation Desktop */}
+        <nav className="hidden lg:flex items-center gap-space-xs">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm lg:text-base font-extrabold transition-colors ${
+                className={`px-space-md py-space-xs rounded-xl font-label-lg text-label-lg transition-colors ${
                   isActive
-                    ? 'text-orange-600 border-b-3 border-orange-600 pb-1.5'
-                    : 'text-slate-700 hover:text-slate-900'
+                    ? 'bg-surface-container text-on-surface font-semibold shadow-2xs'
+                    : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
                 {link.label}
@@ -53,138 +66,123 @@ export const PublicHeader: React.FC = () => {
           })}
         </nav>
 
-        {/* Droite du Header : FR/EN, Auth, CTA (Boutons agrandis) */}
-        <div className="hidden lg:flex items-center gap-4">
-          {/* Sélecteur de Langue FR / EN */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1.5 rounded-xl text-sm font-extrabold border border-slate-200">
-            <Globe className="w-4 h-4 text-slate-400 ml-1.5" />
+        {/* Côté Droit : Sélecteur Langue, Connexion, Inscription */}
+        <div className="flex items-center gap-space-sm">
+          {/* FR / EN Switcher */}
+          <div className="flex items-center bg-surface-container-low rounded-lg p-space-2xs">
             <button
               onClick={() => setLanguage('fr')}
-              className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                language === 'fr' ? 'bg-white text-orange-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+              className={`px-space-xs py-space-2xs rounded-DEFAULT font-label-sm text-label-sm transition-all cursor-pointer ${
+                language === 'fr'
+                  ? 'bg-surface-container-lowest text-on-surface font-semibold shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
               }`}
+              type="button"
             >
               FR
             </button>
-            <span className="text-slate-300">|</span>
             <button
               onClick={() => setLanguage('en')}
-              className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                language === 'en' ? 'bg-white text-orange-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+              className={`px-space-xs py-space-2xs rounded-DEFAULT font-label-sm text-label-sm transition-all cursor-pointer ${
+                language === 'en'
+                  ? 'bg-surface-container-lowest text-on-surface font-semibold shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
               }`}
+              type="button"
             >
               EN
             </button>
           </div>
 
+          <div className="h-6 w-px bg-outline-variant hidden sm:block"></div>
+
           {user ? (
             <Link
               to={getDashboardPath()}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900 text-white font-extrabold text-sm shadow-md hover:bg-slate-800 transition-colors"
+              className="inline-flex items-center justify-center px-space-base py-space-xs rounded-xl font-label-md text-label-md bg-secondary text-on-secondary hover:bg-secondary-container transition-colors shadow-sm"
             >
-              <LayoutDashboard className="w-4 h-4 text-orange-400" />
-              <span>{t.nav.dashboard}</span>
+              Mon Espace
             </Link>
           ) : (
             <>
               <Link
                 to="/connexion"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                className="hidden sm:inline-flex items-center justify-center px-space-base py-space-xs rounded-xl font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors"
               >
-                <LogIn className="w-4 h-4 text-slate-500" />
-                {t.nav.signIn}
+                Connexion
               </Link>
               <Link
                 to="/inscription"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                className="inline-flex items-center justify-center px-space-base py-space-xs rounded-xl font-label-md text-label-md bg-secondary text-on-secondary hover:bg-secondary-container transition-colors shadow-sm"
               >
-                <UserPlus className="w-4 h-4 text-slate-500" />
-                {t.nav.signUp}
+                S'inscrire
               </Link>
             </>
           )}
 
+          {/* User Icon Circle */}
           <Link
-            to="/inscription"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-black text-sm md:text-base shadow-lg shadow-orange-500/25 transition-all transform hover:scale-105 cursor-pointer"
+            to={user ? getDashboardPath() : '/connexion'}
+            className="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:opacity-85 transition-opacity"
           >
-            {t.nav.startFree}
+            <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
           </Link>
-        </div>
 
-        {/* Bouton Menu Mobile */}
-        <div className="flex items-center gap-2 lg:hidden">
-          {/* Sélecteur rapide de langue mobile */}
-          <button
-            onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
-            className="p-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs uppercase"
-          >
-            {language}
-          </button>
-
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+            className="lg:hidden p-2 rounded-xl text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Off-canvas Menu Mobile */}
+      {/* Menu Mobile Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-150">
-          <nav className="flex flex-col space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 ${
-                  location.pathname === link.path ? 'text-orange-600' : 'text-slate-700'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="pt-2 space-y-3">
-            {user ? (
-              <Link
-                to={getDashboardPath()}
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-xs flex items-center justify-center gap-2"
-              >
-                <LayoutDashboard className="w-4 h-4 text-orange-400" />
-                {t.nav.dashboard}
-              </Link>
-            ) : (
-              <div className="grid grid-cols-2 gap-2">
+        <div className="lg:hidden border-t border-outline-variant/30 bg-surface px-6 py-5 shadow-lg flex flex-col gap-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-2 px-3 rounded-lg font-label-lg text-label-lg ${
+                location.pathname === link.path
+                  ? 'bg-surface-container text-on-surface font-bold'
+                  : 'text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="pt-2 border-t border-outline-variant/30 flex flex-col gap-2">
+            {!user ? (
+              <>
                 <Link
                   to="/connexion"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2.5 rounded-xl border border-slate-200 text-center font-bold text-xs text-slate-700"
+                  className="w-full py-2.5 text-center rounded-xl font-label-md text-label-md border border-outline-variant text-on-surface"
                 >
-                  {t.nav.signIn}
+                  Connexion
                 </Link>
                 <Link
                   to="/inscription"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2.5 rounded-xl bg-orange-600 text-center font-bold text-xs text-white"
+                  className="w-full py-2.5 text-center rounded-xl font-label-md text-label-md bg-secondary text-on-secondary"
                 >
-                  {t.nav.signUp}
+                  S'inscrire
                 </Link>
-              </div>
+              </>
+            ) : (
+              <Link
+                to={getDashboardPath()}
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 text-center rounded-xl font-label-md text-label-md bg-secondary text-on-secondary"
+              >
+                Mon Espace
+              </Link>
             )}
-
-            <Link
-              to="/inscription"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-xs text-center block shadow-md"
-            >
-              {t.nav.startFree}
-            </Link>
           </div>
         </div>
       )}
