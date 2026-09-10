@@ -382,11 +382,11 @@ export const RestaurantDetailPage: React.FC = () => {
               )}
             </div>
 
-            {/* Localisation Google Maps & Infos pratiques */}
+            {/* Localisation OpenStreetMap & Infos pratiques */}
             <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-4 shadow-md">
               <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2 border-b border-slate-100 pb-3">
                 <MapPin className="w-5 h-5 text-orange-600" />
-                Localisation & Itinéraire Google Maps
+                Localisation & Carte Interactive
               </h3>
 
               <GoogleMap

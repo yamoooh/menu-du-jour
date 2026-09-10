@@ -3,6 +3,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Header } from '@/components/Header'
 import { supabase } from '@/lib/supabase'
 import { CheckCircle2, ArrowRight, AlertCircle, Loader2 } from 'lucide-react'
+import { Logo } from '@/components/common/Logo'
+import { SeoHead } from '@/components/public/SeoHead'
 
 export const AuthCallbackPage: React.FC = () => {
   const navigate = useNavigate()
@@ -95,16 +97,24 @@ export const AuthCallbackPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      <SeoHead
+        title="Validation Auth - Menu du Jour"
+        description="Validation de votre authentification Menu du Jour."
+        path="/auth/callback"
+        noindex={true}
+      />
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 py-12">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 space-y-6 text-center">
-          <img src="/logo.png" alt="Menu du Jour" className="h-16 w-auto mx-auto object-contain mb-2" />
+        <div className="w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6 text-center">
+          <div className="flex justify-center mb-2">
+            <Logo size="lg" />
+          </div>
 
           {loading ? (
             <div className="py-8 space-y-4">
               <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto" />
-              <p className="text-sm text-slate-600 font-medium">{statusMessage}</p>
+              <p className="text-sm text-slate-600 font-bold">{statusMessage}</p>
             </div>
           ) : error ? (
             <div className="space-y-4">
@@ -127,7 +137,7 @@ export const AuthCallbackPage: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight font-display">
                   Adresse email confirmée !
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -138,7 +148,7 @@ export const AuthCallbackPage: React.FC = () => {
               <div className="pt-2">
                 <button
                   onClick={() => navigate('/connexion?confirmed=1', { replace: true })}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Se connecter à mon compte
                   <ArrowRight className="w-4 h-4" />
@@ -151,4 +161,5 @@ export const AuthCallbackPage: React.FC = () => {
     </div>
   )
 }
+
 

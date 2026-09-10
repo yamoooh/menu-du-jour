@@ -16,8 +16,19 @@ DECLARE
   v_now TIMESTAMPTZ := NOW();
   v_new_end TIMESTAMPTZ;
   v_new_start TIMESTAMPTZ;
+  v_plan_type TEXT := COALESCE(p_metadata->>'plan_type', CASE WHEN p_amount = 50000 THEN 'annual' ELSE 'monthly' END);
+  v_days INTEGER;
 BEGIN
-  -- 1. Vérification d'idempotence si une référence de transaction est fournie
+  -- 0. Validation stricte du couple (montant, formule)
+  IF v_plan_type = 'annual' AND p_amount = 50000 THEN
+    v_days := 365;
+  ELSIF v_plan_type = 'monthly' AND p_amount = 5000 THEN
+    v_days := 30;
+  ELSE
+    RAISE EXCEPTION 'Combinaison montant/formule invalide : plan=%, amount=% XOF (Seules monthly+5000 XOF et annual+50000 XOF sont valides)', v_plan_type, p_amount;
+  END IF;
+
+  -- 1. Idempotence 1 : Si la référence de transaction provider a déjà été crédité avec succès
   IF p_provider_ref IS NOT NULL AND p_provider_ref != '' THEN
     SELECT id INTO v_payment_id
     FROM public.payments
@@ -27,6 +38,21 @@ BEGIN
       RETURN jsonb_build_object(
         'success', true,
         'message', 'Paiement déjà traité (idempotent)',
+        'payment_id', v_payment_id
+      );
+    END IF;
+  END IF;
+
+  -- 1b. Idempotence 2 : Si le checkout_id a déjà été crédité avec succès
+  IF (p_metadata->>'checkout_id') IS NOT NULL AND (p_metadata->>'checkout_id') != '' THEN
+    SELECT id INTO v_payment_id
+    FROM public.payments
+    WHERE metadata->>'checkout_id' = (p_metadata->>'checkout_id') AND status = 'completed';
+
+    IF v_payment_id IS NOT NULL THEN
+      RETURN jsonb_build_object(
+        'success', true,
+        'message', 'Checkout déjà traité (idempotent)',
         'payment_id', v_payment_id
       );
     END IF;
@@ -43,20 +69,19 @@ BEGIN
     RETURNING * INTO v_sub;
   END IF;
 
-  -- 3. Calcul de la nouvelle date d'expiration (+30 jours)
-  IF (v_sub.status = 'active' AND v_sub.current_period_end > v_now) OR
-     (v_sub.status = 'trialing' AND v_sub.trial_end_at > v_now) THEN
-    
-    IF v_sub.status = 'active' AND v_sub.current_period_end IS NOT NULL THEN
-      v_new_start := v_sub.current_period_start;
-      v_new_end := v_sub.current_period_end + INTERVAL '30 days';
-    ELSE
-      v_new_start := v_now;
-      v_new_end := v_sub.trial_end_at + INTERVAL '30 days';
-    END IF;
-  ELSE
+  -- 3. Calcul de la nouvelle date d'expiration (préservation des jours restants d'un abonnement actif ou d'un essai gratuit)
+  IF v_sub.status = 'active' AND v_sub.current_period_end IS NOT NULL AND v_sub.current_period_end > v_now THEN
+    -- Abonnement actif en cours : la prolongation s'ajoute à la fin de la période actuelle (aucun jour perdu)
+    v_new_start := v_sub.current_period_start;
+    v_new_end := v_sub.current_period_end + (v_days || ' days')::INTERVAL;
+  ELSIF v_sub.status = 'trialing' AND v_sub.trial_end_at IS NOT NULL AND v_sub.trial_end_at > v_now THEN
+    -- Essai gratuit en cours : la période payante s'ajoute à la fin de la période d'essai (aucun jour d'essai perdu)
     v_new_start := v_now;
-    v_new_end := v_now + INTERVAL '30 days';
+    v_new_end := v_sub.trial_end_at + (v_days || ' days')::INTERVAL;
+  ELSE
+    -- Abonnement expiré ou inactif : démarrage immédiat aujourd'hui
+    v_new_start := v_now;
+    v_new_end := v_now + (v_days || ' days')::INTERVAL;
   END IF;
 
   -- 4. Mettre à jour l'abonnement
@@ -94,8 +119,9 @@ BEGIN
 
   RETURN jsonb_build_object(
     'success', true,
-    'message', 'Abonnement activé/prolongé de 30 jours avec succès',
+    'message', format('Abonnement activé/prolongé de %s jours avec succès', v_days),
     'payment_id', v_payment_id,
+    'plan_type', v_plan_type,
     'current_period_end', v_new_end
   );
 END;

@@ -4,23 +4,18 @@ import { useLanguage } from '@/context/LanguageContext'
 import { PwaInstallButton } from '@/components/public/PwaInstallButton'
 import { WHATSAPP_NUMBER, WHATSAPP_URL } from '@/components/public/FloatingWhatsApp'
 import { MessageCircle, Shield, Globe } from 'lucide-react'
+import { Logo } from '@/components/common/Logo'
 
 export const PublicFooter: React.FC = () => {
   const { t, language, setLanguage } = useLanguage()
 
   return (
-    <footer className="border-t border-slate-200 bg-slate-900 text-slate-300 pt-12 pb-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+    <footer className="border-t border-slate-800 bg-slate-900 text-slate-300 pt-12 pb-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Colonne 1 : Brand & Description */}
           <div className="space-y-4 md:col-span-1">
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Menu du Jour"
-                className="h-12 w-auto object-contain bg-white/90 p-1.5 rounded-xl shadow-xs"
-              />
-            </Link>
+            <Logo lightMode={true} size="md" />
             <p className="text-xs text-slate-400 leading-relaxed">
               La solution digitale complète permettant aux restaurants de publier leurs menus quotidiens et de gérer leurs réservations en ligne sans commission.
             </p>

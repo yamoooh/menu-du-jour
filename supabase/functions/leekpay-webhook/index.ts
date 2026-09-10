@@ -135,16 +135,37 @@ serve(async (req) => {
       )
     }
 
-    if (amount !== 5000) {
+    if (currency !== 'XOF') {
       return new Response(
-        JSON.stringify({ error: `Montant invalide : ${amount} XOF (5000 XOF attendu)` }),
+        JSON.stringify({ error: `Devise invalide : ${currency} (XOF attendu)` }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    if (currency !== 'XOF') {
+    // Extraction et validation de plan_type transmis via metadata
+    const rawPlan = data.metadata?.plan_type || body.metadata?.plan_type || (amount === 50000 ? 'annual' : amount === 5000 ? 'monthly' : null)
+    const planType = rawPlan ? String(rawPlan).toLowerCase() : null
+
+    // Contrôle strict d'adéquation entre la formule et le montant payé
+    if (planType === 'monthly' && amount !== 5000) {
+      console.error(`Paiement rejeté : Formule 'monthly' requiert exactement 5000 XOF (montant reçu : ${amount} XOF)`)
       return new Response(
-        JSON.stringify({ error: `Devise invalide : ${currency} (XOF attendu)` }),
+        JSON.stringify({ error: `Incohérence paiement : La formule mensuelle 'monthly' nécessite exactement 5000 XOF (reçu ${amount} XOF)` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (planType === 'annual' && amount !== 50000) {
+      console.error(`Paiement rejeté : Formule 'annual' requiert exactement 50000 XOF (montant reçu : ${amount} XOF)`)
+      return new Response(
+        JSON.stringify({ error: `Incohérence paiement : La formule annuelle 'annual' nécessite exactement 50000 XOF (reçu ${amount} XOF)` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (planType !== 'monthly' && planType !== 'annual') {
+      return new Response(
+        JSON.stringify({ error: `Formule d abonnement invalide ou non reconnue : '${rawPlan}' avec montant ${amount} XOF` }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -162,11 +183,12 @@ serve(async (req) => {
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
     const { data: rpcResult, error: rpcError } = await supabaseAdmin.rpc('confirm_payment_subscription', {
       p_restaurant_id: restaurantId,
-      p_amount: 5000,
+      p_amount: amount,
       p_provider_ref: transactionId,
       p_metadata: {
         event: eventType,
         checkout_id: checkoutId,
+        plan_type: planType,
         payment_method: data.payment_method,
         customer: data.customer,
         paid_at: data.paid_at || new Date().toISOString(),

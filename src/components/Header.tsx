@@ -3,6 +3,7 @@ import { UtensilsCrossed, LogOut, User as UserIcon, LogIn, UserPlus } from 'luci
 import { useAuth } from '@/context/AuthContext'
 import { NotificationBell } from '@/components/notification/NotificationBell'
 import { ROLE_LABELS, type UserRole } from '@/types/auth.types'
+import { Logo } from '@/components/common/Logo'
 
 export const Header = () => {
   const { user, profile, signOut } = useAuth()
@@ -16,16 +17,10 @@ export const Header = () => {
   const roleLabel = profile?.role ? ROLE_LABELS[profile.role as UserRole] || '' : ''
 
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 md:h-24 flex items-center justify-between">
-        {/* Logo (Agrandi pour une lisibilité optimale) */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <img
-            src="/logo.png"
-            alt="Menu du Jour"
-            className="h-14 sm:h-16 md:h-18 w-auto object-contain group-hover:scale-105 transition-transform"
-          />
-        </Link>
+    <header className="border-b border-slate-200/80 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-xs">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Logo Stitch Officiel */}
+        <Logo size="md" />
 
         {/* Actions utilisateur / Navigation */}
         <div className="flex items-center gap-4">

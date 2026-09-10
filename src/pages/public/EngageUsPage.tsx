@@ -22,13 +22,16 @@ export const EngageUsPage: React.FC = () => {
 
       <main className="flex-1 space-y-16 pb-16">
         {/* Hero Engagez-nous */}
-        <section className="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-950 text-white py-16 sm:py-24 text-center relative overflow-hidden">
+        <section className="bg-slate-900 text-white py-16 sm:py-24 text-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ea580c_1px,transparent_1px)] [background-size:16px_16px]" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl" />
+
           <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30 backdrop-blur-md">
               <Store className="w-3.5 h-3.5" />
               <span>Pour les Restaurateurs</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight font-display">
               {t.engagePage.title}
             </h1>
             <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
@@ -38,7 +41,7 @@ export const EngageUsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link
                 to="/inscription"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm shadow-xl shadow-orange-500/25 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-sm shadow-xl shadow-orange-600/30 transition-all cursor-pointer"
               >
                 <span>{t.engagePage.ctaPrimary}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -48,7 +51,7 @@ export const EngageUsPage: React.FC = () => {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg transition-all cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
                 <span>{t.engagePage.ctaSecondary}</span>

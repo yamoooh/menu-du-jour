@@ -54,13 +54,27 @@ serve(async (req) => {
       )
     }
 
-    const { restaurant_id } = await req.json()
+    const bodyJson = await req.json().catch(() => ({}))
+    const { restaurant_id, plan_type } = bodyJson
+
     if (!restaurant_id) {
       return new Response(
         JSON.stringify({ error: 'restaurant_id obligatoire dans le body' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
+
+    const requestedPlan = plan_type ? String(plan_type).toLowerCase() : 'monthly'
+    if (requestedPlan !== 'monthly' && requestedPlan !== 'annual') {
+      return new Response(
+        JSON.stringify({ error: `Formule d abonnement invalide: '${plan_type}'. Seules 'monthly' (5000 FCFA) et 'annual' (50000 FCFA) sont autorisées.` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const isAnnual = requestedPlan === 'annual'
+    const amount = isAnnual ? 50000 : 5000
+    const planDurationLabel = isAnnual ? '365 jours (Pass Annuel)' : '30 jours (Pass Mensuel)'
 
     // Vérifier la propriété du restaurant côté serveur
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
@@ -101,13 +115,15 @@ serve(async (req) => {
 
     // Payload officiel de création de Checkout LeekPay
     const checkoutPayload = {
-      amount: 5000,
+      amount,
       currency: 'XOF',
-      description: `Abonnement 30 jours Menu du Jour - ${restaurant.name}`,
+      description: `Abonnement ${planDurationLabel} Menu du Jour - ${restaurant.name}`,
       metadata: {
         restaurant_id: restaurant.id,
         restaurant_name: restaurant.name,
         user_id: user.id,
+        plan_type: isAnnual ? 'annual' : 'monthly',
+        days: isAnnual ? 365 : 30,
       },
       success_url: successUrl,
       cancel_url: cancelUrl,

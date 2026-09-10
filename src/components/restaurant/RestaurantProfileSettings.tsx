@@ -151,9 +151,10 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
     if (error) {
       setErrorMessage(error.message)
     } else {
-      setSuccessMessage('Position GPS et coordonnées Google Maps enregistrées.')
+      setSuccessMessage('Position GPS et coordonnées enregistrées avec succès.')
       onRefresh()
     }
+
   }
 
   // Sauvegarder les paramètres de Réservation (BLOC 7)
@@ -400,12 +401,12 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
         </div>
       )}
 
-      {/* SECTION 3 : LOCALISATION & GOOGLE MAPS - BLOC 5 */}
+      {/* SECTION 3 : LOCALISATION & OPENSTREETMAP - BLOC 5 */}
       {activeSection === 'location' && (
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
           <div className="flex items-center gap-2 text-slate-900 font-extrabold text-base pb-3 border-b border-slate-100">
             <MapPin className="w-5 h-5 text-orange-600" />
-            <span>Localisation Google Maps & GPS</span>
+            <span>Localisation OpenStreetMap & Position GPS</span>
           </div>
 
           <p className="text-xs text-slate-600 leading-relaxed">
@@ -439,6 +440,7 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
           </div>
         </div>
       )}
+
 
       {/* SECTION 4 : PARAMÈTRES DE RÉSERVATION - BLOC 7 */}
       {activeSection === 'reservations' && (

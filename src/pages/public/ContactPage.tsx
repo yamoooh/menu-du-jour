@@ -33,13 +33,14 @@ export const ContactPage: React.FC = () => {
 
       <main className="flex-1 space-y-16 pb-16">
         {/* Hero Contact */}
-        <section className="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-16 sm:py-20 text-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-4">
+        <section className="bg-slate-900 text-white py-16 sm:py-20 text-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ea580c_1px,transparent_1px)] [background-size:16px_16px]" />
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-4 relative z-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30">
               <Mail className="w-3.5 h-3.5" />
               <span>Contact & Support</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight">{t.contactPage.title}</h1>
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-display">{t.contactPage.title}</h1>
             <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
               {t.contactPage.subtitle}
             </p>

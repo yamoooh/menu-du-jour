@@ -100,13 +100,14 @@ export const subscriptionService = {
 
   // Créer une session de paiement officielle via l'Edge Function serveur create-leekpay-checkout
   async createCheckoutSession(
-    restaurantId: string
+    restaurantId: string,
+    planType: 'monthly' | 'annual' = 'monthly'
   ): Promise<{ checkoutUrl: string | null; error: Error | null }> {
     if (!supabase) return { checkoutUrl: null, error: new Error('Client Supabase non initialisé') }
 
     try {
       const { data, error } = await supabase.functions.invoke('create-leekpay-checkout', {
-        body: { restaurant_id: restaurantId },
+        body: { restaurant_id: restaurantId, plan_type: planType },
       })
 
       if (error) {

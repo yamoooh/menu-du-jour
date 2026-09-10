@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
-import { Mail, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { Mail, AlertCircle, CheckCircle2, ArrowLeft, KeyRound } from 'lucide-react'
 import { SeoHead } from '@/components/public/SeoHead'
+import { Logo } from '@/components/common/Logo'
 
 export const ForgotPasswordPage: React.FC = () => {
   const { resetPassword } = useAuth()
@@ -46,27 +47,35 @@ export const ForgotPasswordPage: React.FC = () => {
       />
       <Header />
 
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 space-y-6">
-          <div className="text-center space-y-2">
-            <img src="/logo.png" alt="Menu du Jour" className="h-16 w-auto mx-auto object-contain mb-1" />
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Mot de passe oublié
-            </h2>
-            <p className="text-xs text-slate-500">
-              Saisissez votre email pour recevoir les instructions de réinitialisation.
-            </p>
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 py-12">
+        <div className="w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+          <div className="text-center space-y-3">
+            <div className="flex justify-center">
+              <Logo size="lg" />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-xs font-bold mb-2">
+                <KeyRound className="w-3.5 h-3.5" />
+                Sécurité Compte
+              </div>
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight font-display">
+                Mot de passe oublié
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Saisissez votre email pour recevoir le lien de réinitialisation.
+              </p>
+            </div>
           </div>
 
           {successMessage && (
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <span>{successMessage}</span>
             </div>
           )}
 
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -74,7 +83,7 @@ export const ForgotPasswordPage: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
+              <label className="text-xs font-bold text-slate-700 block">
                 Adresse email
               </label>
               <div className="relative">
@@ -94,16 +103,23 @@ export const ForgotPasswordPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-semibold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
-              {loading ? 'Envoi en cours...' : 'Envoyer le lien'}
+              {loading ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  Envoi du lien...
+                </>
+              ) : (
+                'Envoyer le lien de réinitialisation'
+              )}
             </button>
           </form>
 
-          <div className="text-center pt-2 border-t border-slate-100">
+          <div className="text-center pt-3 border-t border-slate-100">
             <Link
               to="/connexion"
-              className="text-xs text-slate-600 hover:text-slate-900 font-medium inline-flex items-center gap-1.5"
+              className="text-xs text-slate-600 hover:text-orange-600 font-bold inline-flex items-center gap-1.5 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Retour à la connexion
@@ -114,3 +130,4 @@ export const ForgotPasswordPage: React.FC = () => {
     </div>
   )
 }
+

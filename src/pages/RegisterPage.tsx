@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Header } from '@/components/Header'
-import { Mail, Lock, User, Phone, Store, UserCheck, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, User, Phone, Store, UserCheck, AlertCircle, ArrowRight, Eye, EyeOff, ShieldCheck, Sparkles } from 'lucide-react'
 import { SeoHead } from '@/components/public/SeoHead'
+import { Logo } from '@/components/common/Logo'
 
 export const RegisterPage: React.FC = () => {
   const { signUp, user, profile, loading: authLoading } = useAuth()
@@ -103,57 +104,75 @@ export const RegisterPage: React.FC = () => {
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 py-8 sm:py-12">
-        <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 space-y-6">
+        <div className="w-full max-w-lg bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
           {/* Header de la carte */}
-          <div className="text-center space-y-2">
-            <img src="/logo.png" alt="Menu du Jour" className="h-16 w-auto mx-auto object-contain mb-1" />
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Créer votre compte
-            </h2>
-            <p className="text-xs text-slate-500">
-              Rejoignez la plateforme Menu du Jour
-            </p>
+          <div className="text-center space-y-3">
+            <div className="flex justify-center">
+              <Logo size="lg" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-display">
+                Créer votre compte
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Rejoignez la communauté des gourmets & restaurateurs au Cameroun
+              </p>
+            </div>
           </div>
 
           {/* Choix du rôle */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 block text-center">
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block text-center">
               Je m'inscris en tant que :
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole('client')}
-                className={`p-3.5 rounded-xl border text-left flex flex-col items-center justify-center gap-2 transition-all ${
+                className={`p-3.5 rounded-2xl border text-left flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
                   role === 'client'
-                    ? 'border-orange-500 bg-orange-50/60 text-orange-900 ring-2 ring-orange-500/20 font-semibold'
+                    ? 'border-orange-600 bg-orange-50/80 text-orange-950 ring-2 ring-orange-600/20 font-bold shadow-xs'
                     : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                 }`}
               >
-                <UserCheck className={`w-5 h-5 ${role === 'client' ? 'text-orange-600' : 'text-slate-400'}`} />
-                <span className="text-xs font-medium">Client</span>
+                <div className={`p-2 rounded-xl ${role === 'client' ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                  <UserCheck className="w-5 h-5" />
+                </div>
+                <span className="text-xs font-bold text-slate-900">Client / Gourmet</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setRole('restaurant_manager')}
-                className={`p-3.5 rounded-xl border text-left flex flex-col items-center justify-center gap-2 transition-all ${
+                className={`p-3.5 rounded-2xl border text-left flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
                   role === 'restaurant_manager'
-                    ? 'border-orange-500 bg-orange-50/60 text-orange-900 ring-2 ring-orange-500/20 font-semibold'
+                    ? 'border-orange-600 bg-orange-50/80 text-orange-950 ring-2 ring-orange-600/20 font-bold shadow-xs'
                     : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                 }`}
               >
-                <Store className={`w-5 h-5 ${role === 'restaurant_manager' ? 'text-orange-600' : 'text-slate-400'}`} />
-                <span className="text-xs font-medium text-center leading-tight">
-                  Gestionnaire de restaurant
+                <div className={`p-2 rounded-xl ${role === 'restaurant_manager' ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                  <Store className="w-5 h-5" />
+                </div>
+                <span className="text-xs font-bold text-slate-900 text-center leading-tight">
+                  Gestionnaire Restaurant
                 </span>
               </button>
             </div>
           </div>
 
+          {/* Banner d'information dynamic selon role */}
+          <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/70 text-amber-900 text-xs flex items-center gap-3">
+            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+            <span className="font-medium">
+              {role === 'client'
+                ? 'Accès 100% gratuit pour découvrir et enregistrer vos plats du jour favoris.'
+                : 'Période d\'essai gratuit de 30 jours pour diffuser le menu de votre établissement.'}
+            </span>
+          </div>
+
           {/* Alert d'erreur */}
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -163,7 +182,7 @@ export const RegisterPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 block">
+                <label className="text-xs font-bold text-slate-700 block">
                   Prénom
                 </label>
                 <div className="relative">
@@ -181,7 +200,7 @@ export const RegisterPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 block">
+                <label className="text-xs font-bold text-slate-700 block">
                   Nom
                 </label>
                 <div className="relative">
@@ -200,7 +219,7 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
+              <label className="text-xs font-bold text-slate-700 block">
                 Adresse email
               </label>
               <div className="relative">
@@ -218,8 +237,8 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
-                Numéro de téléphone
+              <label className="text-xs font-bold text-slate-700 block">
+                Numéro de téléphone (WhatsApp recommandé)
               </label>
               <div className="relative">
                 <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -227,7 +246,7 @@ export const RegisterPage: React.FC = () => {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+225 0700000000"
+                  placeholder="+237 6XX XX XX XX"
                   required
                   disabled={loading}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-colors disabled:bg-slate-50"
@@ -237,7 +256,7 @@ export const RegisterPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 block">
+                <label className="text-xs font-bold text-slate-700 block">
                   Mot de passe
                 </label>
                 <div className="relative">
@@ -255,7 +274,7 @@ export const RegisterPage: React.FC = () => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors p-1"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors p-1 cursor-pointer"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -267,7 +286,7 @@ export const RegisterPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 block">
+                <label className="text-xs font-bold text-slate-700 block">
                   Confirmation
                 </label>
                 <div className="relative">
@@ -285,7 +304,7 @@ export const RegisterPage: React.FC = () => {
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     aria-label={showConfirmPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors p-1"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors p-1 cursor-pointer"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -300,7 +319,7 @@ export const RegisterPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-semibold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-2 cursor-pointer"
             >
               {loading ? (
                 <>
@@ -309,19 +328,25 @@ export const RegisterPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  S'inscrire
+                  S'inscrire et commencer
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
+          {/* Rassurance sécurisée */}
+          <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-1">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Données protégées & cryptées selon les normes Supabase Security</span>
+          </div>
+
           {/* Footer de la carte */}
-          <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-600">
+          <div className="text-center pt-3 border-t border-slate-100 text-xs text-slate-600">
             Vous avez déjà un compte ?{' '}
             <Link
               to="/connexion"
-              className="text-orange-600 hover:text-orange-700 font-semibold inline-flex items-center gap-0.5"
+              className="text-orange-600 hover:text-orange-700 font-bold inline-flex items-center gap-0.5"
             >
               Se connecter
             </Link>

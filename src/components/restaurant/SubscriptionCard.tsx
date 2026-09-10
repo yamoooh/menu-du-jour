@@ -40,15 +40,18 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   }, [restaurantId, subscription?.updated_at])
 
   const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [activePlanLoading, setActivePlanLoading] = useState<'monthly' | 'annual' | null>(null)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
-  const handleRenewLeekPay = async () => {
+  const handleRenewLeekPay = async (planType: 'monthly' | 'annual' = 'monthly') => {
     if (!restaurantId) return
     setCheckoutLoading(true)
+    setActivePlanLoading(planType)
     setCheckoutError(null)
 
-    const { checkoutUrl, error } = await subscriptionService.createCheckoutSession(restaurantId)
+    const { checkoutUrl, error } = await subscriptionService.createCheckoutSession(restaurantId, planType)
     setCheckoutLoading(false)
+    setActivePlanLoading(null)
 
     if (error) {
       setCheckoutError(error.message || 'Erreur lors de la génération de la session LeekPay')
@@ -169,35 +172,95 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         </div>
       )}
 
-      {/* CTA principal LeekPay */}
-      <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-5 border border-orange-200/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <h4 className="font-bold text-slate-900 text-sm">
-            Renouveler via LeekPay
-          </h4>
-          <p className="text-xs text-slate-600">
-            Tarif unique : <strong>5 000 FCFA pour 30 jours d'accès</strong>. Redirection sécurisée vers LeekPay.
-          </p>
-        </div>
+      {/* Grille des Offres Restaurateur (Section F) */}
+      <div className="space-y-3 pt-2">
+        <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 border-b border-slate-100 pb-2">
+          <Sparkles className="w-4 h-4 text-orange-600" />
+          Formules d'Abonnement Restaurateur
+        </h4>
 
-        <button
-          onClick={handleRenewLeekPay}
-          disabled={checkoutLoading}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-orange-500/20 transition-all cursor-pointer shrink-0 disabled:opacity-50"
-        >
-          {checkoutLoading ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              <span>Génération du checkout...</span>
-            </>
-          ) : (
-            <>
-              <ExternalLink className="w-4 h-4" />
-              {t.subscription.renewButton}
-            </>
-          )}
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Offre Mensuelle Actuelle */}
+          <div className="bg-gradient-to-br from-orange-50/90 via-amber-50/50 to-white rounded-2xl p-5 border-2 border-orange-500/40 shadow-xs flex flex-col justify-between space-y-4 relative overflow-hidden">
+            <div className="absolute top-3 right-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-orange-600 text-white text-[10px] font-extrabold uppercase tracking-wider">
+                Recommandé
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-orange-800 uppercase tracking-wider block">
+                Pass Mensuel
+              </span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-slate-900 font-display">5 000</span>
+                <span className="text-xs font-bold text-slate-600">FCFA / mois</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Accès illimité pendant 30 jours à la publication de vos menus, à la gestion de vos réservations et aux alertes PWA.
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleRenewLeekPay('monthly')}
+              disabled={checkoutLoading}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer disabled:opacity-50"
+            >
+              {checkoutLoading && activePlanLoading === 'monthly' ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Génération du checkout...</span>
+                </>
+              ) : (
+                <>
+                  <ExternalLink className="w-4 h-4" />
+                  Souscrire 5 000 FCFA (30 jours) via LeekPay
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Offre Annuelle Actuelle */}
+          <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">
+                  Pass Annuel (12 Mois)
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">
+                  Économisez 10 000 FCFA
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-slate-900 font-display">50 000</span>
+                <span className="text-xs font-bold text-slate-600">FCFA / an</span>
+              </div>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Profitez d'un an complet (365 jours) de visibilité sans interruption (soit 2 mois offerts par rapport au tarif mensuel).
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleRenewLeekPay('annual')}
+              disabled={checkoutLoading}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer disabled:opacity-50"
+            >
+              {checkoutLoading && activePlanLoading === 'annual' ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Génération du checkout...</span>
+                </>
+              ) : (
+                <>
+                  <ExternalLink className="w-4 h-4" />
+                  Souscrire 50 000 FCFA (365 jours) via LeekPay
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
+
 
       {/* Tableau d'historique des paiements */}
       <div className="space-y-3 pt-2">
