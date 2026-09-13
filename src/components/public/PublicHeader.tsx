@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 import { Menu as MenuIcon, X } from 'lucide-react'
+import officialLogo from '@/assets/logo.png'
 
 export const PublicHeader: React.FC = () => {
   const { language, setLanguage } = useLanguage()
@@ -26,23 +27,20 @@ export const PublicHeader: React.FC = () => {
     return '/connexion'
   }
 
-  const logoUrl =
-    'https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI'
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
       <div className="h-20 max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex items-center justify-between gap-space-md">
-        {/* Logo Stitch */}
+        {/* Logo Officiel */}
         <div className="flex items-center gap-space-md">
           <Link className="flex items-center gap-space-sm focus:outline-none" to="/">
             <img
               alt="Menu du Jour Logo"
-              className="h-8 w-auto object-contain"
-              src={logoUrl}
+              className="h-11 md:h-12 w-auto object-contain drop-shadow-xs"
+              src={officialLogo}
+              onError={(e) => {
+                e.currentTarget.src = '/logo.png'
+              }}
             />
-            <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight hidden sm:inline-block">
-              Menu du Jour
-            </span>
           </Link>
         </div>
 

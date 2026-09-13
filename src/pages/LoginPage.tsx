@@ -3,9 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { PublicHeader } from '@/components/public/PublicHeader'
 import { PublicFooter } from '@/components/public/PublicFooter'
-import { FloatingWhatsApp, WHATSAPP_NUMBER } from '@/components/public/FloatingWhatsApp'
 import { Mail, Lock, AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff, ShieldCheck, User, Store, Zap, QrCode, Wallet, HelpCircle } from 'lucide-react'
 import { SeoHead } from '@/components/public/SeoHead'
+import officialLogo from '@/assets/logo.png'
 
 export const LoginPage: React.FC = () => {
   const { signIn, user, profile, loading: authLoading } = useAuth()
@@ -333,8 +333,11 @@ export const LoginPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <img
                           alt="Menu du Jour Logo"
-                          className="h-9 w-auto object-contain"
-                          src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+                          className="h-11 w-auto object-contain drop-shadow-xs"
+                          src={officialLogo}
+                          onError={(e) => {
+                            e.currentTarget.src = '/logo.png'
+                          }}
                         />
                         <span className="font-label-sm text-label-sm bg-surface-container text-on-surface px-space-sm py-space-2xs rounded font-semibold uppercase">Édition 2024</span>
                       </div>

@@ -3,9 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { PublicHeader } from '@/components/public/PublicHeader'
 import { PublicFooter } from '@/components/public/PublicFooter'
-import { FloatingWhatsApp, WHATSAPP_NUMBER } from '@/components/public/FloatingWhatsApp'
 import { Mail, Lock, User, Phone, Store, AlertCircle, ArrowRight, Eye, EyeOff, ShieldCheck, CheckCircle2, HelpCircle } from 'lucide-react'
 import { SeoHead } from '@/components/public/SeoHead'
+import officialLogo from '@/assets/logo.png'
 
 export const RegisterPage: React.FC = () => {
   const { signUp, user, profile, loading: authLoading } = useAuth()
@@ -127,15 +127,16 @@ export const RegisterPage: React.FC = () => {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {/* Header Context Tracker */}
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-outline-variant/20">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-sm">
-                <Store className="w-5 h-5 text-secondary" />
-              </div>
-              <div>
-                <span className="font-headline-sm text-headline-sm text-on-surface block tracking-tight font-bold">Menu du Jour</span>
-                <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Portail d'enregistrement unifié</span>
-              </div>
-            </div>
+            <Link to="/" className="flex items-center gap-3 focus:outline-none">
+              <img
+                src={officialLogo}
+                alt="Menu du Jour"
+                className="h-11 w-auto object-contain drop-shadow-xs"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo.png'
+                }}
+              />
+            </Link>
             <Link
               to="/connexion"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors shadow-sm font-medium"
@@ -228,7 +229,10 @@ export const RegisterPage: React.FC = () => {
                 <img
                   className="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-500"
                   alt="Modern African restaurant bistro setup"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtcmVUOQOBiETpn9M2qIzG7v7hWJ4zjQtROG6EQ74Ap9jvbXXMIg-20ckXCpZF1mHC1_wpSfVEOPFGGh6pqYzaouUoJH6hOR_HAys01zBIEOlNfx-BymSc-AxLU_W-QHd9V5HEZ6Xz9FOs9PvTYtiE7besuvIT__DMas1tYTYsXoBwxpJuaIgw6UwpelBzYWmxpBiFOV3xAXzHuqRahxDnjVkYFqMf62J2_uAuJdMSqK8dKozdzQGK"
+                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent p-6 flex flex-col justify-end">
                   <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary-fixed font-bold">Cuisine d'Auteur &amp; Traditions</span>

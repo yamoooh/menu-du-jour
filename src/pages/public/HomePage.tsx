@@ -21,7 +21,7 @@ export const HomePage: React.FC = () => {
   }
 
   const heroRestaurantImg =
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuAY93GF8QoHvo6kdFGKGPOM5WdaRmjhOQZ5BBWqcaN4plccoz2I0uXpq0W-ZI7_8zFwskcBYS_hLCMsTLZEKbwV7m8tHfG_NGNGgGOXeHnpodZcC_owZryvaqAxY45ksEAMu1maCdpGRXfLmJuZ1gpcxmTRvhbZq9_HOfRABm9ZKlhSt6EMwQkxfeJB8O7xMWdWBUNrE4CqsW_joeWJrNefpXYIh2VZAIK_pvZMQH4XZfX9_MyreNHw'
+    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80'
 
   return (
     <div className="bg-background font-body-md text-on-surface min-h-screen flex flex-col">
@@ -116,6 +116,9 @@ export const HomePage: React.FC = () => {
                           className="w-full h-full object-cover"
                           alt="Vue intérieure élégante et chaleureuse d'un restaurant moderne à Douala"
                           src={heroRestaurantImg}
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'
+                          }}
                         />
                         <div className="absolute top-space-xs right-space-xs px-space-xs py-space-2xs bg-surface-container-lowest/90 backdrop-blur-sm rounded font-label-sm text-label-sm text-secondary font-bold">
                           Menu du Jour Actif

@@ -1,10 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import officialLogo from '@/assets/logo.png'
 
 export const PublicFooter: React.FC = () => {
-  const logoUrl =
-    'https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI'
-
   return (
     <footer className="w-full bg-surface-container-low mt-auto border-t border-outline-variant/30">
       <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop py-space-2xl">
@@ -14,12 +12,12 @@ export const PublicFooter: React.FC = () => {
             <div className="flex items-center gap-space-sm">
               <img
                 alt="Menu du Jour Logo"
-                className="h-8 w-auto object-contain"
-                src={logoUrl}
+                className="h-10 md:h-12 w-auto object-contain drop-shadow-xs"
+                src={officialLogo}
+                onError={(e) => {
+                  e.currentTarget.src = '/logo.png'
+                }}
               />
-              <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight font-display">
-                Menu du Jour
-              </span>
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
               Plateforme SaaS de gestion et de publication de menus digitaux pour restaurants d'Afrique Francophone et internationaux. Précision opérationnelle, QR codes dynamiques et commande fluide en FCFA (XAF).

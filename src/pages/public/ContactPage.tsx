@@ -157,7 +157,10 @@ export const ContactPage: React.FC = () => {
                     <img
                       className="w-full h-full object-cover"
                       alt="Modern hospitality technology center in Douala"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuClmuBF8eKmN_8d4qmT0les7lnv6G_1UksiqX20bhBu0NXhHkD-_4TV7-h6SQQghG4Z4woqrZZFa5-63GgYzLjtFo9cPoKppDmS32trdwDkw2kPghU7Tq8LWX5DG3BHupNPmXSFdHHDNZ2vbGQZY-tCxR_9s67tXcEj6QeOfpw0DCg10EVzotARLaN7gnu2UcKXXSKEA3U15qXiFccFjKgy-uWCo7IoV5ZY07qQiwUQ4upmokF6HXf2"
+                      src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80";
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex items-end p-space-md">
                       <span className="text-on-primary font-label-md text-label-md flex items-center gap-space-xs font-semibold">

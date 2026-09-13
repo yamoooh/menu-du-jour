@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { SeoHead } from '@/components/public/SeoHead'
+import officialLogo from '@/assets/logo.png'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { restaurantService } from '@/services/restaurantService'
@@ -192,15 +193,15 @@ export const ClientDashboardPage: React.FC = () => {
         <div className="flex flex-col">
           {/* Logo Header */}
           <div className="h-16 px-4 flex items-center justify-between border-b border-slate-100">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3 focus:outline-none">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+                src={officialLogo}
                 alt="Menu du Jour"
-                className="h-8 w-auto object-contain"
+                className="h-10 w-auto object-contain drop-shadow-xs"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo.png'
+                }}
               />
-              <span className="font-headline-sm text-lg font-bold tracking-tight text-on-surface font-display">
-                Menu du Jour
-              </span>
             </Link>
           </div>
 
@@ -289,11 +290,13 @@ export const ClientDashboardPage: React.FC = () => {
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
                   <img
-                    src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+                    src={officialLogo}
                     alt="Menu du Jour"
-                    className="h-7 w-auto object-contain"
+                    className="h-8 w-auto object-contain drop-shadow-xs"
+                    onError={(e) => {
+                      e.currentTarget.src = '/logo.png'
+                    }}
                   />
-                  <span className="font-bold text-slate-900 text-sm">Menu du Jour</span>
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
@@ -775,9 +778,12 @@ export const ClientDashboardPage: React.FC = () => {
                   <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col group">
                     <div className="relative h-48 w-full overflow-hidden bg-surface-container-high">
                       <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1no6M-BK-0EOai2Zse6tAiCEVQ-eC1ACXhEGlaS1I_4A5dqV5ToaD4548dcpdAJbs8X_JGK8w1xy--Iio9gW7NhPEro3_04TLreTtQzCnMlBpdfUrK8tlv1EhGIEKZQp8r-oZlX1zBPPJG2IPeUvEE80IRBejU6XdfcPuj7O6l_8JD3KUdj5OEl-Zy9OgZow-pDanzcgJd-x0U93gvOA-n0k8nhZ18p_4t9D96FOIeN8c8EiOEe5C"
+                        src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"
                         alt="Ndolé Royal aux Gambas Sauvages"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80'
+                        }}
                       />
                       <div className="absolute top-3 left-3 bg-primary/80 backdrop-blur-md text-white px-2.5 py-1 rounded text-[10px] font-semibold uppercase tracking-wider">
                         Spécialité du Marché
@@ -824,9 +830,12 @@ export const ClientDashboardPage: React.FC = () => {
                   <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col group">
                     <div className="relative h-48 w-full overflow-hidden bg-surface-container-high">
                       <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWYDgEZB-IS__192XDeZ-iSXTZuW3Dv-nAGSh52umhsUAQMZnr-njWizXHTD9i1qA2j3D9FzvkPgxdEu8NREX6sbCzVBa2gzkZaaw_M6vOohBTYaluP8ExCq197PHFiKp1ONZaR86XLe7SVR20NpfVEEJ-pATwgxjs5rLfzjWZa9ZqEZhFuS9EE-fEd9nBAN5UtTdYWWTxJhcyJLjdJrybIJhjHmI-e4in4G1505-jCV4E23nRGvIC"
+                        src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80"
                         alt="Carpaccio de Capitaine au Poivre de Penja"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+                        }}
                       />
                       <div className="absolute top-3 left-3 bg-primary/80 backdrop-blur-md text-white px-2.5 py-1 rounded text-[10px] font-semibold uppercase tracking-wider">
                         Entrée Fraîcheur
@@ -873,9 +882,12 @@ export const ClientDashboardPage: React.FC = () => {
                   <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col group">
                     <div className="relative h-48 w-full overflow-hidden bg-surface-container-high">
                       <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuYM7AVShJkq4vGIpyfS3A_yLtV-alhdW9pU2kffUfEglMvmCZGTMOUg57iDLvQTROKcYFNYRYTSdjMc4nGamXMbNq0FvLbkuQUIkzmYGmRhKXN5O1bPlSGHVDu3cOCgg_gh86CYAY-e-sBbEy5h5kN8WqhNbvr_iN11hUDAHd0xoxTCc7M9eTwO_CZQbkYDJymy222_1aEgkHm2pnUgjHqjSfpLNdwCK34VlAFTQYyP40-UlqXpa8"
+                        src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80"
                         alt="Mérou Braisé aux Aromates"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                        }}
                       />
                       <div className="absolute top-3 left-3 bg-secondary-container text-white px-2.5 py-1 rounded text-[10px] font-semibold uppercase tracking-wider">
                         Formule Express Midi

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { SeoHead } from '@/components/public/SeoHead'
+import officialLogo from '@/assets/logo.png'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import {
@@ -230,9 +231,12 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="h-16 px-4 flex items-center justify-between bg-primary-container border-b border-surface-container-highest/10">
             <div className="flex items-center gap-2.5">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+                src={officialLogo}
                 alt="Logo Menu du Jour"
-                className="h-8 w-auto object-contain rounded-sm"
+                className="h-9 w-auto object-contain rounded-full shadow-sm"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/logo.png";
+                }}
               />
               <div className="flex flex-col">
                 <span className="font-headline-sm text-sm text-surface-container-lowest font-bold leading-tight">
@@ -323,9 +327,12 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="md:hidden bg-primary-container text-white p-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2.5">
           <img
-            src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+            src={officialLogo}
             alt="Logo"
-            className="h-7 w-auto object-contain rounded-sm"
+            className="h-8 w-auto object-contain rounded-full shadow-sm"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "/logo.png";
+            }}
           />
           <div>
             <span className="font-bold text-xs block leading-tight">Menu du Jour</span>

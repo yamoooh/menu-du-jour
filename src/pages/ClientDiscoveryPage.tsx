@@ -90,9 +90,9 @@ export const ClientDiscoveryPage: React.FC = () => {
   }, [restaurants, selectedRestaurantId])
 
   const defaultImages = [
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuB1rbD_K3yosV-Dyz2XJxtKUggVrCPFhN85nDGQWI4_au0KCvOsdLZw6-Sj3nlGiowtqVKcdEJt1aGVbsptLjGFZLgnRLDtGjaI5aCAgt3gwWAM-78pR5x-7AAh-k7vXg5efTYzunh-A96fahaGdFgbl7LVPwQ9J_wuFTMRPHeFdCqVNsD1_8bN6M_4fSOtg-dUtkqi_q2g_DBsaM68gOm_MUuPqn9mxrbaeunCrSJbYQviYeDJxKyZ',
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuAJWcTdq21c45yuiKUllftBFvfEyRJ-HF6ExuumOBJIqGJx86xjFbZvGh_iK1SxQio7L2eDu_U25ee80oKCMpXtGLvJUvlTCNikEnxuOw0P5pTHOAEmiuyqf6yR_O-gHghQlLr5rPCoJ_OQa3D508J1LSY8G5IH2HxhYXbQY3c3cOzZy0lI77v1ZDJuGubtakNcyr2cUxqmkOl4tHaC2fU5IjgOsuXhl-DVH47UjY3sIrZ-GYnUJfmq',
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDXfd8RzkmNjVTceb32aub4jbVt_LCBJzBVabF-wh-Yv-ZZBMktwUzJ4tQxIW_AK7-euV8bTywl1fVc_sXwe00WShXvWC5f5233ZcekJtKfecDStqqjASYJGpsZ4pmi8tUjscWvgCpybLEVfV3XfVyp_2WCLV9pU3gnRnmMFelH1DUKVp85XUZhy1WlOJOKC2eDnyHws6fXvaHQ4rBYYdmxOzgJ6_R3swRNyjYoHfDRSe62kH-Gpi89',
+    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
   ]
 
   return (
@@ -506,7 +506,7 @@ export const ClientDiscoveryPage: React.FC = () => {
                 className="w-full h-full bg-cover bg-center"
                 style={{
                   backgroundImage:
-                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBKhIHxHbzdZI_PhzvIfOu9LYjRw0Ap4azyfO2PSyNt_9EARXGX8ssb-jpZMP-Go0ssOyAnQwQeuIQfojFgoc7KsdB8IwrAhXGfq8DZ5MvsCRDg8_HSzxXs2zc-n-ZJUpp6Gda3kDl5XdCmbDV8r3gwXkvpbEdvAKkXFi8hACDGAZ3bqYVtHbuo2kW19YDAEAOSYyKLYLLwak0M-nY05f9WhOuKYq-KSBGhB6zSOHJkUYqKaet8oN5W')",
+                    "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80')",
                 }}
               >
                 {/* Cartography Layer Overlay */}

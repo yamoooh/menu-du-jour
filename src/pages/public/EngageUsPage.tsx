@@ -94,7 +94,10 @@ export const EngageUsPage: React.FC = () => {
                       <img
                         className="w-full h-80 object-cover rounded-lg shadow-sm"
                         alt="Restaurant gastronomique au Cameroun"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB14Ti4aM8MXV3lZbVgcDZ9AUDLtQebmr-vING4qdk4Xk5HhZBybqYrKk121yJWr8N-q-zuUix3f-Ap1RfuiYVfUqRMvWTsJ5pN_VzPA0YcHK9pEV0R6Eu0loLE_NKdtV_2r6aZXx_FjCYUrI8MyhOW9h5MIvvJvr2KiCG0ybnK1asvahAgtj8mB2fDTMkvVmn5SZeFsq-aV8LYlQkUkAmQhXbrhiyruQM5RaPy9p_-yPgYcryucdnq"
+                        src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80";
+                        }}
                       />
                     </div>
                     {/* Overlapping Float Card */}
@@ -290,7 +293,10 @@ export const EngageUsPage: React.FC = () => {
                     <img
                       className="w-full h-56 object-cover"
                       alt="Table de restaurant africain avec menu digitalisé"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnv526m_RPxKCKmT2sI-iYLkEGC5aN_pVBb2gO-8DYNRmq7PYaA_naQ-kMH0hYcPzA9fPN9cZanQwB5xMwA_Lnj_xRrF6hdAdrNiQrgSklM-3q7HM2BZ_NgpV6IrKMqAn8jzW4hY_ZrZZ5E3fiq9FD5t3aX-jLyc-6j6eFeUnLvrGdfv91KwEu1D686V33zP-V0jNEPPW6TeMcNJBNYCRoNvhy1YPLXcfdlOU5noNKlpiLDCaAf8DD"
+                      src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80";
+                      }}
                     />
                   </div>
                 </div>

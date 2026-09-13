@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
+import officialLogo from '@/assets/logo.png'
 import { useAuth } from '@/context/AuthContext'
 import { restaurantService } from '@/services/restaurantService'
 import { subscriptionService } from '@/services/subscriptionService'
@@ -241,21 +243,16 @@ export const RestaurantDashboardPage: React.FC = () => {
         <div className="flex flex-col">
           {/* Brand header */}
           <div className="h-16 px-space-base flex items-center justify-between bg-surface-container-lowest border-b border-surface-container-low">
-            <div className="flex items-center gap-space-sm">
+            <Link to="/" className="flex items-center gap-space-sm focus:outline-none">
               <img
                 alt="Brand logo"
-                className="h-8 w-auto object-contain"
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UTt-dNa22cOeXEs7v8x9kOXhf2TxxgJonsL9_Oz5pDK6exz46Abxlmk4aUjK6aMeQRY1FFDioZKZP0kw7opI2le25btUY1uLfxKvHQhg4X3EZbh7VOEARmjDnC66zmZg0__BNzLHIi10bixPDXHyAl4D-Y0z1X_X3AFBpIazoPOEkhVVJID4rB4uYDKC48ourRAOOrQOhFzanyXMH7k66usylb-1s8WQxnS034eNhV2C6lvKgE5MQ3sDI"
+                className="h-10 w-auto object-contain drop-shadow-xs"
+                src={officialLogo}
+                onError={(e) => {
+                  e.currentTarget.src = '/logo.png'
+                }}
               />
-              <div className="flex flex-col">
-                <span className="font-headline-sm text-headline-sm tracking-tight text-on-surface leading-none font-bold">
-                  Menu du Jour
-                </span>
-                <span className="font-label-sm text-label-sm text-on-surface-variant leading-none mt-space-2xs">
-                  Portail Restaurateur
-                </span>
-              </div>
-            </div>
+            </Link>
           </div>
 
           {/* Active Venue Pill */}
@@ -971,7 +968,10 @@ export const RestaurantDashboardPage: React.FC = () => {
                                   <img
                                     className="w-full h-full object-cover"
                                     alt="Carpaccio de Bar Sauvage Fumé"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz7b98FpcYawj0kyPfErhaGderA-qpPipMcCfDL32FWcuekAeWf0OFYDpY_ROptvj4qZc-ACFaNLlCxQ9q2MHXNE_i5rsaxU4jwq9c7KPQPtIIUY6MKlOkvp_PZ1n0gbYT2_2WR0NuHzZHdmjZSUBXFmz0UDvo19eSMYvH4ibYma6nv1VkNDgOZpdG-TEnosBiCBsf_qOQmD6NfUJcmdHYduwm-BJ9g4UyPrU9kcJNC3tHfDRCML91"
+                                    src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80"
+                                    onError={(e) => {
+                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
+                                    }}
                                   />
                                   <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
                                     Stock: 18 restants
@@ -1007,7 +1007,10 @@ export const RestaurantDashboardPage: React.FC = () => {
                                   <img
                                     className="w-full h-full object-cover"
                                     alt="Pavé de Capitaine Braisé & Alloco"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkdMEku278MrtB4gTtCI9DePp9V5cy4Qz0Ljfekx4mfIC508D0Hc8ULftikDwv1mBw63BG9nc-OSH0h3i7oo4Yw_GuWqDMmfMFxM37kx-Rg42vrUvluk10BRQ_ADg8LoqOlTVGSB7-qDDpMEegOJFAKDXITi9pFydPlScD7Doni0XAVjUCF3gCeh7te8HnI4ZbN9G-2rocTlxvTqDp1a7SRmmH2Ot69bXO9r5MXs7xRbTq2XqFG8lb"
+                                    src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+                                    onError={(e) => {
+                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+                                    }}
                                   />
                                   <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
                                     Stock: 24 restants
@@ -1043,7 +1046,10 @@ export const RestaurantDashboardPage: React.FC = () => {
                                   <img
                                     className="w-full h-full object-cover"
                                     alt="Tartelette Passion & Noix de Coco"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-aqIhjX80M3qIeSZJJYxISoySoSU350PAadPmRFV7eiKGv-9XD1DxATMokniwAwBKK86ytZ1RJjMFpRHQJiiUw2WsNnB3BJ9Snn6P4jBpMQBlamY5tKuOsH10KW5QwGlbGb9Kc6aJFVn3KFipBLj8x4LHQmC4Y_qOCeLw0fzxXpnxxRltdkjETMd-8yE2NvCaHr7cIV5CENQymFcsTxi34soWh_FvhcEw8b9oMIi3ggiuM_e1rZHx"
+                                    src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+                                    onError={(e) => {
+                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80'
+                                    }}
                                   />
                                   <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
                                     Stock: 12 restants
@@ -1233,7 +1239,7 @@ export const RestaurantDashboardPage: React.FC = () => {
                           <div
                             className="w-full h-28 rounded-lg bg-cover bg-center overflow-hidden flex items-end p-space-xs shadow-inner"
                             style={{
-                              backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI9-HihbjeYNqmRFzhEn0SUDUcJUBqJbuQRDDWg5iPiQ7gjKQMqS_TXhG97hIVy7vFC30e5CPOtOkREZwhAgkFBGg8xtA2m2HTsjhVfPA_kNZNYTVrxIHnwbn7iFIwRU1VONuDYkyuNKx12yZIyIu9vs9xXN2GNUpyBe0AHSaVL6RAdibHOIuSjVaA6YXyzsE43izkR0adNsGKECvFHpSlt4hcxeftfSDeuq46KkKt7vyUifG-nsUB')`,
+                              backgroundImage: `url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80')`,
                             }}
                           >
                             <span className="px-space-xs py-space-2xs rounded bg-primary-container/85 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">

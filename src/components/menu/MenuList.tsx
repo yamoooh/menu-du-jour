@@ -363,7 +363,10 @@ export const MenuList: React.FC<MenuListProps> = ({
                     <img
                       className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                       alt="Carpaccio de Capitaine aux agrumes"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1wYHqcDrO1gA5nn_2po_-H0H5OS5Sr7lwK64vdN_E-8zL97ng59mEeXcELDFjZnNaFYsnJ_IEEjJfFjH5Vxv4LlQVtCSPPivhndNTYH2rW6H4_l-Zgin1wvjEBV0wTJ7YRqugNGwfscmG94cdjYqGQOHO8_yu7UqKaPG6MDU8xCz9Tj_h6HFRrcKbWyhxNd8KRkQJMhuwULBbo6ljEO1tb0PM4Wk81ET_mEFS1ErnOW8N5isjYWl4"
+                      src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=400&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="flex flex-col">
@@ -404,7 +407,10 @@ export const MenuList: React.FC<MenuListProps> = ({
                     <img
                       className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                       alt="Velouté de potiron et patates douces"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgVuHs1E0npbYcGwRed4SHN7Xx496SMhqMU460ZOTBoDWJPOOV4ePxvv-wwn9GkAYRfk1wQFy5l3ZwUMfd-HA1jNb98A-iUwoDlPJjZ_uIVl2uwjxCQF90sgtP11Wz9L2CKAbVFxjl32LKrE3xQDGI0Ql2_kYloWRfRge7KzIVmO1cx0zFzq0-Ydre_in9Te4rOrGUQfBYXjyCOwb9f0OEAS4OIFgELGh5lEU3DcjJ20OenLTehvFv"
+                      src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=400&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="flex flex-col">
@@ -462,7 +468,10 @@ export const MenuList: React.FC<MenuListProps> = ({
                     <img
                       className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                       alt="Ndolé Royal aux crevettes et miondo"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaXBqdmNZ2En12FGAwjqZED5PMH0MLE0wI9f-Chg68a0NjZ1Lc3JsKIMgEd4QqFTEO-2DHTkQZ37bEi-GilQeJWuGMbpO1ZVXKMsXMTWqW8fHoUo_joiEEE5czA4ZPdfnNDV26A3p3zv2g4fcjDFdHIlSwGcvs7KkLvUNaVWJRSHywJ6zlw7GGa4SIddtCk56vvyrgQYOVaqZoOapS4jX9njJqFxIS4hoKQlkMma92fRW5Z1M8hRYJ"
+                      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="flex flex-col">
@@ -503,7 +512,10 @@ export const MenuList: React.FC<MenuListProps> = ({
                     <img
                       className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
                       alt="Filet de Bar braisé sauce kankankan"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbq4IRwot5DX12xoxh_o3rqyHv-oREE8hFkOVZSjSe61yHVf0LNeF--7pczALdi0LlF_2m-CyQZVHDCuH6dMT6oLQaXvtR8M9t8w0wQMEmCT-O4d7SHulcEogYo0jLPIb9D5mxBkUB-zWu_KFNVYczrepBgrdrGz7or99WSW6qw6fGme0b8MXvPKxhRsTmTbtS6U_vojs6p-azuM4eqlDbMR-yzXMjAQBZJBp7w5JF_sv7INkGc0t-"
+                      src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=400&q=80"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="flex flex-col">
