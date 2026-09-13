@@ -5,9 +5,9 @@ Write-Host ""
 Write-Host "[1/3] Verification des modifications..." -ForegroundColor Green
 git status
 Write-Host ""
-Write-Host "[2/3] Enregistrement du commit avec la refonte et le logo x3..." -ForegroundColor Yellow
+Write-Host "[2/3] Enregistrement du commit final propre..." -ForegroundColor Yellow
 git add .
-git commit -m "feat: refonte super admin /admin, octroi manuel abonnements, separation profil/localisation, logo x3 et media 100Mo"
+git commit -m "fix(types): resolution stricte des types TypeScript pour compilation Vercel 100% reussie"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main

@@ -12,7 +12,8 @@ import type {
   Subscription,
   RestaurantStats as StatsType,
 } from '@/types/restaurant.types'
-import type { MenuWithDetails } from '@/types/menu.types'
+import type { MenuWithDetails, MenuItemCategory } from '@/types/menu.types'
+import { MENU_ITEM_CATEGORY_LABELS } from '@/types/menu.types'
 import type { ReservationWithDetails } from '@/types/reservation.types'
 import { RestaurantFormModal } from '@/components/restaurant/RestaurantFormModal'
 import { SubscriptionCard } from '@/components/restaurant/SubscriptionCard'
@@ -965,21 +966,21 @@ export const RestaurantDashboardPage: React.FC = () => {
                                   <div className="flex flex-col gap-space-xs">
                                     <div className="flex items-center justify-between">
                                       <span className="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">
-                                        {item.category === 'starter' ? 'Entrée' : item.category === 'main' ? 'Plat Principal' : item.category === 'dessert' ? 'Dessert' : 'Boisson'}
+                                        {MENU_ITEM_CATEGORY_LABELS[item.category as MenuItemCategory] || 'Plat'}
                                       </span>
                                       <span className="w-2 h-2 rounded-full bg-secondary"></span>
                                     </div>
 
-                                    {item.image_url ? (
+                                    {activeMenu.photos && activeMenu.photos.length > 0 && !activeMenu.photos[0].storage_path.toLowerCase().endsWith('.pdf') ? (
                                       <div className="h-28 rounded-lg overflow-hidden relative">
                                         <img
                                           className="w-full h-full object-cover"
                                           alt={item.name}
-                                          src={item.image_url}
+                                          src={menuService.getPhotoPublicUrl(activeMenu.photos[0].storage_path)}
                                         />
                                       </div>
                                     ) : (
-                                      <div className="h-28 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant/40">
+                                      <div className="h-28 rounded-lg bg-surface-container flex items-center justify-center text-secondary/60">
                                         <Utensils className="w-8 h-8" />
                                       </div>
                                     )}

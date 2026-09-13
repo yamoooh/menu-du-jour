@@ -53,6 +53,10 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     setCheckoutLoading(false)
     setActivePlanLoading(null)
 
+    if (error) {
+      console.warn('Erreur session checkout LeekPay (basculement en mode direct):', error.message)
+    }
+
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
       return
