@@ -5,6 +5,7 @@ import { PublicHeader } from '@/components/public/PublicHeader'
 import { PublicFooter } from '@/components/public/PublicFooter'
 import { Mail, Lock, AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff, ShieldCheck, User, Store, Zap, QrCode, Wallet, HelpCircle } from 'lucide-react'
 import { SeoHead } from '@/components/public/SeoHead'
+import { FloatingWhatsApp, WHATSAPP_NUMBER } from '@/components/public/FloatingWhatsApp'
 import officialLogo from '@/assets/logo.png'
 
 export const LoginPage: React.FC = () => {

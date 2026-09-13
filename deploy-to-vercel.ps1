@@ -5,9 +5,9 @@ Write-Host ""
 Write-Host "[1/3] Verification des modifications..." -ForegroundColor Green
 git status
 Write-Host ""
-Write-Host "[2/3] Commit des modifications du logo officiel..." -ForegroundColor Green
+Write-Host "[2/3] Enregistrement du commit avec les corrections et le logo officiel..." -ForegroundColor Yellow
 git add .
-git commit -m "feat: integration du design Accueil Menu Final Stitch et logo officiel"
+git commit -m "fix(build): resolution des imports FloatingWhatsApp et WHATSAPP_NUMBER + logo officiel"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main
