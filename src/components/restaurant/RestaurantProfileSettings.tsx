@@ -18,14 +18,28 @@ interface RestaurantProfileSettingsProps {
   restaurant: Restaurant
   hours: RestaurantHours[] | null
   onRefresh: () => void
+  initialSection?: 'general' | 'assets' | 'location' | 'reservations' | 'hours'
+  mode?: 'profile' | 'location'
 }
 
 export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps> = ({
   restaurant,
   hours,
   onRefresh,
+  initialSection,
+  mode = 'profile',
 }) => {
-  const [activeSection, setActiveSection] = useState<'general' | 'assets' | 'location' | 'reservations' | 'hours'>('general')
+  const [activeSection, setActiveSection] = useState<'general' | 'assets' | 'location' | 'reservations' | 'hours'>(
+    initialSection || (mode === 'location' ? 'location' : 'general')
+  )
+
+  React.useEffect(() => {
+    if (initialSection) {
+      setActiveSection(initialSection)
+    } else if (mode === 'location') {
+      setActiveSection('location')
+    }
+  }, [initialSection, mode])
 
   // Formulaire général
   const [name, setName] = useState(restaurant.name || '')
@@ -200,36 +214,43 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
 
         {/* Tabs de section */}
         <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1.5 rounded-xl text-xs font-bold w-full sm:w-auto">
-          <button
-            onClick={() => setActiveSection('general')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'general' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Général
-          </button>
-          <button
-            onClick={() => setActiveSection('assets')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'assets' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Images & Logo
-          </button>
-          <button
-            onClick={() => setActiveSection('location')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'location' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Localisation
-          </button>
-          <button
-            onClick={() => setActiveSection('reservations')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'reservations' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Réservations
-          </button>
-          <button
-            onClick={() => setActiveSection('hours')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'hours' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Horaires
-          </button>
+          {mode === 'profile' ? (
+            <>
+              <button
+                onClick={() => setActiveSection('general')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'general' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Identité & Coordonnées
+              </button>
+              <button
+                onClick={() => setActiveSection('assets')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'assets' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Logo & Bannière Couverture
+              </button>
+              <button
+                onClick={() => setActiveSection('reservations')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'reservations' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Réservations & Capacité
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setActiveSection('location')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'location' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Adresse & Carte OpenStreetMap
+              </button>
+              <button
+                onClick={() => setActiveSection('hours')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeSection === 'hours' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                Grille des Horaires (7j/7)
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -379,7 +400,7 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
 
             {/* 2. Upload Couverture */}
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 text-center">
-              <h4 className="font-extrabold text-slate-900 text-sm">Photo de Couverture</h4>
+              <h4 className="font-extrabold text-slate-900 text-sm">Photo de Couverture (Bannière)</h4>
               <div className="relative w-full h-24 rounded-2xl overflow-hidden border-2 border-slate-300 bg-white shadow-xs flex items-center justify-center">
                 {coverImageUrl ? (
                   <img src={coverImageUrl} alt="Couverture" className="w-full h-full object-cover" />
@@ -388,14 +409,70 @@ export const RestaurantProfileSettings: React.FC<RestaurantProfileSettingsProps>
                 )}
               </div>
               <p className="text-[11px] text-slate-500 leading-relaxed">
-                Recommandé : Image panoramique HD (max 5 Mo).
+                Recommandé : Image panoramique HD (max 5 Mo) pour embellir l'en-tête de votre vitrine.
               </p>
 
               <label className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer w-full">
                 <Upload className="w-4 h-4 text-orange-400" />
-                {uploadingCover ? 'Téléchargement...' : 'Téléverser une couverture'}
+                {uploadingCover ? 'Téléchargement...' : 'Téléverser une bannière'}
                 <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleCoverUpload} disabled={uploadingCover} className="hidden" />
               </label>
+            </div>
+          </div>
+
+          {/* Galerie Photos & Réalisations Culinaire */}
+          <div className="pt-6 border-t border-slate-100 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-extrabold text-slate-900 text-sm">Galerie Réalisations & Ambiance</h4>
+                <p className="text-xs text-slate-500">Mettez en valeur votre salle, terrasse et créations pour séduire les clients</p>
+              </div>
+              <span className="px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 font-bold text-[11px] border border-teal-200">
+                Vitrine Gourmande
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="relative rounded-xl overflow-hidden aspect-video border border-slate-200 shadow-xs group">
+                <img
+                  src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+                  alt="Plat signature braisé"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-bold">
+                  Spécialité Braisée
+                </span>
+              </div>
+              <div className="relative rounded-xl overflow-hidden aspect-video border border-slate-200 shadow-xs group">
+                <img
+                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+                  alt="Salle feutrée"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-bold">
+                  Cadre & Salle
+                </span>
+              </div>
+              <div className="relative rounded-xl overflow-hidden aspect-video border border-slate-200 shadow-xs group">
+                <img
+                  src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80"
+                  alt="Service en terrasse"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-bold">
+                  Terrasse Ensoleillée
+                </span>
+              </div>
+              <div className="relative rounded-xl overflow-hidden aspect-video border border-slate-200 shadow-xs group">
+                <img
+                  src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+                  alt="Dessert maison"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-bold">
+                  Douceurs Sucrées
+                </span>
+              </div>
             </div>
           </div>
         </div>

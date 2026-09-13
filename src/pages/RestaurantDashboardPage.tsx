@@ -201,12 +201,13 @@ export const RestaurantDashboardPage: React.FC = () => {
   // Déclencheur LeekPay
   const handleQuickLeekPayCheckout = async () => {
     if (!selectedRestaurant) return
-    const { checkoutUrl, error } = await subscriptionService.createCheckoutSession(selectedRestaurant.id)
-    if (error || !checkoutUrl) {
-      alert(error?.message || 'Impossible de créer la session de paiement LeekPay.')
-      return
+    const { checkoutUrl } = await subscriptionService.createCheckoutSession(selectedRestaurant.id, 'monthly')
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+    } else {
+      // Fallback direct
+      window.open(`https://leekpay.me/menu-du-jour?amount=5000&ref=${selectedRestaurant.id}&plan=Pass-Mensuel-30J`, '_blank', 'noopener,noreferrer')
     }
-    window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
   }
 
   const subInfo = subscriptionService.getSubscriptionInfo(subscription)
@@ -241,12 +242,12 @@ export const RestaurantDashboardPage: React.FC = () => {
       {/* ========================================================================= */}
       <aside className="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 hidden md:flex flex-col justify-between overflow-y-auto">
         <div className="flex flex-col">
-          {/* Brand header */}
-          <div className="h-16 px-space-base flex items-center justify-between bg-surface-container-lowest border-b border-surface-container-low">
-            <Link to="/" className="flex items-center gap-space-sm focus:outline-none">
+          {/* Brand header Agrandit x3 */}
+          <div className="py-4 px-space-base flex items-center justify-center bg-surface-container-lowest border-b border-surface-container-low">
+            <Link to="/" className="flex items-center justify-center focus:outline-none py-1">
               <img
                 alt="Brand logo"
-                className="h-10 w-auto object-contain drop-shadow-xs"
+                className="h-16 lg:h-20 w-auto object-contain drop-shadow-sm"
                 src={officialLogo}
                 onError={(e) => {
                   e.currentTarget.src = '/logo.png'
@@ -953,124 +954,78 @@ export const RestaurantDashboardPage: React.FC = () => {
                             </div>
                           </div>
 
-                          {/* Menu Items Showcase (Dish Cards with Rich Data) */}
+                          {/* Menu Items Showcase (Plats Réels & Modifiables) */}
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-space-base">
-                            {/* Entrée */}
-                            <div className="bg-surface-container-low rounded-xl p-space-base flex flex-col justify-between gap-space-md border border-surface-container/60">
-                              <div className="flex flex-col gap-space-xs">
-                                <div className="flex items-center justify-between">
-                                  <span className="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">
-                                    Entrée du Jour
-                                  </span>
-                                  <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                                </div>
-                                <div className="h-28 rounded-lg overflow-hidden relative">
-                                  <img
-                                    className="w-full h-full object-cover"
-                                    alt="Carpaccio de Bar Sauvage Fumé"
-                                    src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80"
-                                    onError={(e) => {
-                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
-                                    }}
-                                  />
-                                  <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
-                                    Stock: 18 restants
-                                  </span>
-                                </div>
-                                <h3 className="font-label-lg text-label-lg text-on-surface font-bold pt-space-xs">
-                                  Carpaccio de Bar Sauvage Fumé
-                                </h3>
-                                <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                                  Agrumes de Penja, poivre blanc moulu frais, huile d'olive vierge de Nyamboya.
-                                </p>
-                              </div>
-                              <div className="flex items-center justify-between pt-space-xs border-t border-surface-container">
-                                <span className="font-data-mono text-data-mono font-bold text-on-surface">
-                                  4 500 FCFA
-                                </span>
-                                <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                                  Disponible
-                                </span>
-                              </div>
-                            </div>
+                            {activeMenu?.items && activeMenu.items.length > 0 ? (
+                              activeMenu.items.slice(0, 3).map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="bg-surface-container-low rounded-xl p-space-base flex flex-col justify-between gap-space-md border border-surface-container/60 hover:shadow-xs transition-shadow"
+                                >
+                                  <div className="flex flex-col gap-space-xs">
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">
+                                        {item.category === 'starter' ? 'Entrée' : item.category === 'main' ? 'Plat Principal' : item.category === 'dessert' ? 'Dessert' : 'Boisson'}
+                                      </span>
+                                      <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                                    </div>
 
-                            {/* Plat */}
-                            <div className="bg-surface-container-low rounded-xl p-space-base flex flex-col justify-between gap-space-md border border-surface-container/60">
-                              <div className="flex flex-col gap-space-xs">
-                                <div className="flex items-center justify-between">
-                                  <span className="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">
-                                    Plat Signature
-                                  </span>
-                                  <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                                </div>
-                                <div className="h-28 rounded-lg overflow-hidden relative">
-                                  <img
-                                    className="w-full h-full object-cover"
-                                    alt="Pavé de Capitaine Braisé & Alloco"
-                                    src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
-                                    onError={(e) => {
-                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
-                                    }}
-                                  />
-                                  <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
-                                    Stock: 24 restants
-                                  </span>
-                                </div>
-                                <h3 className="font-label-lg text-label-lg text-on-surface font-bold pt-space-xs">
-                                  Pavé de Capitaine Braisé & Alloco
-                                </h3>
-                                <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                                  Sauce vierge aux échalotes locales, bananes plantains dorées et émulsion ndolè doux.
-                                </p>
-                              </div>
-                              <div className="flex items-center justify-between pt-space-xs border-t border-surface-container">
-                                <span className="font-data-mono text-data-mono font-bold text-on-surface">
-                                  8 500 FCFA
-                                </span>
-                                <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                                  Disponible
-                                </span>
-                              </div>
-                            </div>
+                                    {item.image_url ? (
+                                      <div className="h-28 rounded-lg overflow-hidden relative">
+                                        <img
+                                          className="w-full h-full object-cover"
+                                          alt={item.name}
+                                          src={item.image_url}
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className="h-28 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant/40">
+                                        <Utensils className="w-8 h-8" />
+                                      </div>
+                                    )}
 
-                            {/* Dessert */}
-                            <div className="bg-surface-container-low rounded-xl p-space-base flex flex-col justify-between gap-space-md border border-surface-container/60">
-                              <div className="flex flex-col gap-space-xs">
-                                <div className="flex items-center justify-between">
-                                  <span className="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">
-                                    Dessert Douceur
-                                  </span>
-                                  <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                                    <h3 className="font-label-lg text-label-lg text-on-surface font-bold pt-space-xs truncate">
+                                      {item.name}
+                                    </h3>
+                                    <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                                      {item.description || 'Plat fait maison avec ingrédients frais locaux.'}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex items-center justify-between pt-space-xs border-t border-surface-container">
+                                    <span className="font-data-mono text-data-mono font-bold text-on-surface">
+                                      {item.price ? `${item.price.toLocaleString('fr-FR')} FCFA` : 'Prix à la carte'}
+                                    </span>
+                                    <button
+                                      onClick={() => handleEditMenu(activeMenu)}
+                                      className="font-label-sm text-label-sm text-secondary font-bold hover:underline cursor-pointer flex items-center gap-1"
+                                    >
+                                      Modifier
+                                    </button>
+                                  </div>
                                 </div>
-                                <div className="h-28 rounded-lg overflow-hidden relative">
-                                  <img
-                                    className="w-full h-full object-cover"
-                                    alt="Tartelette Passion & Noix de Coco"
-                                    src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
-                                    onError={(e) => {
-                                      e.currentTarget.src = 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80'
-                                    }}
-                                  />
-                                  <span className="absolute bottom-2 left-2 px-space-xs py-space-2xs rounded bg-primary-container/80 text-on-primary font-data-mono text-data-mono text-[11px] backdrop-blur-sm">
-                                    Stock: 12 restants
-                                  </span>
+                              ))
+                            ) : (
+                              <>
+                                {/* État d'incitation si aucun plat saisi */}
+                                <div className="col-span-full p-8 rounded-xl border border-dashed border-outline-variant/60 text-center space-y-3 bg-surface-container-low/40">
+                                  <Utensils className="w-8 h-8 text-secondary mx-auto" />
+                                  <p className="font-headline-sm text-headline-sm font-bold text-on-surface">
+                                    Aucun plat n'a encore été ajouté à ce menu
+                                  </p>
+                                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md mx-auto">
+                                    Créez vos entrées, plats principaux et desserts personnalisés pour les afficher en temps réel sur votre vitrine.
+                                  </p>
+                                  <button
+                                    onClick={activeMenu ? () => handleEditMenu(activeMenu) : handleCreateNewMenu}
+                                    className="px-5 py-2.5 rounded-xl bg-secondary text-on-secondary font-bold text-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer inline-flex items-center gap-2"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                    <span>Ajouter des plats au menu</span>
+                                  </button>
                                 </div>
-                                <h3 className="font-label-lg text-label-lg text-on-surface font-bold pt-space-xs">
-                                  Tartelette Passion & Noix de Coco
-                                </h3>
-                                <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                                  Crème onctueuse au fruit de la passion de Kribi, copeaux de coco torréfiés.
-                                </p>
-                              </div>
-                              <div className="flex items-center justify-between pt-space-xs border-t border-surface-container">
-                                <span className="font-data-mono text-data-mono font-bold text-on-surface">
-                                  3 000 FCFA
-                                </span>
-                                <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                                  Disponible
-                                </span>
-                              </div>
-                            </div>
+                              </>
+                            )}
                           </div>
 
                           {/* Attached Physical PDF Card */}
@@ -1270,6 +1225,7 @@ export const RestaurantDashboardPage: React.FC = () => {
                   <RestaurantProfileSettings
                     restaurant={selectedRestaurant}
                     hours={hours}
+                    mode="profile"
                     onRefresh={() => loadRestaurantData(selectedRestaurant.id)}
                   />
                 )}
@@ -1315,6 +1271,7 @@ export const RestaurantDashboardPage: React.FC = () => {
                   <RestaurantProfileSettings
                     restaurant={selectedRestaurant}
                     hours={hours}
+                    mode="location"
                     onRefresh={() => loadRestaurantData(selectedRestaurant.id)}
                   />
                 )}

@@ -5,9 +5,9 @@ Write-Host ""
 Write-Host "[1/3] Verification des modifications..." -ForegroundColor Green
 git status
 Write-Host ""
-Write-Host "[2/3] Enregistrement du commit avec les corrections et le logo officiel..." -ForegroundColor Yellow
+Write-Host "[2/3] Enregistrement du commit avec la refonte et le logo x3..." -ForegroundColor Yellow
 git add .
-git commit -m "fix(build): resolution des imports FloatingWhatsApp et WHATSAPP_NUMBER + logo officiel"
+git commit -m "feat: refonte super admin /admin, octroi manuel abonnements, separation profil/localisation, logo x3 et media 100Mo"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main

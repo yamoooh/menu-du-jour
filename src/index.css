@@ -1,52 +1,55 @@
 @import "tailwindcss";
 
 @theme {
-  --color-surface: #f8f9ff;
-  --color-surface-dim: #cbdbf5;
-  --color-surface-bright: #f8f9ff;
+  --color-surface: #f4f8f7;
+  --color-surface-dim: #d5e5e2;
+  --color-surface-bright: #ffffff;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eff4ff;
-  --color-surface-container: #e5eeff;
-  --color-surface-container-high: #dce9ff;
-  --color-surface-container-highest: #d3e4fe;
-  --color-on-surface: #0b1c30;
-  --color-on-surface-variant: #45464d;
-  --color-inverse-surface: #213145;
-  --color-inverse-on-surface: #eaf1ff;
-  --color-outline: #76777d;
-  --color-outline-variant: #c6c6cd;
-  --color-surface-tint: #565e74;
-  --color-surface-variant: #d3e4fe;
-  --color-background: #f8f9ff;
-  --color-on-background: #0b1c30;
+  --color-surface-container-low: #eaf3f1;
+  --color-surface-container: #dcece8;
+  --color-surface-container-high: #cee5df;
+  --color-surface-container-highest: #bfded6;
+  --color-on-surface: #0b221f;
+  --color-on-surface-variant: #354e4a;
+  --color-inverse-surface: #10332e;
+  --color-inverse-on-surface: #e6f6f2;
+  --color-outline: #6b8882;
+  --color-outline-variant: #b2cac5;
+  --color-surface-tint: #0d9488;
+  --color-surface-variant: #dcece8;
+  --color-background: #f4f8f7;
+  --color-on-background: #0b221f;
 
-  --color-primary: #000000;
+  /* Primary: Teal / Emeraude du logo */
+  --color-primary: #0f766e;
   --color-on-primary: #ffffff;
-  --color-primary-container: #131b2e;
-  --color-on-primary-container: #7c839b;
-  --color-inverse-primary: #bec6e0;
-  --color-primary-fixed: #dae2fd;
-  --color-primary-fixed-dim: #bec6e0;
-  --color-on-primary-fixed: #131b2e;
-  --color-on-primary-fixed-variant: #3f465c;
+  --color-primary-container: #115e59;
+  --color-on-primary-container: #ccfbf1;
+  --color-inverse-primary: #5eead4;
+  --color-primary-fixed: #ccfbf1;
+  --color-primary-fixed-dim: #99f6e4;
+  --color-on-primary-fixed: #134e4a;
+  --color-on-primary-fixed-variant: #115e59;
 
-  --color-secondary: #a73a00;
+  /* Secondary: Orange Paprika gourmand du logo */
+  --color-secondary: #ea580c;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #fd651e;
-  --color-on-secondary-container: #571a00;
-  --color-secondary-fixed: #ffdbce;
-  --color-secondary-fixed-dim: #ffb599;
-  --color-on-secondary-fixed: #370e00;
-  --color-on-secondary-fixed-variant: #7f2b00;
+  --color-secondary-container: #c2410c;
+  --color-on-secondary-container: #ffedd5;
+  --color-secondary-fixed: #ffedd5;
+  --color-secondary-fixed-dim: #fed7aa;
+  --color-on-secondary-fixed: #7c2d12;
+  --color-on-secondary-fixed-variant: #9a3412;
 
-  --color-tertiary: #000000;
+  /* Tertiary: Jaune Or Étoilé du logo */
+  --color-tertiary: #d97706;
   --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #2a1700;
-  --color-on-tertiary-container: #b87500;
-  --color-tertiary-fixed: #ffddb8;
-  --color-tertiary-fixed-dim: #ffb95f;
-  --color-on-tertiary-fixed: #2a1700;
-  --color-on-tertiary-fixed-variant: #653e00;
+  --color-tertiary-container: #b45309;
+  --color-on-tertiary-container: #fef3c7;
+  --color-tertiary-fixed: #fef3c7;
+  --color-tertiary-fixed-dim: #fde68a;
+  --color-on-tertiary-fixed: #78350f;
+  --color-on-tertiary-fixed-variant: #92400e;
 
   --color-error: #ba1a1a;
   --color-on-error: #ffffff;

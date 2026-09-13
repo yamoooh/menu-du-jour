@@ -42,7 +42,7 @@ export const HomePage: React.FC = () => {
       {/* HEADER NAVIGATION CENTRALISÉ */}
       <PublicHeader />
 
-      <main className="w-full pt-20 flex-1 bg-surface">
+      <main className="w-full pt-24 md:pt-28 flex-1 bg-surface">
         <div className="flex flex-col w-full">
           {/* ========================================================================= */}
           {/* 1. HERO SECTION : IMMERSIVE AVEC ATMOSPHÈRE HAUT DE GAMME & PITCH SAAS   */}

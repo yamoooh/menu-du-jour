@@ -28,16 +28,17 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
 
     const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
     const isImage = file.type.startsWith('image/')
+    const isVideo = file.type.startsWith('video/') || file.name.toLowerCase().endsWith('.mp4') || file.name.toLowerCase().endsWith('.webm')
 
-    // Validation type
-    if (!isPdf && !isImage) {
-      setError('Veuillez sélectionner une image (JPG, PNG, WEBP) ou un document PDF valide.')
+    // Validation type étendu (Images, Vidéos MP4/WebM, Documents PDF)
+    if (!isPdf && !isImage && !isVideo) {
+      setError('Veuillez sélectionner un fichier média valide : Image (JPG, PNG, WebP), Vidéo (MP4, WebM) ou Document PDF.')
       return
     }
 
-    // Validation taille max 10 Mo
-    if (file.size > 10 * 1024 * 1024) {
-      setError('La taille du fichier ne doit pas dépasser 10 Mo.')
+    // Validation taille max 100 Mo
+    if (file.size > 100 * 1024 * 1024) {
+      setError('La taille du fichier ne doit pas dépasser 100 Mo.')
       return
     }
 
@@ -74,17 +75,17 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
             <Image className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-900 text-sm">Visuels et Documents du Menu (Images & PDF)</h4>
-            <p className="text-xs text-slate-500">Ajoutez des photos de plats ou la carte intégrale au format PDF</p>
+            <h4 className="font-bold text-slate-900 text-sm">Médias & Documents du Menu (Images, Vidéos & PDF)</h4>
+            <p className="text-xs text-slate-500">Ajoutez des photos de plats, vidéos de préparation ou votre carte PDF (jusqu'à 100 Mo)</p>
           </div>
         </div>
 
         <label className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 text-xs font-semibold cursor-pointer transition-colors shrink-0">
           <Upload className="w-3.5 h-3.5" />
-          <span>{uploading ? 'Chargement...' : 'Ajouter Image ou PDF'}</span>
+          <span>{uploading ? 'Chargement en cours...' : 'Ajouter Média ou PDF (100 Mo)'}</span>
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp,application/pdf,.pdf"
+            accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,application/pdf,.pdf"
             onChange={handleFileSelect}
             disabled={uploading}
             className="hidden"
@@ -101,14 +102,15 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
 
       {photos.length === 0 ? (
         <div className="p-6 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 space-y-1">
-          <p>Aucun support visuel ou PDF associé à ce menu.</p>
-          <p className="text-slate-500">Ajoutez vos photos ou votre fichier PDF pour captiver vos clients.</p>
+          <p>Aucun support visuel, vidéo ou PDF associé à ce menu.</p>
+          <p className="text-slate-500">Ajoutez des photos alléchantes, courtes vidéos de présentation ou votre PDF complet (max 100 Mo).</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {photos.map((photo) => {
             const url = menuService.getPhotoPublicUrl(photo.storage_path)
             const isPdf = photo.storage_path.toLowerCase().endsWith('.pdf')
+            const isVideo = photo.storage_path.toLowerCase().endsWith('.mp4') || photo.storage_path.toLowerCase().endsWith('.webm')
 
             return (
               <div
@@ -131,6 +133,18 @@ export const MenuPhotoUploader: React.FC<MenuPhotoUploaderProps> = ({
                     >
                       Consulter
                     </a>
+                  </div>
+                ) : isVideo ? (
+                  <div className="w-full h-full relative bg-black flex items-center justify-center">
+                    <video
+                      src={url}
+                      controls
+                      className="w-full h-full object-cover"
+                      preload="metadata"
+                    />
+                    <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold uppercase pointer-events-none">
+                      Vidéo
+                    </span>
                   </div>
                 ) : (
                   <img

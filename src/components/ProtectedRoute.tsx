@@ -30,6 +30,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!user) {
+    if (location.pathname.startsWith('/admin')) {
+      return <Navigate to="/admin/connexion" state={{ from: location }} replace />
+    }
     return <Navigate to="/connexion" state={{ from: location }} replace />
   }
 
@@ -37,6 +40,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     const userRole = profile?.role
 
     if (!userRole || !allowedRoles.includes(userRole)) {
+      if (location.pathname.startsWith('/admin')) {
+        return <Navigate to="/admin/connexion" replace />
+      }
       // Redirection vers sa zone autorisée
       if (userRole === 'client') {
         return <Navigate to="/espace-client" replace />

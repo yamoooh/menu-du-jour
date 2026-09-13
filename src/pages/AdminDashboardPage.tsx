@@ -215,6 +215,49 @@ export const AdminDashboardPage: React.FC = () => {
     })
   }
 
+  // Modal d'octroi manuel d'abonnement
+  const [grantSubModalOpen, setGrantSubModalOpen] = useState(false)
+  const [grantSubRestaurant, setGrantSubRestaurant] = useState<AdminRestaurant | null>(null)
+  const [grantSubDays, setGrantSubDays] = useState<number>(30)
+  const [grantSubStatus, setGrantSubStatus] = useState<'active' | 'trialing'>('active')
+  const [grantSubLoading, setGrantSubLoading] = useState(false)
+  const [grantSubSuccess, setGrantSubSuccess] = useState<string | null>(null)
+
+  const handleOpenGrantModal = (resto: AdminRestaurant) => {
+    setGrantSubRestaurant(resto)
+    setGrantSubDays(30)
+    setGrantSubStatus('active')
+    setGrantSubSuccess(null)
+    setGrantSubModalOpen(true)
+  }
+
+  const handleConfirmGrantSubscription = async () => {
+    if (!grantSubRestaurant) return
+    setGrantSubLoading(true)
+    const { error } = await adminService.grantOrUpdateSubscription(grantSubRestaurant.id, {
+      status: grantSubStatus,
+      daysToAdd: grantSubDays,
+      notes: `Abonnement manuel de ${grantSubDays} jours accordé par le Super Admin`,
+    })
+    setGrantSubLoading(false)
+
+    if (error) {
+      alert(`Erreur: ${error.message || 'Impossible d octroyer l abonnement'}`)
+    } else {
+      setGrantSubSuccess(`Abonnement de ${grantSubDays} jours accordé avec succès !`)
+      setTimeout(() => {
+        setGrantSubModalOpen(false)
+        setGrantSubSuccess(null)
+      }, 1500)
+      // Rafraîchir les données
+      if (activeTab === 'restaurants') {
+        adminService.fetchRestaurants(restoStatusFilter, restoSearch).then(({ data }) => setRestaurants(data))
+      } else if (activeTab === 'subscriptions') {
+        adminService.fetchSubscriptions(subStatusFilter).then(({ data }) => setSubscriptions(data))
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-surface font-body-md text-on-surface antialiased flex flex-col md:flex-row">
       <SeoHead
@@ -227,29 +270,24 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Sidebar Desktop Admin (Google Stitch w-72 bg-primary-container) */}
       <aside className="hidden md:flex fixed left-0 top-0 h-full w-72 bg-primary-container z-50 flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.12)]">
         <div className="flex flex-col">
-          {/* Logo Brand Header */}
-          <div className="h-16 px-4 flex items-center justify-between bg-primary-container border-b border-surface-container-highest/10">
-            <div className="flex items-center gap-2.5">
-              <img
-                src={officialLogo}
-                alt="Logo Menu du Jour"
-                className="h-9 w-auto object-contain rounded-full shadow-sm"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/logo.png";
-                }}
-              />
-              <div className="flex flex-col">
-                <span className="font-headline-sm text-sm text-surface-container-lowest font-bold leading-tight">
-                  Menu du Jour
-                </span>
-                <span className="font-label-sm text-[10px] text-on-primary-container uppercase tracking-wider">
-                  Tour de Contrôle
-                </span>
-              </div>
+          {/* Logo Brand Header Agrandit x3 */}
+          <div className="py-4 px-4 flex flex-col items-center justify-center bg-primary-container border-b border-surface-container-highest/10 gap-2">
+            <img
+              src={officialLogo}
+              alt="Logo Menu du Jour"
+              className="h-16 lg:h-20 w-auto object-contain drop-shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/logo.png";
+              }}
+            />
+            <div className="flex items-center justify-between w-full px-1">
+              <span className="font-headline-sm text-xs text-surface-container-lowest font-bold">
+                Tour de Contrôle
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary text-[10px] font-bold uppercase tracking-wider">
+                Super Admin
+              </span>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary text-[10px] font-bold uppercase tracking-wider">
-              Super Admin
-            </span>
           </div>
 
           {/* Instance Pill */}
@@ -1325,12 +1363,19 @@ export const AdminDashboardPage: React.FC = () => {
                             )}
                           </td>
                           <td className="py-3 px-3">{formatDate(r.created_at)}</td>
-                          <td className="py-3 px-3">
+                          <td className="py-3 px-3 flex items-center gap-1.5">
                             <button
                               onClick={() => handleInspectRestaurant(r.id)}
-                              className="px-3 py-1 rounded-lg bg-slate-900 text-white font-bold text-[11px] hover:bg-slate-800 transition-colors cursor-pointer"
+                              className="px-2.5 py-1 rounded-lg bg-slate-900 text-white font-bold text-[11px] hover:bg-slate-800 transition-colors cursor-pointer"
                             >
                               Inspecter
+                            </button>
+                            <button
+                              onClick={() => handleOpenGrantModal(r)}
+                              className="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] hover:bg-emerald-700 transition-colors cursor-pointer flex items-center gap-1"
+                              title="Octroyer ou prolonger l'abonnement"
+                            >
+                              <span>Abonner</span>
                             </button>
                           </td>
                         </tr>
@@ -1885,6 +1930,155 @@ export const AdminDashboardPage: React.FC = () => {
           )}
         </main>
       </div>
+
+      {/* Modal d'octroi / modification manuelle d'abonnement Super Admin */}
+      {grantSubModalOpen && grantSubRestaurant && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-5 animate-in fade-in zoom-in duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2 text-emerald-700">
+                <ShieldCheck className="w-5 h-5" />
+                <h3 className="font-bold text-slate-900 text-sm">
+                  Octroi Manuel d'Abonnement
+                </h3>
+              </div>
+              <button
+                onClick={() => setGrantSubModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+              <span className="text-[11px] text-slate-500 block font-medium">Établissement sélectionné</span>
+              <span className="font-bold text-slate-900 text-sm block">{grantSubRestaurant.name}</span>
+              <span className="text-[11px] text-slate-400 block font-mono">ID: {grantSubRestaurant.id}</span>
+            </div>
+
+            {grantSubSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{grantSubSuccess}</span>
+              </div>
+            )}
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1.5">
+                  Statut à appliquer
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubStatus('active')}
+                    className={`p-2.5 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubStatus === 'active'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-800 ring-2 ring-emerald-500/20'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    Actif (Abonné payé)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubStatus('trialing')}
+                    className={`p-2.5 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubStatus === 'trialing'
+                        ? 'bg-amber-50 border-amber-500 text-amber-800 ring-2 ring-amber-500/20'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    Essai Provisoire
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1.5">
+                  Durée de validité
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubDays(30)}
+                    className={`py-2 px-1 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubDays === 30
+                        ? 'bg-slate-900 border-slate-900 text-white'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    30 Jours
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubDays(90)}
+                    className={`py-2 px-1 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubDays === 90
+                        ? 'bg-slate-900 border-slate-900 text-white'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    3 Mois
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubDays(365)}
+                    className={`py-2 px-1 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubDays === 365
+                        ? 'bg-slate-900 border-slate-900 text-white'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    1 An (365 j)
+                  </button>
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="text-slate-500 text-[11px]">Ou nombre de jours personnalisé :</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="3650"
+                    value={grantSubDays}
+                    onChange={(e) => setGrantSubDays(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-20 px-2.5 py-1 border border-slate-200 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-100 text-[11px] text-emerald-900 leading-relaxed">
+                Ce changement prend effet <strong>immédiatement</strong> sur Supabase. L'espace du restaurant passera instantanément en statut débloqué avec toutes les fonctionnalités accessibles.
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setGrantSubModalOpen(false)}
+                disabled={grantSubLoading}
+                className="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold text-xs transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmGrantSubscription}
+                disabled={grantSubLoading}
+                className="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-bold text-xs shadow-sm transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+              >
+                {grantSubLoading ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Application...</span>
+                  </>
+                ) : (
+                  <span>Confirmer l'Abonnement</span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

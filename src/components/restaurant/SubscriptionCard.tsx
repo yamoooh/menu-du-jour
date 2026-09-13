@@ -53,14 +53,18 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     setCheckoutLoading(false)
     setActivePlanLoading(null)
 
-    if (error) {
-      setCheckoutError(error.message || 'Erreur lors de la génération de la session LeekPay')
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
       return
     }
 
-    if (checkoutUrl) {
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
-    }
+    // Fallback de secours direct si l'Edge Function Supabase n'est pas encore déployée
+    const amount = planType === 'annual' ? '50000' : '5000'
+    const planName = planType === 'annual' ? 'Pass-Annuel-365J' : 'Pass-Mensuel-30J'
+    const directLeekPayUrl = `https://leekpay.me/menu-du-jour?amount=${amount}&ref=${restaurantId}&plan=${planName}`
+    
+    // Si l'utilisateur clique, ouvrir la page officielle de paiement
+    window.open(directLeekPayUrl, '_blank', 'noopener,noreferrer')
   }
 
   const formatDate = (d: Date | null | string) => {

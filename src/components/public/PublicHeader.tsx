@@ -28,14 +28,14 @@ export const PublicHeader: React.FC = () => {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-      <div className="h-20 max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex items-center justify-between gap-space-md">
-        {/* Logo Officiel */}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-xl shadow-[0_2px_12px_rgba(15,118,110,0.08)] border-b border-primary/10">
+      <div className="h-24 md:h-28 max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex items-center justify-between gap-space-md">
+        {/* Logo Officiel Agrandit x3 */}
         <div className="flex items-center gap-space-md">
-          <Link className="flex items-center gap-space-sm focus:outline-none" to="/">
+          <Link className="flex items-center gap-space-sm focus:outline-none py-2 group" to="/">
             <img
               alt="Menu du Jour Logo"
-              className="h-11 md:h-12 w-auto object-contain drop-shadow-xs"
+              className="h-16 md:h-20 lg:h-22 w-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200"
               src={officialLogo}
               onError={(e) => {
                 e.currentTarget.src = '/logo.png'

@@ -467,6 +467,100 @@ export const adminService = {
     }
   },
 
+  // Octroyer, prolonger ou modifier manuellement un abonnement pour un restaurant
+  async grantOrUpdateSubscription(
+    restaurantId: string,
+    options: {
+      status: 'active' | 'trialing' | 'expired'
+      daysToAdd: number
+      notes?: string
+    }
+  ): Promise<{ data: any; error: any }> {
+    try {
+      const now = new Date()
+      const currentPeriodStart = now.toISOString()
+      const endDate = new Date(now.getTime() + options.daysToAdd * 24 * 60 * 60 * 1000)
+      const currentPeriodEnd = endDate.toISOString()
+
+      // 1. Vérifier si un abonnement existe déjà pour ce restaurant
+      const { data: existing } = await supabase
+        .from('subscriptions')
+        .select('id')
+        .eq('restaurant_id', restaurantId)
+        .maybeSingle()
+
+      let mutationResult: any = null
+
+      if (existing?.id) {
+        // Mise à jour de l'abonnement existant
+        const updatePayload: any = {
+          status: options.status,
+          current_period_start: currentPeriodStart,
+          current_period_end: currentPeriodEnd,
+          updated_at: now.toISOString(),
+        }
+        if (options.status === 'trialing') {
+          updatePayload.trial_end_at = currentPeriodEnd
+        }
+
+        const { data, error } = await supabase
+          .from('subscriptions')
+          .update(updatePayload)
+          .eq('id', existing.id)
+          .select()
+          .single()
+
+        if (error) throw error
+        mutationResult = data
+      } else {
+        // Création d'un nouvel enregistrement d'abonnement
+        const insertPayload: any = {
+          restaurant_id: restaurantId,
+          status: options.status,
+          trial_start_at: currentPeriodStart,
+          trial_end_at: currentPeriodEnd,
+          current_period_start: currentPeriodStart,
+          current_period_end: currentPeriodEnd,
+          created_at: now.toISOString(),
+          updated_at: now.toISOString(),
+        }
+
+        const { data, error } = await supabase
+          .from('subscriptions')
+          .insert(insertPayload)
+          .select()
+          .single()
+
+        if (error) throw error
+        mutationResult = data
+      }
+
+      // Enregistrer une trace de paiement administratif ou log si actif
+      if (options.status === 'active') {
+        await supabase.from('payments').insert({
+          restaurant_id: restaurantId,
+          subscription_id: mutationResult?.id || null,
+          amount: 0,
+          currency: 'XAF',
+          provider: 'super_admin_grant',
+          status: 'completed',
+          provider_transaction_ref: `ADMIN-${Date.now()}`,
+          paid_at: now.toISOString(),
+          metadata: {
+            granted_by_admin: true,
+            days: options.daysToAdd,
+            notes: options.notes || 'Abonnement octroyé manuellement par le Super Administrateur',
+          },
+        })
+      }
+
+      return { data: mutationResult, error: null }
+    } catch (err: any) {
+      console.error('Erreur grantOrUpdateSubscription:', err)
+      return { data: null, error: err }
+    }
+  },
+
   // Fetch global payments
   async fetchPayments(
     statusFilter: string = 'all'
