@@ -11,6 +11,7 @@ import { ReservationModal } from '@/components/reservation/ReservationModal'
 import { SeoHead } from '@/components/public/SeoHead'
 import { GoogleMap } from '@/components/common/GoogleMap'
 import { MediaViewerModal, type MediaItem } from '@/components/common/MediaViewerModal'
+import { RestaurantSocialFeed } from '@/components/restaurant/RestaurantSocialFeed'
 import {
   Store,
   MapPin,
@@ -39,7 +40,7 @@ export const RestaurantDetailPage: React.FC = () => {
   const [hours, setHours] = useState<RestaurantHours[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
-  const [activeTab, setActiveTab] = useState<'menu' | 'info'>('menu')
+  const [activeTab, setActiveTab] = useState<'menu' | 'gallery' | 'info'>('menu')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
   // Lightbox Media Modal
@@ -252,6 +253,18 @@ export const RestaurantDetailPage: React.FC = () => {
                 >
                   <Utensils className={`w-4 h-4 ${activeTab === 'menu' ? 'text-secondary' : ''}`} />
                   <span>Menu du Jour & Carte</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('gallery')}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-label-lg text-xs font-semibold transition-all cursor-pointer ${
+                    activeTab === 'gallery'
+                      ? 'bg-surface-container-lowest shadow-xs text-on-surface'
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  <Sparkles className={`w-4 h-4 ${activeTab === 'gallery' ? 'text-secondary' : ''}`} />
+                  <span>Galerie & Réalisations</span>
                 </button>
                 <button
                   type="button"
@@ -484,7 +497,14 @@ export const RestaurantDetailPage: React.FC = () => {
               </div>
             )}
 
-            {/* Tab 2: Horaires & Localisation */}
+            {/* Tab 2: Galerie & Réalisations Interactives */}
+            {activeTab === 'gallery' && restaurant && (
+              <div className="w-full">
+                <RestaurantSocialFeed restaurant={restaurant} isPublicView={true} />
+              </div>
+            )}
+
+            {/* Tab 3: Horaires & Localisation */}
             {activeTab === 'info' && (
               <div className="flex flex-col gap-8">
                 {/* Google Map Section */}

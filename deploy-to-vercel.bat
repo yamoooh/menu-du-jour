@@ -10,7 +10,7 @@ git status
 echo.
 echo [2/3] Enregistrement du commit final propre...
 git add .
-git commit -m "fix(types): resolution stricte des types TypeScript pour compilation Vercel 100% reussie"
+git commit -m "feat: formulaire upload media 100Mo (photos, videos, pdf) et nouvel espace interactif Galerie & Realisations"
 echo.
 echo [3/3] Envoi vers GitHub et declenchement de Vercel...
 git push origin main

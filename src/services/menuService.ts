@@ -283,17 +283,18 @@ export const menuService = {
   ): Promise<{ data: MenuPhoto | null; error: Error | null }> {
     if (!supabase) return { data: null, error: new Error('Client Supabase non initialisé') }
 
-    // Validation de la taille (max 10 Mo)
-    if (file.size > 10 * 1024 * 1024) {
-      return { data: null, error: new Error('Le fichier dépasse la taille maximale autorisée (10 Mo).') }
+    // Validation de la taille (max 100 Mo)
+    if (file.size > 100 * 1024 * 1024) {
+      return { data: null, error: new Error('Le fichier dépasse la taille maximale autorisée (100 Mo).') }
     }
 
-    // Validation des formats autorisés (JPG, PNG, WebP, PDF)
+    // Validation des formats autorisés (JPG, PNG, WebP, Vidéo MP4/WebM, PDF)
     const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+    const isVideo = file.type.startsWith('video/') || file.name.toLowerCase().endsWith('.mp4') || file.name.toLowerCase().endsWith('.webm')
     const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp']
 
-    if (!isPdf && !allowedImageTypes.includes(file.type)) {
-      return { data: null, error: new Error('Format de fichier non supporté. Seuls les formats JPG, PNG, WebP et PDF sont autorisés.') }
+    if (!isPdf && !isVideo && !allowedImageTypes.includes(file.type)) {
+      return { data: null, error: new Error('Format de fichier non supporté. Formats autorisés : JPG, PNG, WebP, Vidéo MP4/WebM ou Document PDF.') }
     }
 
     try {

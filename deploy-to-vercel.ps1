@@ -7,7 +7,7 @@ git status
 Write-Host ""
 Write-Host "[2/3] Enregistrement du commit final propre..." -ForegroundColor Yellow
 git add .
-git commit -m "fix(types): resolution stricte des types TypeScript pour compilation Vercel 100% reussie"
+git commit -m "feat: formulaire upload media 100Mo (photos, videos, pdf) et nouvel espace interactif Galerie & Realisations"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main

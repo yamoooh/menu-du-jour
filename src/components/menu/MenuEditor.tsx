@@ -169,6 +169,7 @@ export const MenuEditor: React.FC<MenuEditorProps> = ({
     price: number
     category: MenuItemCategory
     accompaniment?: string
+    mediaFile?: File | null
   }) => {
     let mId = activeMenuId
     if (!mId) {
@@ -176,17 +177,24 @@ export const MenuEditor: React.FC<MenuEditorProps> = ({
       if (!mId) return
     }
 
+    const { mediaFile, ...cleanItemData } = itemData
+
     if (itemToEdit) {
-      const { error: updateErr } = await menuService.updateMenuItem(itemToEdit.id, itemData)
+      const { error: updateErr } = await menuService.updateMenuItem(itemToEdit.id, cleanItemData)
       if (updateErr) throw updateErr
     } else {
       const { error: addErr } = await menuService.addMenuItem({
         menu_id: mId,
         restaurant_id: restaurantId,
-        ...itemData,
+        ...cleanItemData,
         display_order: items.length,
       })
       if (addErr) throw addErr
+    }
+
+    // Téléverser le média du plat (Image, Vidéo ou PDF jusqu'à 100 Mo)
+    if (mediaFile) {
+      await menuService.uploadMenuPhoto(restaurantId, mId, mediaFile, itemData.name)
     }
 
     await refreshActiveMenu(mId)

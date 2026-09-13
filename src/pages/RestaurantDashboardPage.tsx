@@ -23,6 +23,7 @@ import { RestaurantReservationsList } from '@/components/reservation/RestaurantR
 import { NotificationList } from '@/components/notification/NotificationList'
 import { PushSubscriptionToggle } from '@/components/notification/PushSubscriptionToggle'
 import { RestaurantProfileSettings } from '@/components/restaurant/RestaurantProfileSettings'
+import { RestaurantSocialFeed } from '@/components/restaurant/RestaurantSocialFeed'
 import { PwaInstallPromptModal } from '@/components/notification/PwaInstallPromptModal'
 import { SeoHead } from '@/components/public/SeoHead'
 import {
@@ -48,12 +49,14 @@ import {
   ChevronRight,
   TrendingUp,
   User,
+  Sparkles,
 } from 'lucide-react'
 
 export type SidebarTab =
   | 'dashboard'
   | 'restaurants'
   | 'menus'
+  | 'gallery'
   | 'reservations'
   | 'localisation'
   | 'subscription'
@@ -221,6 +224,7 @@ export const RestaurantDashboardPage: React.FC = () => {
     { id: 'dashboard' as SidebarTab, label: 'Tableau de bord', icon: LayoutDashboard },
     { id: 'restaurants' as SidebarTab, label: 'Profil & Établissement', icon: Store },
     { id: 'menus' as SidebarTab, label: 'Menus & Cartes', icon: Utensils },
+    { id: 'gallery' as SidebarTab, label: 'Galerie & Prestations', icon: Sparkles },
     { id: 'reservations' as SidebarTab, label: 'Réservations', icon: Calendar },
     { id: 'localisation' as SidebarTab, label: 'Localisation & Horaires', icon: MapPin },
     { id: 'subscription' as SidebarTab, label: 'Abonnement & Facturation', icon: Receipt },
@@ -1253,6 +1257,13 @@ export const RestaurantDashboardPage: React.FC = () => {
                       onRefresh={() => selectedRestaurant && loadRestaurantData(selectedRestaurant.id)}
                     />
                   )
+                )}
+
+                {/* ------------------------------------------------------------- */}
+                {/* TAB 3.5: GALERIE & RÉALISATIONS (ESPACE SOCIAL INTERACTIF)    */}
+                {/* ------------------------------------------------------------- */}
+                {activeTab === 'gallery' && selectedRestaurant && (
+                  <RestaurantSocialFeed restaurant={selectedRestaurant} isPublicView={false} />
                 )}
 
                 {/* ------------------------------------------------------------- */}
