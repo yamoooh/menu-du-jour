@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import type { MenuItem, MenuItemCategory } from '@/types/menu.types'
 import { MENU_ITEM_CATEGORY_LABELS } from '@/types/menu.types'
-import { Utensils, X, Check, AlertCircle, Upload, FileText, Video, Image as ImageIcon } from 'lucide-react'
+import { Utensils, X, Check, AlertCircle, Upload } from 'lucide-react'
 
 interface MenuItemModalProps {
   isOpen: boolean
