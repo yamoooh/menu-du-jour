@@ -7,7 +7,7 @@ git status
 Write-Host ""
 Write-Host "[2/3] Commit des modifications du logo officiel..." -ForegroundColor Green
 git add .
-git commit -m "fix: integration du logo officiel bundle et correction des images"
+git commit -m "feat: integration du design Accueil Menu Final Stitch et logo officiel"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main

@@ -10,7 +10,7 @@ git status
 echo.
 echo [2/3] Enregistrement du commit avec le logo officiel...
 git add .
-git commit -m "fix: integration du logo officiel bundle et correction des images"
+git commit -m "feat: integration du design Accueil Menu Final Stitch et logo officiel"
 echo.
 echo [3/3] Envoi vers GitHub et declenchement de Vercel...
 git push origin main
