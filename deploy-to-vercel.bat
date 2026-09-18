@@ -10,7 +10,7 @@ git status
 echo.
 echo [2/3] Enregistrement du commit final propre...
 git add .
-git commit -m "feat: refonte globale - imagerie africaine 4K, gradient hero, vitrine ardoises, forfait unique 5000 FCFA"
+git commit -m "fix(build): securisation build Vercel vite build et suppression XCircle"
 echo.
 echo [3/3] Envoi vers GitHub et declenchement de Vercel...
 git push origin main

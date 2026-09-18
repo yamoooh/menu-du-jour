@@ -7,7 +7,7 @@ git status
 Write-Host ""
 Write-Host "[2/3] Enregistrement du commit final propre..." -ForegroundColor Yellow
 git add .
-git commit -m "feat: refonte globale - imagerie africaine 4K, gradient hero, vitrine ardoises, forfait unique 5000 FCFA"
+git commit -m "fix(build): securisation build Vercel vite build et suppression XCircle"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main
