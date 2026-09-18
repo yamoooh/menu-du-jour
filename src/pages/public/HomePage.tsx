@@ -65,116 +65,68 @@ export const HomePage: React.FC = () => {
             </div>
 
             <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop py-20 lg:py-24 relative z-10 w-full">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
-                {/* Colonne Pitch & Réassurances */}
-                <div className="lg:col-span-8 flex flex-col gap-6">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 w-fit">
-                    <span className="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
-                    <span className="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider font-semibold">
-                      SaaS Restauration • Cameroun &amp; CEMAC • Zéro Commission
-                    </span>
+              <div className="max-w-4xl flex flex-col gap-6">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 w-fit">
+                  <span className="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+                  <span className="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider font-semibold">
+                    SaaS Restauration • Cameroun &amp; CEMAC • Zéro Commission
+                  </span>
+                </div>
+
+                <h1 className="font-display-lg text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight max-w-3xl">
+                  La plateforme SaaS pour digitaliser vos menus du jour, centraliser vos réservations et fidéliser vos clients — sans commission.
+                </h1>
+
+                <p className="font-body-lg text-base sm:text-lg text-slate-200 max-w-2xl font-light leading-relaxed">
+                  <strong>Menu du Jour</strong> permet aux restaurants, bistrots et tables d'Afrique centrale de diffuser instantanément leur ardoise quotidienne par QR code et WhatsApp, de gérer leurs réservations en direct et d'encaisser via Mobile Money, le tout pour un tarif fixe de 5 000 FCFA/mois.
+                </p>
+
+                {/* CTAs avec contrastes percutants */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                  <Link
+                    to="/inscription?role=restaurant_manager"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-secondary text-white shadow-lg hover:bg-secondary-container transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add_business</span>
+                    <span>Inscrire mon établissement (Essai 7j offert)</span>
+                  </Link>
+
+                  <Link
+                    to="/decouvrir"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">explore</span>
+                    <span>Explorer les restaurants</span>
+                  </Link>
+                </div>
+
+                {/* Piliers de confiance & Réassurance */}
+                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/15 max-w-xl">
+                  <div className="flex flex-col">
+                    <span className="text-2xl lg:text-3xl font-bold text-secondary-fixed">0%</span>
+                    <span className="text-xs text-slate-300 font-medium">Commission sur les couverts</span>
                   </div>
-
-                  <h1 className="font-display-lg text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight max-w-3xl">
-                    La plateforme SaaS pour digitaliser vos menus du jour, centraliser vos réservations et fidéliser vos clients — sans commission.
-                  </h1>
-
-                  <p className="font-body-lg text-base sm:text-lg text-slate-200 max-w-2xl font-light leading-relaxed">
-                    <strong>Menu du Jour</strong> permet aux restaurants, bistrots et tables d'Afrique centrale de diffuser instantanément leur ardoise quotidienne par QR code et WhatsApp, de gérer leurs réservations en direct et d'encaisser via Mobile Money, le tout pour un tarif fixe de 5 000 FCFA/mois.
-                  </p>
-
-                  {/* CTAs avec contrastes percutants */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                    <Link
-                      to="/inscription?role=restaurant_manager"
-                      className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-secondary text-white shadow-lg hover:bg-secondary-container transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-                    >
-                      <span className="material-symbols-outlined text-[20px]">add_business</span>
-                      <span>Inscrire mon établissement (Essai 7j offert)</span>
-                    </Link>
-
-                    <Link
-                      to="/decouvrir"
-                      className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 transition-all"
-                    >
-                      <span className="material-symbols-outlined text-[20px]">explore</span>
-                      <span>Explorer les restaurants</span>
-                    </Link>
+                  <div className="flex flex-col">
+                    <span className="text-2xl lg:text-3xl font-bold text-white">7 Jours</span>
+                    <span className="text-xs text-slate-300 font-medium">Essai pro sans carte bancaire</span>
                   </div>
-
-                  {/* Piliers de confiance & Réassurance */}
-                  <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/15 max-w-xl">
-                    <div className="flex flex-col">
-                      <span className="text-2xl lg:text-3xl font-bold text-secondary-fixed">0%</span>
-                      <span className="text-xs text-slate-300 font-medium">Commission sur les couverts</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-2xl lg:text-3xl font-bold text-white">7 Jours</span>
-                      <span className="text-xs text-slate-300 font-medium">Essai pro sans carte bancaire</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-2xl lg:text-3xl font-bold text-secondary-container">5 000 XAF</span>
-                      <span className="text-xs text-slate-300 font-medium">Abonnement fixe via LeekPay</span>
-                    </div>
-                  </div>
-
-                  {/* Badge officiel confiance locale */}
-                  <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-300">
-                    <span className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-secondary text-[16px]">verified</span>
-                      Paiements MTN MoMo &amp; Orange Money
-                    </span>
-                    <span className="hidden sm:inline opacity-40">•</span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-secondary text-[16px]">support_agent</span>
-                      Assistance dédiée Douala &amp; Yaoundé
-                    </span>
+                  <div className="flex flex-col">
+                    <span className="text-2xl lg:text-3xl font-bold text-secondary-container">5 000 XAF</span>
+                    <span className="text-xs text-slate-300 font-medium">Abonnement fixe via LeekPay</span>
                   </div>
                 </div>
 
-                {/* Colonne Droite : Carte Interactive d'Aperçu Vivant */}
-                <div className="lg:col-span-4 relative mt-6 lg:mt-0">
-                  <div className="bg-slate-900/80 backdrop-blur-xl border border-white/15 rounded-2xl p-6 shadow-2xl flex flex-col gap-4 text-white">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
-                          En direct à Douala
-                        </span>
-                      </div>
-                      <span className="font-data-mono text-xs text-secondary-fixed font-bold">
-                        Aujourd'hui
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
-                        <div>
-                          <p className="font-bold text-sm text-white">Ndolè Royal aux Crevettes</p>
-                          <p className="text-xs text-slate-400">Le Wouri Bistrot • Bonanjo</p>
-                        </div>
-                        <span className="font-bold text-secondary-fixed text-sm">7 500 XAF</span>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
-                        <div>
-                          <p className="font-bold text-sm text-white">Filet de Bar Braisé</p>
-                          <p className="text-xs text-slate-400">La Terrasse Tropicale • Bastos</p>
-                        </div>
-                        <span className="font-bold text-secondary-fixed text-sm">6 000 XAF</span>
-                      </div>
-                    </div>
-
-                    <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[16px] text-emerald-400">qr_code_2</span>
-                        QR Code sur table actif
-                      </span>
-                      <Link to="/decouvrir" className="text-secondary-fixed hover:underline font-semibold">
-                        Voir tout →
-                      </Link>
-                    </div>
-                  </div>
+                {/* Badge officiel confiance locale */}
+                <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-secondary text-[16px]">verified</span>
+                    Paiements MTN MoMo &amp; Orange Money
+                  </span>
+                  <span className="hidden sm:inline opacity-40">•</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-secondary text-[16px]">support_agent</span>
+                    Assistance dédiée Douala &amp; Yaoundé
+                  </span>
                 </div>
               </div>
             </div>

@@ -10,7 +10,7 @@ git status
 echo.
 echo [2/3] Enregistrement du commit final propre...
 git add .
-git commit -m "fix(menu): suppression des imports inutilises dans MenuItemModal et validation TS stricte"
+git commit -m "feat: suppression du bloc apercu en direct dans le hero de la page d accueil"
 echo.
 echo [3/3] Envoi vers GitHub et declenchement de Vercel...
 git push origin main

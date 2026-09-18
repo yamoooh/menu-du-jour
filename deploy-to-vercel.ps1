@@ -7,7 +7,7 @@ git status
 Write-Host ""
 Write-Host "[2/3] Enregistrement du commit final propre..." -ForegroundColor Yellow
 git add .
-git commit -m "fix(menu): suppression des imports inutilises dans MenuItemModal et validation TS stricte"
+git commit -m "feat: suppression du bloc apercu en direct dans le hero de la page d accueil"
 Write-Host ""
 Write-Host "[3/3] Envoi vers GitHub et Vercel..." -ForegroundColor Green
 git push origin main
