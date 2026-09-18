@@ -9,23 +9,23 @@ export const translations = {
   fr: {
     meta: {
       home: {
-        title: 'Menu du Jour — La Plateforme SaaS des Restaurants',
-        description: 'Menu du Jour est la plateforme SaaS complète permettant aux restaurants de publier leurs menus du jour, gérer leurs réservations et fidéliser leurs clients.',
+        title: 'Menu du Jour — Ardoises du Jour & Menus des Restaurants',
+        description: 'Menu du Jour est la plateforme culinaire complète permettant aux restaurants de publier leurs ardoises du jour, gérer leurs réservations en direct et fidéliser leurs clients sans commission.',
       },
       about: {
-        title: 'À propos — Menu du Jour SaaS',
-        description: 'Découvrez la mission de Menu du Jour : digitaliser l’expérience des restaurants et faciliter l’accès aux menus quotidiens.',
+        title: 'À propos — Menu du Jour',
+        description: 'Découvrez la mission de Menu du Jour : rapprocher les restaurateurs et leurs convives et faciliter l’accès aux menus quotidiens.',
       },
       engage: {
         title: 'Rejoindre la plateforme — Menu du Jour pour Restaurateurs',
         description: 'Développez la visibilité et la fréquentation de votre restaurant grâce à Menu du Jour. Essayez gratuitement pendant 7 jours.',
       },
       pricing: {
-        title: 'Tarifs professionnels — Menu du Jour SaaS',
+        title: 'Tarifs professionnels — Menu du Jour',
         description: 'Tarif clair et accessible pour les restaurants : 7 jours d’essai gratuit puis 5 000 FCFA / 30 jours sans engagement.',
       },
       contact: {
-        title: 'Contactez-nous — Menu du Jour SaaS',
+        title: 'Contactez-nous — Menu du Jour',
         description: 'Une question ou besoin d’aide pour inscrire votre restaurant ? Contactez l’équipe Menu du Jour par formulaire ou WhatsApp.',
       },
     },
@@ -43,7 +43,7 @@ export const translations = {
       pwaInstall: 'Installer l\'application',
     },
     hero: {
-      badge: 'Plateforme SaaS pour Restaurants & Gastronomie',
+      badge: 'Plateforme Culinaire • Menus Digitaux & Réservations Directes',
       title: 'Le digital au service de votre restaurant',
       subtitle: 'Simplifiez la publication de vos menus quotidiens, attirez de nouveaux gourmets et gérez vos réservations en toute simplicité.',
       ctaPrimary: 'Commencer gratuitement',
@@ -146,7 +146,7 @@ export const translations = {
     faq: {
       tag: 'Faq',
       title: 'Questions fréquemment posées',
-      subtitle: 'Retrouvez les réponses à vos interrogations sur la plateforme SaaS.',
+      subtitle: 'Retrouvez les réponses à vos interrogations sur la plateforme.',
       items: [
         {
           q: 'Comment fonctionne l’essai gratuit de 7 jours ?',
@@ -179,7 +179,7 @@ export const translations = {
       title: 'À propos de Menu du Jour',
       subtitle: 'Notre mission : rapprocher les restaurateurs et leurs convives grâce au digital.',
       missionTitle: 'Notre Mission',
-      missionText: 'Proposer aux restaurateurs une solution SaaS simple, élégante et accessible pour valoriser leur savoir-faire culinaire quotidien et simplifier la réservation de tables.',
+      missionText: 'Proposer aux restaurateurs une plateforme simple, élégante et accessible pour valoriser leur savoir-faire culinaire quotidien et simplifier la réservation de tables sans intermédiaire.',
       visionTitle: 'Notre Vision',
       visionText: 'Faire du numérique un levier de croissance pour tous les restaurants locaux, en éliminant les intermédiaires coûteux et les commissions abusives.',
       valuesTitle: 'Nos Valeurs',
@@ -443,11 +443,11 @@ export const translations = {
   en: {
     meta: {
       home: {
-        title: 'Menu du Jour — Restaurant SaaS Platform',
-        description: 'Menu du Jour is the complete SaaS platform for restaurants to publish daily menus, manage online reservations, and build customer loyalty.',
+        title: 'Menu du Jour — Daily Menus & Table Reservations',
+        description: 'Menu du Jour is the complete dining platform for restaurants to publish daily menus, manage online reservations, and build customer loyalty without commissions.',
       },
       about: {
-        title: 'About Us — Menu du Jour SaaS',
+        title: 'About Us — Menu du Jour',
         description: 'Discover the mission of Menu du Jour: digitizing the restaurant experience and making daily menus easily accessible.',
       },
       engage: {
@@ -455,11 +455,11 @@ export const translations = {
         description: 'Grow your restaurant’s visibility and foot traffic with Menu du Jour. Enjoy a 7-day free trial.',
       },
       pricing: {
-        title: 'Professional Pricing — Menu du Jour SaaS',
+        title: 'Professional Pricing — Menu du Jour',
         description: 'Transparent and affordable pricing for restaurants: 7 days free trial, then 5,000 FCFA / 30 days without commitment.',
       },
       contact: {
-        title: 'Contact Us — Menu du Jour SaaS',
+        title: 'Contact Us — Menu du Jour',
         description: 'Have a question or need help registering your restaurant? Contact the Menu du Jour team via form or WhatsApp.',
       },
     },
@@ -477,7 +477,7 @@ export const translations = {
       pwaInstall: 'Install App',
     },
     hero: {
-      badge: 'SaaS Platform for Restaurants & Dining',
+      badge: 'Culinary Platform for Restaurants & Dining',
       title: 'Digital empowerment for your restaurant',
       subtitle: 'Effortlessly publish your daily menus, attract local foodies, and manage online table reservations.',
       ctaPrimary: 'Start for Free',
@@ -580,7 +580,7 @@ export const translations = {
     faq: {
       tag: 'Faq',
       title: 'Frequently Asked Questions',
-      subtitle: 'Find answers to common questions about our SaaS platform.',
+      subtitle: 'Find answers to common questions about our dining platform.',
       items: [
         {
           q: 'How does the 7-day free trial work?',
@@ -613,7 +613,7 @@ export const translations = {
       title: 'About Menu du Jour',
       subtitle: 'Our mission: connecting restaurateurs with their guests through digital innovation.',
       missionTitle: 'Our Mission',
-      missionText: 'Providing restaurateurs with a simple, elegant, and affordable SaaS solution to highlight their daily culinary creations and streamline table bookings.',
+      missionText: 'Providing restaurateurs with a simple, elegant, and affordable platform to highlight their daily culinary creations and streamline table bookings without unfair fees.',
       visionTitle: 'Our Vision',
       visionText: 'Making digital technology a growth driver for local restaurants by eliminating expensive intermediaries and unfair commissions.',
       valuesTitle: 'Our Core Values',

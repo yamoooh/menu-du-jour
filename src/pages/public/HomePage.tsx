@@ -17,24 +17,24 @@ export const HomePage: React.FC = () => {
       priceCurrency: 'XAF',
     },
     description:
-      'La plateforme SaaS pour digitaliser vos menus du jour, centraliser vos réservations et fidéliser vos clients — sans commission.',
+      'La plateforme culinaire pour découvrir les ardoises du jour en direct, réserver sa table en 1 clic et digitaliser son restaurant sans commission en Afrique centrale.',
   }
 
-  // Photos haute résolution d'ambiance restauration (Unsplash CDN garanti sans erreur 403)
+  // Photos 4K Ultra HD d'ambiance et de gastronomie africaine (Unsplash CDN garanti sans erreur 403)
   const heroBgImg =
-    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2000&q=80'
+    'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=3840&q=90'
   const chefActionImg =
-    'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1200&q=80'
+    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=3840&q=90'
   const terraceImg =
-    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80'
+    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=3840&q=90'
   const barWineImg =
-    'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2000&q=80'
+    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=3840&q=90'
 
   return (
     <div className="bg-background font-body-md text-on-surface min-h-screen flex flex-col antialiased selection:bg-secondary selection:text-white">
       <SeoHead
-        title="Menu du Jour - Plateforme SaaS Multi-Restaurants & Menus Digitaux"
-        description="La plateforme SaaS pour digitaliser vos menus du jour, centraliser vos réservations et fidéliser vos clients sans commission au Cameroun et en Afrique Centrale."
+        title="Menu du Jour - Ardoises du Jour, Menus Digitaux & Réservations Directes"
+        description="La plateforme culinaire tout-en-un pour découvrir les ardoises fraîches du midi, réserver sa table en 1 clic et digitaliser son restaurant sans commission au Cameroun et en Afrique Centrale."
         path="/"
         schema={jsonLdSchema}
       />
@@ -45,23 +45,23 @@ export const HomePage: React.FC = () => {
       <main className="w-full pt-24 md:pt-28 flex-1 bg-surface">
         <div className="flex flex-col w-full">
           {/* ========================================================================= */}
-          {/* 1. HERO SECTION : IMMERSIVE AVEC ATMOSPHÈRE HAUT DE GAMME & PITCH SAAS   */}
+          {/* 1. HERO SECTION : IMMERSIVE AVEC CHEF RESTAURATEUR À DROITE & DÉGRADÉ GAUCHE */}
           {/* ========================================================================= */}
-          <section className="relative w-full overflow-hidden bg-slate-950 text-white min-h-[640px] lg:min-h-[720px] flex items-center">
-            {/* Arrière-plan gastronomique haute définition */}
+          <section className="relative w-full overflow-hidden bg-slate-950 text-white min-h-[660px] lg:min-h-[740px] flex items-center">
+            {/* Arrière-plan gastronomique haute définition - Personnage positionné à droite */}
             <div className="absolute inset-0 z-0">
               <img
-                alt="Salle de restaurant haut de gamme feutrée et contemporaine"
-                className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out opacity-45"
+                alt="Chef restaurateur africain accueillant dans son établissement"
+                className="w-full h-full object-cover object-[78%_center] lg:object-[82%_center] scale-105 transition-transform duration-1000 ease-out opacity-90"
                 src={heroBgImg}
                 onError={(e) => {
                   e.currentTarget.src =
-                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=2000&q=80'
+                    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=3840&q=90'
                 }}
               />
-              {/* Gradients protecteurs calibrés pour une lisibilité totale */}
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/40"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/60"></div>
+              {/* Gradient directionnel : Sombre et opaque sur la gauche pour le texte, transparent sur la droite pour révéler le chef et le restaurant */}
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent via-50% lg:via-55%"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/30 lg:hidden"></div>
             </div>
 
             <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop py-20 lg:py-24 relative z-10 w-full">
@@ -69,23 +69,28 @@ export const HomePage: React.FC = () => {
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 w-fit">
                   <span className="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
                   <span className="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider font-semibold">
-                    SaaS Restauration • Cameroun &amp; CEMAC • Zéro Commission
+                    Plateforme Culinaire • Cameroun &amp; CEMAC • Zéro Commission
                   </span>
                 </div>
 
                 <h1 className="font-display-lg text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight max-w-3xl">
-                  La plateforme SaaS pour digitaliser vos menus du jour, centraliser vos réservations et fidéliser vos clients — sans commission.
+                  L'ardoise du jour de vos restaurants préférés, réservable en direct et sans commission.
                 </h1>
 
-                <p className="font-body-lg text-base sm:text-lg text-slate-200 max-w-2xl font-light leading-relaxed">
-                  <strong>Menu du Jour</strong> permet aux restaurants, bistrots et tables d'Afrique centrale de diffuser instantanément leur ardoise quotidienne par QR code et WhatsApp, de gérer leurs réservations en direct et d'encaisser via Mobile Money, le tout pour un tarif fixe de 5 000 FCFA/mois.
-                </p>
+                <div className="flex flex-col gap-3 max-w-2xl">
+                  <p className="font-body-lg text-base sm:text-lg text-slate-200 font-light leading-relaxed">
+                    <strong className="text-white font-semibold">Pour les convives :</strong> Découvrez en temps réel ce qui mijote ce midi autour de vous à Douala, Yaoundé ou Kribi. Consultez les ardoises fraîches et réservez votre table en 1 clic sans surcoût.
+                  </p>
+                  <p className="font-body-md text-sm sm:text-base text-slate-300 font-light leading-relaxed">
+                    <strong className="text-white font-semibold">Pour les restaurateurs :</strong> Publiez votre ardoise en 30 secondes par QR code et WhatsApp, recevez vos réservations en direct et conservez 100% de votre chiffre d'affaires pour 5 000 FCFA/mois.
+                  </p>
+                </div>
 
                 {/* CTAs avec contrastes percutants */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                   <Link
                     to="/inscription?role=restaurant_manager"
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-secondary text-white shadow-lg hover:bg-secondary-container transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-secondary text-white shadow-lg hover:bg-secondary-container transition-all transform hover:-translate-y-0.5 active:translate-y-0 font-bold"
                   >
                     <span className="material-symbols-outlined text-[20px]">add_business</span>
                     <span>Inscrire mon établissement (Essai 7j offert)</span>
@@ -93,10 +98,10 @@ export const HomePage: React.FC = () => {
 
                   <Link
                     to="/decouvrir"
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 transition-all"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-label-lg text-label-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 transition-all font-bold"
                   >
                     <span className="material-symbols-outlined text-[20px]">explore</span>
-                    <span>Explorer les restaurants</span>
+                    <span>Explorer les ardoises du jour</span>
                   </Link>
                 </div>
 
@@ -164,6 +169,236 @@ export const HomePage: React.FC = () => {
               <div className="flex items-center gap-2 text-on-surface-variant font-body-sm">
                 <span className="material-symbols-outlined text-secondary text-[20px]">map</span>
                 <span>OpenStreetMap &amp; Leaflet natif (Zéro frais d'API)</span>
+              </div>
+            </div>
+          </section>
+
+          {/* ========================================================================= */}
+          {/* 2.5 VITRINE DES ARDOISES DU MOMENT : PLATS AFRICAINS & RESTAURANTS PILOTES */}
+          {/* ========================================================================= */}
+          <section className="w-full py-20 bg-slate-50 border-b border-slate-200/70" id="ardoises-du-moment">
+            <div className="max-w-[1600px] mx-auto px-gutter-mobile md:px-gutter-tablet lg:px-gutter-desktop flex flex-col gap-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="flex flex-col gap-2 max-w-2xl">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold w-fit">
+                    <span className="material-symbols-outlined text-[16px] text-secondary">restaurant_menu</span>
+                    <span>En Direct des Cuisines</span>
+                  </div>
+                  <h2 className="font-headline-lg text-2xl sm:text-3xl lg:text-4xl text-on-surface font-extrabold tracking-tight">
+                    Ce qui mijote aujourd'hui dans vos quartiers
+                  </h2>
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    Découvrez les suggestions du jour préparées ce matin par les chefs à Bonanjo, Akwa et Bastos. Réservation directe en 1 clic sans supplément.
+                  </p>
+                </div>
+                <Link
+                  to="/decouvrir"
+                  className="inline-flex items-center gap-2 text-secondary font-label-md font-bold hover:gap-3 transition-all"
+                >
+                  <span>Voir tous les restaurants partenaires</span>
+                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </Link>
+              </div>
+
+              {/* 3 Cartes Illustratives Plats & Établissements */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Carte 1 : Le Wouri Bistrot */}
+                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                  <div>
+                    <div className="relative h-56 w-full overflow-hidden bg-slate-900">
+                      <img
+                        alt="Ndolé Royal aux crevettes géantes fraîches"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=85'
+                        }}
+                      />
+                      <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-white font-label-sm text-xs font-semibold flex items-center gap-1.5 border border-white/20">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Ardoise à 10h45</span>
+                      </div>
+                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-secondary text-white font-label-sm text-xs font-bold shadow-md">
+                        4 500 FCFA
+                      </div>
+                      <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-slate-900 font-label-sm text-[11px] font-bold">
+                        Spécialité Côtière
+                      </div>
+                    </div>
+
+                    <div className="p-6 flex flex-col gap-3">
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span className="font-semibold text-secondary flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px]">location_on</span>
+                          Douala • Bonanjo
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px] text-amber-500">star</span>
+                          4.9 (120 avis)
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-secondary transition-colors">
+                        Le Wouri Bistrot
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        <strong className="text-slate-800">Plat du jour :</strong> Ndolé royal aux crevettes géantes fraîches de l'estuaire, miondo et bananes plantains vapeur.
+                      </p>
+
+                      <div className="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                        <span className="w-7 h-7 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-[11px]">
+                          CT
+                        </span>
+                        <span className="text-slate-700 font-medium">Chef Christian T.</span>
+                        <span className="text-slate-300 ml-auto">• 18 couverts restants</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 pt-0">
+                    <Link
+                      to="/decouvrir"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-orange-50 hover:bg-secondary text-secondary hover:text-white font-label-md font-bold text-xs transition-all border border-orange-200 hover:border-secondary"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">event_seat</span>
+                      <span>Réserver une table</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Carte 2 : La Terrasse Tropicale */}
+                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                  <div>
+                    <div className="relative h-56 w-full overflow-hidden bg-slate-900">
+                      <img
+                        alt="Poisson Capitaine braisé aux épices de Penja"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=85"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85'
+                        }}
+                      />
+                      <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-white font-label-sm text-xs font-semibold flex items-center gap-1.5 border border-white/20">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Ardoise à 11h15</span>
+                      </div>
+                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-secondary text-white font-label-sm text-xs font-bold shadow-md">
+                        5 000 FCFA
+                      </div>
+                      <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-slate-900 font-label-sm text-[11px] font-bold">
+                        Braisés au Feu de Bois
+                      </div>
+                    </div>
+
+                    <div className="p-6 flex flex-col gap-3">
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span className="font-semibold text-secondary flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px]">location_on</span>
+                          Yaoundé • Bastos
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px] text-amber-500">star</span>
+                          4.8 (98 avis)
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-secondary transition-colors">
+                        La Terrasse Tropicale
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        <strong className="text-slate-800">Plat du jour :</strong> Capitaine &amp; Bar braisés au poivre blanc de Penja, sauce piment douce et bâtons de manioc.
+                      </p>
+
+                      <div className="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                        <span className="w-7 h-7 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-[11px]">
+                          SM
+                        </span>
+                        <span className="text-slate-700 font-medium">Cheffe Sandra M.</span>
+                        <span className="text-slate-300 ml-auto">• Terrasse ombragée</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 pt-0">
+                    <Link
+                      to="/decouvrir"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-orange-50 hover:bg-secondary text-secondary hover:text-white font-label-md font-bold text-xs transition-all border border-orange-200 hover:border-secondary"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">event_seat</span>
+                      <span>Réserver une table</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Carte 3 : Le Safoutier Gourmand */}
+                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                  <div>
+                    <div className="relative h-56 w-full overflow-hidden bg-slate-900">
+                      <img
+                        alt="Poulet DG fermier sauté aux légumes du marché"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=85"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85'
+                        }}
+                      />
+                      <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-white font-label-sm text-xs font-semibold flex items-center gap-1.5 border border-white/20">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Ardoise à 10h30</span>
+                      </div>
+                      <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-secondary text-white font-label-sm text-xs font-bold shadow-md">
+                        4 000 FCFA
+                      </div>
+                      <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-slate-900 font-label-sm text-[11px] font-bold">
+                        Terroir Camerounais
+                      </div>
+                    </div>
+
+                    <div className="p-6 flex flex-col gap-3">
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span className="font-semibold text-secondary flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px]">location_on</span>
+                          Douala • Bonapriso
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px] text-amber-500">star</span>
+                          4.9 (145 avis)
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-secondary transition-colors">
+                        Le Safoutier Gourmand
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        <strong className="text-slate-800">Plat du jour :</strong> Poulet DG fermier traditionnel sauté aux rondelles de plantain doré, carottes croquantes et poivrons.
+                      </p>
+
+                      <div className="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                        <span className="w-7 h-7 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-[11px]">
+                          AK
+                        </span>
+                        <span className="text-slate-700 font-medium">Chef Alain K.</span>
+                        <span className="text-slate-300 ml-auto">• Salle climatisée</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 pt-0">
+                    <Link
+                      to="/decouvrir"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-orange-50 hover:bg-secondary text-secondary hover:text-white font-label-md font-bold text-xs transition-all border border-orange-200 hover:border-secondary"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">event_seat</span>
+                      <span>Réserver une table</span>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -403,7 +638,7 @@ export const HomePage: React.FC = () => {
                     src={terraceImg}
                     onError={(e) => {
                       e.currentTarget.src =
-                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'
+                        'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80'
                     }}
                   />
                   {/* Overlay texturé assurant une lisibilité maximale */}
@@ -777,7 +1012,7 @@ export const HomePage: React.FC = () => {
                 src={barWineImg}
                 onError={(e) => {
                   e.currentTarget.src =
-                    'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=2000&q=80'
+                    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=2000&q=80'
                 }}
               />
               {/* Overlay sombre élégant avec léger blur */}

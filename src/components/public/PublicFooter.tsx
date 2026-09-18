@@ -20,7 +20,7 @@ export const PublicFooter: React.FC = () => {
               />
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
-              Plateforme SaaS de gestion et de publication de menus digitaux pour restaurants d'Afrique Francophone et internationaux. Précision opérationnelle, QR codes dynamiques et commande fluide en FCFA (XAF).
+              La plateforme culinaire de référence pour découvrir les ardoises fraîches du jour et digitaliser les restaurants à Douala, Yaoundé et en Afrique Centrale. QR codes dynamiques, réservations directes sans commission et gestion en FCFA (XAF).
             </p>
             <div className="flex items-center gap-space-sm pt-space-xs">
               <span className="material-symbols-outlined text-secondary text-[20px]">chat</span>

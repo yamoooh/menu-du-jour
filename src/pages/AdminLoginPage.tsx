@@ -84,7 +84,7 @@ export const AdminLoginPage: React.FC = () => {
       if (userProfile?.role !== 'admin') {
         await signOut()
         setLoading(false)
-        setError("Accès refusé. Ce portail est strictement réservé au Super Admin du SaaS Menu du Jour.")
+        setError("Accès refusé. Ce portail est strictement réservé au Super Administrateur de la plateforme Menu du Jour.")
         return
       }
     }

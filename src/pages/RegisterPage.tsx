@@ -159,7 +159,7 @@ export const RegisterPage: React.FC = () => {
                 <div className="relative z-10">
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest/10 text-tertiary-fixed font-label-sm text-label-sm uppercase tracking-wider mb-4 backdrop-blur-md font-semibold">
                     <span className="w-2 h-2 rounded-full bg-secondary-container animate-pulse" />
-                    Plateforme Gastronomique &amp; SaaS
+                    Plateforme Culinaire &amp; Tables d'Exception
                   </span>
                   <h2 className="font-headline-lg text-headline-lg mb-3 font-bold text-on-primary">
                     {role === 'client'

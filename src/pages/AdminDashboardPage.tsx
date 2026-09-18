@@ -38,7 +38,6 @@ import {
   TrendingUp,
   CheckCircle2,
   Clock,
-  XCircle,
   Download,
   Server,
   Zap,
@@ -993,16 +992,16 @@ export const AdminDashboardPage: React.FC = () => {
                       <div className="flex flex-col gap-1.5 pt-2.5">
                         <div className="flex items-center justify-between text-xs">
                           <span className="text-on-surface-variant font-medium">
-                            Stockage Médias & Menus PDF
+                            Stockage Médias &amp; Menus PDF
                           </span>
-                          <span className="font-mono text-on-surface font-bold">
-                            42% (4.2 Go / 10 Go)
+                          <span className="font-mono text-emerald-600 font-bold">
+                            Opérationnel (Supabase Storage)
                           </span>
                         </div>
                         <div className="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
                           <div
-                            className="bg-secondary-container h-full rounded-full"
-                            style={{ width: '42%' }}
+                            className="bg-emerald-500 h-full rounded-full"
+                            style={{ width: '100%' }}
                           ></div>
                         </div>
                       </div>
@@ -1019,38 +1018,29 @@ export const AdminDashboardPage: React.FC = () => {
                         </h2>
                       </div>
                       <span className="w-5 h-5 rounded-full bg-secondary-container text-on-secondary text-xs flex items-center justify-center font-bold">
-                        4
+                        {(stats?.expiredRestaurants || 0) > 0 ? 1 : 0}
                       </span>
                     </div>
 
                     <div className="flex flex-col gap-2.5">
-                      {/* Alert 1 */}
-                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-200/60 flex items-start gap-2.5">
-                        <Clock className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-xs font-bold text-amber-900">
-                            3 Essais expirent dans 24h
-                          </span>
-                          <span className="text-[11px] text-amber-800 leading-snug">
-                            Bafoussam Délices, Grillades du Centre, Le Safoutier. Relance
-                            WhatsApp automatique envoyée.
-                          </span>
+                      {(stats?.expiredRestaurants || 0) > 0 ? (
+                        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200/60 flex items-start gap-2.5">
+                          <Clock className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-xs font-bold text-amber-900">
+                              {stats?.expiredRestaurants} établissement(s) expiré(s)
+                            </span>
+                            <span className="text-[11px] text-amber-800 leading-snug">
+                              Consultez l'onglet Abonnements pour réactiver ou relancer via LeekPay.
+                            </span>
+                          </div>
                         </div>
-                      </div>
-
-                      {/* Alert 2 */}
-                      <div className="p-3 rounded-lg bg-rose-50 border border-rose-200/60 flex items-start gap-2.5">
-                        <XCircle className="w-4 h-4 text-rose-700 shrink-0 mt-0.5" />
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-xs font-bold text-rose-900">
-                            Motif de refus récurrent
-                          </span>
-                          <span className="text-[11px] text-rose-800 leading-snug">
-                            1 établissement a rejeté des réservations d'affilée pour motif :
-                            « Coupure d'énergie / POS ».
-                          </span>
+                      ) : (
+                        <div className="p-3.5 rounded-lg bg-emerald-50/70 border border-emerald-200/60 flex items-center gap-2.5 text-xs text-emerald-900">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>Aucune alerte critique. Le système est prêt et tous les services fonctionnent normalement.</span>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     <button
@@ -1322,7 +1312,17 @@ export const AdminDashboardPage: React.FC = () => {
               {loading ? (
                 <div className="py-12 text-center text-xs text-slate-400">Chargement des restaurants...</div>
               ) : restaurants.length === 0 ? (
-                <div className="py-12 text-center text-xs text-slate-500">{t.admin.restaurants.noRestaurants}</div>
+                <div className="py-16 text-center space-y-3 p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                  <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 mx-auto flex items-center justify-center font-bold">
+                    <Store className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-bold text-slate-800 text-sm">
+                    Aucun établissement inscrit pour le moment
+                  </h4>
+                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                    La plateforme démarre à zéro. Dès qu'un restaurateur crée son compte via le portail ou que vous en enregistrez un, il apparaîtra ici avec son statut d'abonnement, ses menus et ses réservations.
+                  </p>
+                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
@@ -1892,7 +1892,7 @@ export const AdminDashboardPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                 <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-medium block">Nom du SaaS</span>
+                  <span className="text-slate-400 font-medium block">Nom de la Plateforme</span>
                   <span className="text-slate-900 font-extrabold text-sm block">Menu du Jour</span>
                 </div>
 
@@ -2008,7 +2008,18 @@ export const AdminDashboardPage: React.FC = () => {
                         : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    30 Jours
+                    30 Jours (1 mois)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGrantSubDays(60)}
+                    className={`py-2 px-1 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
+                      grantSubDays === 60
+                        ? 'bg-slate-900 border-slate-900 text-white'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    60 Jours (2 mois)
                   </button>
                   <button
                     type="button"
@@ -2019,18 +2030,7 @@ export const AdminDashboardPage: React.FC = () => {
                         : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    3 Mois
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setGrantSubDays(365)}
-                    className={`py-2 px-1 rounded-xl border font-bold text-center transition-colors cursor-pointer ${
-                      grantSubDays === 365
-                        ? 'bg-slate-900 border-slate-900 text-white'
-                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    1 An (365 j)
+                    90 Jours (3 mois)
                   </button>
                 </div>
                 <div className="mt-2 flex items-center gap-2">

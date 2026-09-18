@@ -26,7 +26,7 @@ export const AboutPage: React.FC = () => {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30">
               <UtensilsCrossed className="w-3.5 h-3.5" />
-              <span>SaaS Menu du Jour</span>
+              <span>Menu du Jour</span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight">{t.aboutPage.title}</h1>
             <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">

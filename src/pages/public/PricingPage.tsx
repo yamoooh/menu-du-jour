@@ -215,8 +215,8 @@ export const PricingPage: React.FC = () => {
                       <div className="flex items-start gap-space-sm">
                         <Lock className="text-secondary-container w-5 h-5 shrink-0" />
                         <div>
-                          <h4 className="font-label-md text-label-md text-on-primary font-semibold">Upload PDF &amp; Médias (10 Mo)</h4>
-                          <p className="font-body-sm text-body-sm text-on-primary-container">Téléversement direct de cartes graphiques et cartes des vins haute résolution.</p>
+                          <h4 className="font-label-md text-label-md text-on-primary font-semibold">Upload PDF, Vidéos &amp; Photos (100 Mo)</h4>
+                          <p className="font-body-sm text-body-sm text-on-primary-container">Téléversement direct de photos 4K, vidéos de plats et cartes PDF haute résolution.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-space-sm">

@@ -42,7 +42,7 @@ export const App = () => {
         <AuthProvider>
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              {/* Public SaaS Pages */}
+              {/* Public Pages */}
               <Route path="/" element={<HomePage />} />
               <Route path="/a-propos" element={<AboutPage />} />
               <Route path="/engagez-nous" element={<EngageUsPage />} />
